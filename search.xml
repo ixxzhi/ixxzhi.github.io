@@ -405,36 +405,6 @@
       </tags>
   </entry>
   <entry>
-    <title>mysql配置time_zone属性</title>
-    <url>/2021/07/14/mysql%E9%85%8D%E7%BD%AEtime-zone%E5%B1%9E%E6%80%A7/</url>
-    <content><![CDATA[<p>&#x3D;&#x3D;每次用idea连接mysql都要设置time_zone属性，简直不要太烦&#x3D;&#x3D;</p>
-<p>&#x3D;&#x3D;几行代码告别烦恼&#x3D;&#x3D;</p>
-<ol>
-<li><p>win+r 打开运行</p>
-</li>
-<li><p>cmd 打开命令行</p>
-</li>
-<li><p>连接数据库</p>
-<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">mysql -uroot -p</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>配置time_zone属性</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">set global time_zone = &#x27;+8:00&#x27;;</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>验证是否成功</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">show variables like ’%time_zone’;</span><br></pre></td></tr></table></figure>
-
-<p><img src="https://cdn.jsdelivr.net/gh/temuulenj/images/images/20210714215354.png" alt="image-20210714215109365"></p>
-</li>
-</ol>
-]]></content>
-      <categories>
-        <category>数据库</category>
-      </categories>
-      <tags>
-        <tag>SQL</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>kali破解WiFi密码</title>
     <url>/2021/05/22/kali%E7%A0%B4%E8%A7%A3WiFi%E5%AF%86%E7%A0%81/</url>
     <content><![CDATA[<blockquote>
@@ -519,6 +489,36 @@
       </tags>
   </entry>
   <entry>
+    <title>mysql配置time_zone属性</title>
+    <url>/2021/07/14/mysql%E9%85%8D%E7%BD%AEtime-zone%E5%B1%9E%E6%80%A7/</url>
+    <content><![CDATA[<p>&#x3D;&#x3D;每次用idea连接mysql都要设置time_zone属性，简直不要太烦&#x3D;&#x3D;</p>
+<p>&#x3D;&#x3D;几行代码告别烦恼&#x3D;&#x3D;</p>
+<ol>
+<li><p>win+r 打开运行</p>
+</li>
+<li><p>cmd 打开命令行</p>
+</li>
+<li><p>连接数据库</p>
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">mysql -uroot -p</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>配置time_zone属性</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">set global time_zone = &#x27;+8:00&#x27;;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>验证是否成功</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">show variables like ’%time_zone’;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://cdn.jsdelivr.net/gh/temuulenj/images/images/20210714215354.png" alt="image-20210714215109365"></p>
+</li>
+</ol>
+]]></content>
+      <categories>
+        <category>数据库</category>
+      </categories>
+      <tags>
+        <tag>SQL</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>关于kali安装typora遇到的问题</title>
     <url>/2021/05/24/%E5%85%B3%E4%BA%8Ekali%E5%AE%89%E8%A3%85typora%E9%81%87%E5%88%B0%E7%9A%84%E9%97%AE%E9%A2%98/</url>
     <content><![CDATA[<h1 id="安装Typora"><a href="#安装Typora" class="headerlink" title="安装Typora"></a>安装Typora</h1><p>按照<a class="link"   href="https://www.typora.io/#linux" >Typora官网<i class="fas fa-external-link-alt"></i></a>提示</p>
@@ -572,9 +572,9 @@
 <p>本文所使用的环境为：</p>
 <ul>
 <li>Windows10 20H2</li>
-<li><a class="link"   href="mailto:&#110;&#x6f;&#x64;&#101;&#46;&#x6a;&#115;&#x40;&#x31;&#x34;&#46;&#x31;&#54;&#46;&#48;" >&#110;&#x6f;&#x64;&#101;&#46;&#x6a;&#115;&#x40;&#x31;&#x34;&#46;&#x31;&#54;&#46;&#48;<i class="fas fa-external-link-alt"></i></a></li>
-<li><a class="link"   href="mailto:&#x67;&#x69;&#116;&#64;&#x32;&#46;&#51;&#x31;&#46;&#49;&#x2e;&#119;&#x69;&#110;&#100;&#x6f;&#x77;&#115;&#x2e;&#x31;" >&#x67;&#x69;&#116;&#64;&#x32;&#46;&#51;&#x31;&#46;&#49;&#x2e;&#119;&#x69;&#110;&#100;&#x6f;&#x77;&#115;&#x2e;&#x31;<i class="fas fa-external-link-alt"></i></a></li>
-<li><a class="link"   href="mailto:&#x68;&#101;&#120;&#111;&#x40;&#x35;&#46;&#x34;&#x2e;&#48;" >&#x68;&#101;&#120;&#111;&#x40;&#x35;&#46;&#x34;&#x2e;&#48;<i class="fas fa-external-link-alt"></i></a></li>
+<li><a class="link"   href="mailto:&#x6e;&#x6f;&#x64;&#x65;&#x2e;&#106;&#x73;&#x40;&#49;&#52;&#x2e;&#x31;&#54;&#x2e;&#48;" >&#x6e;&#x6f;&#x64;&#x65;&#x2e;&#106;&#x73;&#x40;&#49;&#52;&#x2e;&#x31;&#54;&#x2e;&#48;<i class="fas fa-external-link-alt"></i></a></li>
+<li><a class="link"   href="mailto:&#103;&#x69;&#x74;&#x40;&#x32;&#x2e;&#x33;&#49;&#46;&#x31;&#x2e;&#119;&#x69;&#110;&#100;&#x6f;&#x77;&#x73;&#x2e;&#x31;" >&#103;&#x69;&#x74;&#x40;&#x32;&#x2e;&#x33;&#49;&#46;&#x31;&#x2e;&#119;&#x69;&#110;&#100;&#x6f;&#x77;&#x73;&#x2e;&#x31;<i class="fas fa-external-link-alt"></i></a></li>
+<li><a class="link"   href="mailto:&#x68;&#x65;&#120;&#111;&#64;&#53;&#x2e;&#x34;&#46;&#48;" >&#x68;&#x65;&#120;&#111;&#64;&#53;&#x2e;&#x34;&#46;&#48;<i class="fas fa-external-link-alt"></i></a></li>
 </ul>
 <h1 id="搭建GitHub博客"><a href="#搭建GitHub博客" class="headerlink" title="搭建GitHub博客"></a>搭建GitHub博客</h1><h2 id="新建仓库"><a href="#新建仓库" class="headerlink" title="新建仓库"></a>新建仓库</h2><p>登录GitHub后点击左侧的<code>create repository</code>来新建仓库</p>
 <p><img src="https://z3.ax1x.com/2021/05/03/geyvee.png" alt="image-20210503054302757"></p>
