@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="keywords" content="Hexo Theme Keep">
+    <meta name="description" content="Hexo Theme Keep">
+    <meta name="author" content="小小志不憨">
+    
+    <title>
+        
+            MySQL命令行大全 |
+        
+        小小志の部落阁
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <link rel="shortcut icon" href="/images/logo.svg">
+    
+<link rel="stylesheet" href="/css/font-awesome.min.css">
+
+    <script id="hexo-configurations">
+    let KEEP = window.KEEP || {};
+    KEEP.hexo_config = {"hostname":"www.ixxzhi.cn","root":"/","language":"zh-CN","path":"search.xml"};
+    KEEP.theme_config = {"toc":{"enable":true,"number":true,"expand_all":true,"init_open":true},"style":{"primary_color":"#0066CC","avatar":"https://s3.bmp.ovh/imgs/2022/04/08/575dd80192f6d4c1.jpg","favicon":"/images/logo.svg","article_img_align":"left","left_side_width":"260px","content_max_width":"920px","hover":{"shadow":true,"scale":true},"first_screen":{"enable":true,"background_img":"/images/bg.svg","description":"Keep writing and Keep loving."},"scroll":{"progress_bar":{"enable":true},"percent":{"enable":true}}},"local_search":{"enable":true,"preload":true},"code_copy":{"enable":true,"style":"mac"},"pjax":{"enable":false},"lazyload":{"enable":false},"version":"3.4.5"};
+    KEEP.language_ago = {"second":"%s 秒前","minute":"%s 分钟前","hour":"%s 小时前","day":"%s 天前","week":"%s 周前","month":"%s 个月前","year":"%s 年前"};
+  </script>
+<meta name="generator" content="Hexo 6.1.0"></head>
+
+
+<body>
+<div class="progress-bar-container">
+    
+        <span class="scroll-progress-bar"></span>
+    
+
+    
+</div>
+
+
+<main class="page-container">
+
+    
+
+    <div class="page-main-content">
+
+        <div class="page-main-content-top">
+            <header class="header-wrapper">
+
+    <div class="header-content">
+        <div class="left">
+            
+                <a class="logo-image" href="/">
+                    <img src="https://s3.bmp.ovh/imgs/2022/04/08/575dd80192f6d4c1.jpg">
+                </a>
+            
+            <a class="logo-title" href="/">
+                小小志の部落阁
+            </a>
+        </div>
+
+        <div class="right">
+            <div class="pc">
+                <ul class="menu-list">
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/"
+                            >
+                                首页
+                            </a>
+                        </li>
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/archives"
+                            >
+                                归档
+                            </a>
+                        </li>
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/categories"
+                            >
+                                分类
+                            </a>
+                        </li>
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/tags"
+                            >
+                                标签
+                            </a>
+                        </li>
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/links"
+                            >
+                                友链
+                            </a>
+                        </li>
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/about"
+                            >
+                                关于
+                            </a>
+                        </li>
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/changelog"
+                            >
+                                更新日志
+                            </a>
+                        </li>
+                    
+                    
+                        <li class="menu-item search search-popup-trigger">
+                            <i class="fas fa-search"></i>
+                        </li>
+                    
+                </ul>
+            </div>
+            <div class="mobile">
+                
+                    <div class="icon-item search search-popup-trigger"><i class="fas fa-search"></i></div>
+                
+                <div class="icon-item menu-bar">
+                    <div class="menu-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="header-drawer">
+        <ul class="drawer-menu-list">
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/">首页</a>
+                </li>
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/archives">归档</a>
+                </li>
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/categories">分类</a>
+                </li>
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/tags">标签</a>
+                </li>
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/links">友链</a>
+                </li>
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/about">关于</a>
+                </li>
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/changelog">更新日志</a>
+                </li>
+            
+        </ul>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="page-main-content-middle">
+
+            <div class="main-content">
+
+                
+                    <div class="fade-in-down-animation">
+    <div class="article-content-container">
+
+        <div class="article-title">
+            <span class="title-hover-animation">MySQL命令行大全</span>
+        </div>
+
+        
+            <div class="article-header">
+                <div class="avatar">
+                    <img src="https://s3.bmp.ovh/imgs/2022/04/08/575dd80192f6d4c1.jpg">
+                </div>
+                <div class="info">
+                    <div class="author">
+                        <span class="name">小小志不憨</span>
+                        
+                            <span class="author-label">Lv2</span>
+                        
+                    </div>
+                    <div class="meta-info">
+                        <div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fas fa-edit"></i>&nbsp;
+        <span class="pc">2021-05-17 00:06:53</span>
+        <span class="mobile">2021-05-17 00:06</span>
+    </span>
+    
+        <span class="article-categories article-meta-item">
+            <i class="fas fa-folder"></i>&nbsp;
+            <ul>
+                
+                    <li>
+                        <a href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/">数据库</a>&nbsp;
+                    </li>
+                
+            </ul>
+        </span>
+    
+    
+        <span class="article-tags article-meta-item">
+            <i class="fas fa-tags"></i>&nbsp;
+            <ul>
+                
+                    <li>
+                        <a href="/tags/SQL/">SQL</a>&nbsp;
+                    </li>
+                
+            </ul>
+        </span>
+    
+
+    
+    
+    
+    
+        <span class="article-pv article-meta-item">
+            <i class="fas fa-eye"></i>&nbsp;<span id="busuanzi_value_page_pv"></span>
+        </span>
+    
+</div>
+
+                    </div>
+                </div>
+            </div>
+        
+
+        <div class="article-content markdown-body">
+            <img src="https://cdn.jsdelivr.net/gh/temuulenj/images/images/20210517010218.jpg">
+
+
+
+<h1 id="MYSQL常用命令"><a href="#MYSQL常用命令" class="headerlink" title="MYSQL常用命令"></a>MYSQL常用命令</h1><blockquote>
+<ol>
+<li>导出整个数据库</li>
+</ol>
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mysqldump -u 用户名 -p –default-character-set=latin1 数据库名 &gt; 导出的文件名(数据库默认编码是latin1)  </span><br><span class="line">mysqldump -u wcnc -p smgp_apps_wcnc &gt; wcnc.sql  </span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>导出一个表</li>
+</ol>
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mysqldump -u 用户名 -p 数据库名 表名&gt; 导出的文件名  </span><br><span class="line">mysqldump -u wcnc -p smgp_apps_wcnc users&gt; wcnc_users.sql  </span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>导出一个数据库结构</li>
+</ol>
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mysqldump -u wcnc -p -d –add-drop-table smgp_apps_wcnc &gt;d:wcnc_db.sql  </span><br><span class="line">-d 没有数据 –add-drop-table 在每个create语句之前增加一个drop table</span><br></pre></td></tr></table></figure>
+
+<ol start="4">
+<li>导入数据库</li>
+</ol>
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">A:常用source 命令  </span><br><span class="line">进入mysql数据库控制台，  </span><br><span class="line">如mysql -u root -p  </span><br><span class="line">mysql&gt;use 数据库  </span><br><span class="line">然后使用source命令，后面参数为脚本文件(如这里用到的.sql)  </span><br><span class="line">mysql&gt;source wcnc_db.sql  </span><br><span class="line">B:使用mysqldump命令  </span><br><span class="line">mysqldump -u username -p dbname &lt; filename.sql  </span><br><span class="line">C:使用mysql命令  </span><br><span class="line">mysql -u username -p -D dbname &lt; filename.sql  </span><br></pre></td></tr></table></figure>
+</blockquote>
+<h1 id="启动与退出"><a href="#启动与退出" class="headerlink" title="启动与退出"></a>启动与退出</h1><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"> 1、进入MySQL：启动MySQL Command Line Client（MySQL的DOS界面），直接输入安装时的密码即可。此时的提示符是：mysql&gt;  </span><br><span class="line">2、退出MySQL：quit或exit  </span><br></pre></td></tr></table></figure>
+
+<h1 id="库操作"><a href="#库操作" class="headerlink" title="库操作"></a>库操作</h1><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">1、创建数据库  </span><br><span class="line">命令：create database &lt;数据库名&gt;  </span><br><span class="line">例如：建立一个名为xhkdb的数据库  </span><br><span class="line">mysql&gt; create database xhkdb;  </span><br><span class="line">2、显示所有的数据库  </span><br><span class="line">命令：show databases （注意：最后有个s）  </span><br><span class="line">mysql&gt; show databases;  </span><br><span class="line">3、删除数据库  </span><br><span class="line">命令：drop database &lt;数据库名&gt;  </span><br><span class="line">例如：删除名为 xhkdb的数据库  </span><br><span class="line">mysql&gt; drop database xhkdb;  </span><br><span class="line">4、连接数据库  </span><br><span class="line">命令：use &lt;数据库名&gt;  </span><br><span class="line">例如：如果xhkdb数据库存在，尝试存取它：  </span><br><span class="line">mysql&gt; use xhkdb;  </span><br><span class="line">屏幕提示：Database changed  </span><br><span class="line">5、查看当前使用的数据库  </span><br><span class="line">mysql&gt; select database();  </span><br><span class="line">6、当前数据库包含的表信息：  </span><br><span class="line">mysql&gt; show tables; （注意：最后有个s）  </span><br></pre></td></tr></table></figure>
+
+<h1 id="表操作-操作之前应连接某个数据库"><a href="#表操作-操作之前应连接某个数据库" class="headerlink" title="表操作(操作之前应连接某个数据库)"></a>表操作(操作之前应连接某个数据库)</h1><blockquote>
+<p>1、建表<br>命令：create table &lt;表名&gt; ( &lt;字段名&gt; &lt;类型&gt; [,..&lt;字段名n&gt; &lt;类型n&gt;]); </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&gt;mysql&gt; create table MyClass(  </span><br><span class="line">&gt;&gt; id int(4) not null primary key auto_increment,  </span><br><span class="line">&gt;&gt; name char(20) not null,  </span><br><span class="line">&gt;&gt; sex int(4) not null default ’′,  </span><br><span class="line">&gt;&gt; degree double(16,2));</span><br></pre></td></tr></table></figure>
+
+<p>2、获取表结构  </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&gt;命令：desc 表名，或者show columns from 表名  </span><br><span class="line">&gt;mysql&gt;DESCRIBE MyClass  </span><br><span class="line">&gt;mysql&gt; desc MyClass;  </span><br><span class="line">&gt;mysql&gt; show columns from MyClass;  </span><br></pre></td></tr></table></figure>
+
+<p>3、删除表  </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&gt;命令：drop table &lt;表名&gt;  </span><br><span class="line">&gt;例如：删除表名为 MyClass 的表  </span><br><span class="line">&gt;mysql&gt; drop table MyClass;  </span><br></pre></td></tr></table></figure>
+
+<p>4、插入数据  </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&gt;命令：insert into &lt;表名&gt; [( &lt;字段名&gt;[,..&lt;字段名n &gt; ])] values ( 值 )[, ( 值n )]  </span><br><span class="line">&gt;例如，往表 MyClass中插入二条记录, 这二条记录表示：编号为的名为Tom的成绩为.45, 编号为 的名为Joan 的成绩为.99，编号为 的名为Wang 的成绩为.5.  </span><br><span class="line">&gt;mysql&gt; insert into MyClass values(1,’Tom’,96.45),(2,’Joan’,82.99), (2,’Wang’, 96.59);  </span><br></pre></td></tr></table></figure>
+
+<p>5、查询表中的数据  </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&gt;1)、查询所有行  </span><br><span class="line">&gt;命令：select &lt;字段，字段，…&gt; from &lt; 表名 &gt; where &lt; 表达式 &gt;  </span><br><span class="line">&gt;例如：查看表 MyClass 中所有数据  </span><br><span class="line">&gt;mysql&gt; select  from MyClass;  </span><br><span class="line">&gt;2）、查询前几行数据  </span><br><span class="line">&gt;例如：查看表 MyClass 中前行数据  </span><br><span class="line">&gt;mysql&gt; select  from MyClass order by id limit 0,2;  </span><br><span class="line">&gt;或者：  </span><br><span class="line">&gt;mysql&gt; select  from MyClass limit 0,2;  </span><br></pre></td></tr></table></figure>
+
+<p>6、删除表中数据  </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&gt;命令：delete from 表名 where 表达式  </span><br><span class="line">&gt;例如：删除表 MyClass中编号为 的记录  </span><br><span class="line">&gt;mysql&gt; delete from MyClass where id=1;  </span><br></pre></td></tr></table></figure>
+
+<p>7、修改表中数据</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt;命令：update 表名 set 字段=新值,…where 条件  </span><br><span class="line">&gt;mysql&gt; update MyClass set name=’Mary’where id=1;  </span><br></pre></td></tr></table></figure>
+
+<p>8、在表中增加字段</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&gt;命令：alter table 表名 add字段 类型 其他;  </span><br><span class="line">&gt;例如：在表MyClass中添加了一个字段passtest，类型为int(4)，默认值为  </span><br><span class="line">&gt;mysql&gt; alter table MyClass add passtest int(4) default ’′  </span><br></pre></td></tr></table></figure>
+
+<p>9、更改表名：  </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&gt;命令：rename table 原表名 to 新表名;  </span><br><span class="line">&gt;例如：在表MyClass名字更改为YouClass  </span><br><span class="line">&gt;mysql&gt; rename table MyClass to YouClass;  </span><br><span class="line">&gt;更新字段内容  </span><br><span class="line">&gt;update 表名 set 字段名 = 新内容  </span><br><span class="line">&gt;update 表名 set 字段名 = replace(字段名,’旧内容’,’新内容’)  </span><br></pre></td></tr></table></figure>
+</blockquote>
+<h1 id="字段类型"><a href="#字段类型" class="headerlink" title="字段类型"></a>字段类型</h1><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">1．INT[(M)] 型：正常大小整数类型  </span><br><span class="line">2．DOUBLE[(M,D)] [ZEROFILL] 型：正常大小(双精密)浮点数字类型  </span><br><span class="line">3．DATE 日期类型：支持的范围是-01-01到-12-31。MySQL以YYYY-MM-DD格式来显示DATE值，但是允许你使用字符串或数字把值赋给DATE列  </span><br><span class="line">4．CHAR(M) 型：定长字符串类型，当存储时，总是是用空格填满右边到指定的长度  </span><br><span class="line">5．BLOB TEXT类型，最大长度为(2^16-1)个字符。  </span><br><span class="line">6．VARCHAR型：变长字符串类型  </span><br></pre></td></tr></table></figure>
+
+<h1 id="导入数据库表"><a href="#导入数据库表" class="headerlink" title="导入数据库表"></a>导入数据库表</h1><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">创建.sql文件  </span><br><span class="line">先产生一个库如auction.c:mysqlbin&gt;mysqladmin -u root -p creat auction，会提示输入密码，然后成功创建。  </span><br><span class="line">导入auction.sql文件  </span><br><span class="line">　　c:mysqlbin&gt;mysql -u root -p auction &lt; auction.sql。  </span><br><span class="line">　　通过以上操作，就可以创建了一个数据库auction以及其中的一个表auction。  </span><br></pre></td></tr></table></figure>
+
+<h1 id="修改数据库"><a href="#修改数据库" class="headerlink" title="修改数据库"></a>修改数据库</h1><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">　　在mysql的表中增加字段：  </span><br><span class="line">　　alter table dbname add column userid int(11) not null primary key auto_increment;  </span><br><span class="line">　　这样，就在表dbname中添加了一个字段userid，类型为int(11)。  </span><br></pre></td></tr></table></figure>
+
+<h1 id="MySQL数据库的授权"><a href="#MySQL数据库的授权" class="headerlink" title="MySQL数据库的授权"></a>MySQL数据库的授权</h1><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">　　mysql&gt;grant select,insert,delete,create,drop  </span><br><span class="line">　　on . (或test./user./..)  </span><br><span class="line">　　to 用户名@localhost  </span><br><span class="line">　　identified by ‘密码’；  </span><br><span class="line">　　如：新建一个用户帐号以便可以访问数据库，需要进行如下操作：  </span><br><span class="line">　　mysql&gt; grant usage  </span><br><span class="line">　　-&gt; ON test.  </span><br><span class="line">　　-&gt; TO testuser@localhost;  </span><br><span class="line">　　Query OK, 0 rows affected (0.15 sec)  </span><br><span class="line">　　此后就创建了一个新用户叫：testuser，这个用户只能从localhost连接到数据库并可以连接到test 数据库。下一步，我们必须指定testuser这个用户可以执行哪些操作：  </span><br><span class="line">　　mysql&gt; GRANT select, insert, delete,update  </span><br><span class="line">　　-&gt; ON test.  </span><br><span class="line">　　-&gt; TO testuser@localhost;  </span><br><span class="line">　　Query OK, 0 rows affected (0.00 sec)  </span><br><span class="line">　　此操作使testuser能够在每一个test数据库中的表执行SELECT，INSERT和DELETE以及UPDATE查询操作。现在我们结束操作并退出MySQL客户程序：  </span><br><span class="line">　　mysql&gt; exit  </span><br><span class="line">　　Bye9!  </span><br></pre></td></tr></table></figure>
+
+<h1 id="常用操作"><a href="#常用操作" class="headerlink" title="常用操作"></a>常用操作</h1><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">1:使用SHOW语句找出在服务器上当前存在什么数据库：  </span><br><span class="line">mysql&gt; SHOW DATABASES;  </span><br><span class="line">2:2、创建一个数据库MYSQLDATA  </span><br><span class="line">mysql&gt; Create DATABASE MYSQLDATA;  </span><br><span class="line">3:选择你所创建的数据库  </span><br><span class="line">mysql&gt; USE MYSQLDATA; (按回车键出现Database changed 时说明操作成功！)  </span><br><span class="line">4:查看现在的数据库中存在什么表  </span><br><span class="line">mysql&gt; SHOW TABLES;  </span><br><span class="line">5:创建一个数据库表  </span><br><span class="line">mysql&gt; Create TABLE MYTABLE (name VARCHAR(20), sex CHAR(1));  </span><br><span class="line">6:显示表的结构：  </span><br><span class="line">mysql&gt; DESCRIBE MYTABLE;  </span><br><span class="line">7:往表中加入记录</span><br><span class="line">mysql&gt; insert into MYTABLE values (“hyq”,”M”);  </span><br><span class="line">8:用文本方式将数据装入数据库表中（例如D:/mysql.txt）  </span><br><span class="line">mysql&gt; LOAD DATA LOCAL INFILE “D:/mysql.txt”INTO TABLE MYTABLE;  </span><br><span class="line">9:导入.sql文件命令（例如D:/mysql.sql）  </span><br><span class="line">mysql&gt;use database;  </span><br><span class="line">mysql&gt;source d:/mysql.sql;  </span><br><span class="line">10:删除表  </span><br><span class="line">mysql&gt;drop TABLE MYTABLE;  </span><br><span class="line">11:清空表  </span><br><span class="line">mysql&gt;delete from MYTABLE;  </span><br><span class="line">12:更新表中数据  </span><br><span class="line">mysql&gt;update MYTABLE set sex=”f”where name=’hyq’;</span><br></pre></td></tr></table></figure>
+
+<h1 id="以下是无意中在网络看到的使用MySql的管理心得"><a href="#以下是无意中在网络看到的使用MySql的管理心得" class="headerlink" title="以下是无意中在网络看到的使用MySql的管理心得"></a>以下是无意中在网络看到的使用MySql的管理心得</h1><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">在windows中MySql以服务形式存在，在使用前应确保此服务已经启动，未启动可用net start mysql命令启动。而Linux中启动时可用“/etc/rc.d/init.d/mysqld start”命令，注意启动者应具有管理员权限。  </span><br><span class="line">刚安装好的MySql包含一个含空密码的root帐户和一个匿名帐户，这是很大的安全隐患，对于一些重要的应用我们应将安全性尽可能提高，在这里应把匿名帐户删除、root帐户设置密码，可用如下命令进行：  </span><br><span class="line">use mysql;  </span><br><span class="line">delete from User where User=””;  </span><br><span class="line">update User set Password=PASSWORD(‘newpassword’) where User=’root’;  </span><br><span class="line">如果要对用户所用的登录终端进行限制，可以更新User表中相应用户的Host字段，在进行了以上更改后应重新启动数据库服务，此时登录时可用如下类似命令：  </span><br><span class="line">mysql -uroot -p;  </span><br><span class="line">mysql -uroot -pnewpassword;  </span><br><span class="line">mysql mydb -uroot -p;  </span><br><span class="line">mysql mydb -uroot -pnewpassword;  </span><br><span class="line">上面命令参数是常用参数的一部分，详细情况可参考文档。此处的mydb是要登录的数据库的名称。  </span><br><span class="line">在进行开发和实际应用中，用户不应该只用root用户进行连接数据库，虽然使用root用户进行测试时很方便，但会给系统带来重大安全隐患，也不利于管理技术的提高。我们给一个应用中使用的用户赋予最恰当的数据库权限。如一个只进行数据插入的用户不应赋予其删除数据的权限。MySql的用户管理是通过User表来实现的，添加新用户常用的方法有两个，一是在User表插入相应的数据行，同时设置相应的权限；二是通过GRANT命令创建具有某种权限的用户。其中GRANT的常用用法如下：  </span><br><span class="line">grant all on mydb. to NewUserName@HostName identified by “password”;  </span><br><span class="line">grant usage on . to NewUserName@HostName identified by “password”;  </span><br><span class="line">grant select,insert,update on mydb. to NewUserName@HostName identified by “password”;  </span><br><span class="line">grant update,delete on mydb.TestTable to NewUserName@HostName identified by “password”;  </span><br><span class="line">若要给此用户赋予他在相应对象上的权限的管理能力，可在GRANT后面添加WITH GRANT OPTION选项。而对于用插入User表添加的用户，Password字段应用PASSWORD 函数进行更新加密，以防不轨之人窃看密码。对于那些已经不用的用户应给予清除，权限过界的用户应及时回收权限，回收权限可以通过更新User表相应字段，也可以使用REVOKE操作。  </span><br><span class="line">下面给出本人从其它资料(www.cn-java.com)获得的对常用权限的解释：  </span><br><span class="line">全局管理权限：  </span><br><span class="line">FILE: 在MySQL服务器上读写文件。  </span><br><span class="line">PROCESS: 显示或杀死属于其它用户的服务线程。  </span><br><span class="line">RELOAD: 重载访问控制表，刷新日志等。  </span><br><span class="line">SHUTDOWN: 关闭MySQL服务。  </span><br><span class="line">数据库/数据表/数据列权限：  </span><br><span class="line">Alter: 修改已存在的数据表(例如增加/删除列)和索引。  </span><br><span class="line">Create: 建立新的数据库或数据表。  </span><br><span class="line">Delete: 删除表的记录。  </span><br><span class="line">Drop: 删除数据表或数据库。  </span><br><span class="line">INDEX: 建立或删除索引。  </span><br><span class="line">Insert: 增加表的记录。  </span><br><span class="line">Select: 显示/搜索表的记录。  </span><br><span class="line">Update: 修改表中已存在的记录。  </span><br><span class="line">特别的权限：  </span><br><span class="line">ALL: 允许做任何事(和root一样)。  </span><br><span class="line">USAGE: 只允许登录–其它什么也不允许做。  </span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<hr>
+<p>本文引用自_重剑无锋《MYSQL 命令行大全 (简洁、明了、全面)》</p>
+<p><a class="link"   target="_blank" rel="noopener" href="https://blog.csdn.net/qq_35409127/article/details/79760797" >查看原文<i class="fas fa-external-link-alt"></i></a></p>
+<hr>
+
+        </div>
+
+        
+            <div class="post-copyright-info">
+                <div class="article-copyright-info-container">
+    <ul>
+        <li>本文标题：MySQL命令行大全</li>
+        <li>本文作者：小小志不憨</li>
+        <li>创建时间：2021-05-17 00:06:53</li>
+        <li>
+            本文链接：https://www.xxzhi.cn/2021/05/17/MySQL命令行大全/
+        </li>
+        <li>
+            版权声明：本博客所有文章除特别声明外，均采用 <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">BY-NC-SA</a> 许可协议。转载请注明出处！
+        </li>
+    </ul>
+</div>
+
+            </div>
+        
+
+        
+            <ul class="post-tags-box">
+                
+                    <li class="tag-item">
+                        <a href="/tags/SQL/">#SQL</a>&nbsp;
+                    </li>
+                
+            </ul>
+        
+
+        
+            <div class="article-nav">
+                
+                    <div class="article-prev">
+                        <a class="prev"
+                           rel="prev"
+                           href="/2021/05/17/JDBC%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C/"
+                        >
+                            <span class="left arrow-icon flex-center">
+                              <i class="fas fa-chevron-left"></i>
+                            </span>
+                            <span class="title flex-center">
+                                <span class="post-nav-title-item">JDBC基本操作</span>
+                                <span class="post-nav-item">上一篇</span>
+                            </span>
+                        </a>
+                    </div>
+                
+                
+                    <div class="article-next">
+                        <a class="next"
+                           rel="next"
+                           href="/2021/05/03/%E5%9F%BA%E4%BA%8EGitHub-Hexo%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/"
+                        >
+                            <span class="title flex-center">
+                                <span class="post-nav-title-item">基于GitHub+Hexo搭建个人博客</span>
+                                <span class="post-nav-item">下一篇</span>
+                            </span>
+                            <span class="right arrow-icon flex-center">
+                              <i class="fas fa-chevron-right"></i>
+                            </span>
+                        </a>
+                    </div>
+                
+            </div>
+        
+
+        
+            <div class="comment-container">
+                <div class="comments-container">
+    <div id="comment-anchor"></div>
+    <div class="comment-area-title">
+        <i class="fas fa-comments">&nbsp;评论</i>
+    </div>
+    
+
+        
+            
+    <div class="valine-container">
+        <script 
+                src="//cdn.jsdelivr.net/npm/valine@latest/dist/Valine.min.js"></script>
+        <div id="vcomments"></div>
+        <script >
+            function loadValine() {
+                new Valine({
+                    el: '#vcomments',
+                    appId: 'Ufxxaotry4OiiXry9TnNSkev-gzGzoHsz',
+                    appKey: '74Hue6kozh8YVQFTtObWdDrX',
+                    meta: ['nick', 'mail', 'link'],
+                    avatar: 'wavatar',
+                    enableQQ: true,
+                    placeholder: '欢迎评论吖～',
+                    lang: 'zh-CN'.toLowerCase()
+                });
+
+                function getAuthor(language) {
+                    switch (language) {
+                        case 'en':
+                            return 'Author';
+                        case 'zh-CN':
+                            return '博主';
+                        default:
+                            return 'Master';
+                    }
+                }
+
+                // Add "Author" identify
+                const getValineDomTimer = setInterval(() => {
+                    const vcards = document.querySelectorAll('#vcomments .vcards .vcard');
+                    if (vcards.length > 0) {
+                        let author = '小小志不憨';
+
+                        if (author) {
+                            for (let vcard of vcards) {
+                                const vnick_dom = vcard.querySelector('.vhead .vnick');
+                                const vnick = vnick_dom.innerHTML;
+                                if (vnick === author) {
+                                    vnick_dom.innerHTML = `${vnick} <span class="author">${getAuthor(KEEP.hexo_config.language)}</span>`
+                                }
+                            }
+                        }
+                        clearInterval(getValineDomTimer);
+                    } else {
+                        clearInterval(getValineDomTimer);
+                    }
+                }, 2000);
+            }
+
+            if ('false') {
+                const loadValineTimeout = setTimeout(() => {
+                    loadValine();
+                    clearTimeout(loadValineTimeout);
+                }, 1000);
+            } else {
+                window.addEventListener('DOMContentLoaded', loadValine);
+            }
+        </script>
+    </div>
+
+
+
+        
+    
+</div>
+
+            </div>
+        
+    </div>
+</div>
+
+
+                
+            </div>
+
+        </div>
+
+        <div class="page-main-content-bottom">
+            <footer class="footer">
+    <div class="info-container">
+        <div class="copyright-info info-item">
+            &copy;
+            
+              <span>2020</span>
+              -
+            
+            2022&nbsp;<i class="fas fa-heart icon-animate"></i>&nbsp;<a href="/">小小志不憨</a>
+        </div>
+        
+            <script async  src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+            <div class="website-count info-item">
+                
+                    <span id="busuanzi_container_site_uv">
+                        访问人数&nbsp;<span id="busuanzi_value_site_uv"></span>&ensp;
+                    </span>
+                
+                
+                    <span id="busuanzi_container_site_pv">
+                        总访问量&nbsp;<span id="busuanzi_value_site_pv"></span>
+                    </span>
+                
+            </div>
+        
+        <div class="theme-info info-item">
+            由 <a target="_blank" href="https://hexo.io">Hexo</a> 驱动&nbsp;|&nbsp;主题&nbsp;<a class="theme-version" target="_blank" href="https://github.com/XPoet/hexo-theme-keep">Keep v3.4.5</a>
+        </div>
+        
+        
+    </div>
+</footer>
+
+        </div>
+    </div>
+
+    
+        <div class="post-tools">
+            <div class="post-tools-container">
+    <ul class="tools-list">
+        <!-- TOC aside toggle -->
+        
+            <li class="tools-item page-aside-toggle">
+                <i class="fas fa-outdent"></i>
+            </li>
+        
+
+        <!-- go comment -->
+        
+            <li class="go-comment">
+                <i class="fas fa-comment"></i>
+            </li>
+        
+    </ul>
+</div>
+
+        </div>
+    
+
+    <div class="right-bottom-side-tools">
+        <div class="side-tools-container">
+    <ul class="side-tools-list">
+        <li class="tools-item tool-font-adjust-plus flex-center">
+            <i class="fas fa-search-plus"></i>
+        </li>
+
+        <li class="tools-item tool-font-adjust-minus flex-center">
+            <i class="fas fa-search-minus"></i>
+        </li>
+
+        <li class="tools-item tool-expand-width flex-center">
+            <i class="fas fa-arrows-alt-h"></i>
+        </li>
+
+        <li class="tools-item tool-dark-light-toggle flex-center">
+            <i class="fas fa-moon"></i>
+        </li>
+
+        <!-- rss -->
+        
+
+        
+
+        <li class="tools-item tool-scroll-to-bottom flex-center">
+            <i class="fas fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="exposed-tools-list">
+        <li class="tools-item tool-toggle-show flex-center">
+            <i class="fas fa-cog fa-spin"></i>
+        </li>
+        
+            <li class="tools-item tool-scroll-to-top flex-center">
+                <i class="arrow-up fas fa-arrow-up"></i>
+                <span class="percent"></span>
+            </li>
+        
+    </ul>
+</div>
+
+    </div>
+
+    
+        <aside class="page-aside">
+            <div class="post-toc-wrap">
+    <div class="post-toc">
+        <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#MYSQL%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4"><span class="nav-number">1.</span> <span class="nav-text">MYSQL常用命令</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%90%AF%E5%8A%A8%E4%B8%8E%E9%80%80%E5%87%BA"><span class="nav-number">2.</span> <span class="nav-text">启动与退出</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%BA%93%E6%93%8D%E4%BD%9C"><span class="nav-number">3.</span> <span class="nav-text">库操作</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%A1%A8%E6%93%8D%E4%BD%9C-%E6%93%8D%E4%BD%9C%E4%B9%8B%E5%89%8D%E5%BA%94%E8%BF%9E%E6%8E%A5%E6%9F%90%E4%B8%AA%E6%95%B0%E6%8D%AE%E5%BA%93"><span class="nav-number">4.</span> <span class="nav-text">表操作(操作之前应连接某个数据库)</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%AD%97%E6%AE%B5%E7%B1%BB%E5%9E%8B"><span class="nav-number">5.</span> <span class="nav-text">字段类型</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%AF%BC%E5%85%A5%E6%95%B0%E6%8D%AE%E5%BA%93%E8%A1%A8"><span class="nav-number">6.</span> <span class="nav-text">导入数据库表</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BF%AE%E6%94%B9%E6%95%B0%E6%8D%AE%E5%BA%93"><span class="nav-number">7.</span> <span class="nav-text">修改数据库</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#MySQL%E6%95%B0%E6%8D%AE%E5%BA%93%E7%9A%84%E6%8E%88%E6%9D%83"><span class="nav-number">8.</span> <span class="nav-text">MySQL数据库的授权</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%B8%B8%E7%94%A8%E6%93%8D%E4%BD%9C"><span class="nav-number">9.</span> <span class="nav-text">常用操作</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BB%A5%E4%B8%8B%E6%98%AF%E6%97%A0%E6%84%8F%E4%B8%AD%E5%9C%A8%E7%BD%91%E7%BB%9C%E7%9C%8B%E5%88%B0%E7%9A%84%E4%BD%BF%E7%94%A8MySql%E7%9A%84%E7%AE%A1%E7%90%86%E5%BF%83%E5%BE%97"><span class="nav-number">10.</span> <span class="nav-text">以下是无意中在网络看到的使用MySql的管理心得</span></a></li></ol>
+    </div>
+</div>
+        </aside>
+    
+
+    <div class="image-viewer-container">
+    <img src="">
+</div>
+
+
+    
+        <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+          <span class="search-input-field-pre">
+            <i class="fas fa-keyboard"></i>
+          </span>
+            <div class="search-input-container">
+                <input autocomplete="off"
+                       autocorrect="off"
+                       autocapitalize="off"
+                       placeholder="搜索..."
+                       spellcheck="false"
+                       type="search"
+                       class="search-input"
+                >
+            </div>
+            <span class="popup-btn-close">
+                <i class="fas fa-times"></i>
+            </span>
+        </div>
+        <div id="search-result">
+            <div id="no-result">
+                <i class="fas fa-spinner fa-pulse fa-5x fa-fw"></i>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+
+</main>
+
+
+
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/main.js"></script>
+
+<script src="/js/header-shrink.js"></script>
+
+<script src="/js/back2top.js"></script>
+
+<script src="/js/dark-light-toggle.js"></script>
+
+
+
+    
+<script src="/js/local-search.js"></script>
+
+
+
+
+    
+<script src="/js/code-copy.js"></script>
+
+
+
+
+
+<div class="post-scripts">
+    
+        
+<script src="/js/left-side-toggle.js"></script>
+
+<script src="/js/libs/anime.min.js"></script>
+
+<script src="/js/toc.js"></script>
+
+    
+</div>
+
+
+
+</body>
+</html>

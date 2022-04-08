@@ -1,0 +1,809 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="keywords" content="Hexo Theme Keep">
+    <meta name="description" content="Hexo Theme Keep">
+    <meta name="author" content="小小志不憨">
+    
+    <title>
+        
+            SQL学习笔记 |
+        
+        小小志の部落阁
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <link rel="shortcut icon" href="/images/logo.svg">
+    
+<link rel="stylesheet" href="/css/font-awesome.min.css">
+
+    <script id="hexo-configurations">
+    let KEEP = window.KEEP || {};
+    KEEP.hexo_config = {"hostname":"www.ixxzhi.cn","root":"/","language":"zh-CN","path":"search.xml"};
+    KEEP.theme_config = {"toc":{"enable":true,"number":true,"expand_all":true,"init_open":true},"style":{"primary_color":"#0066CC","avatar":"https://s3.bmp.ovh/imgs/2022/04/08/575dd80192f6d4c1.jpg","favicon":"/images/logo.svg","article_img_align":"left","left_side_width":"260px","content_max_width":"920px","hover":{"shadow":true,"scale":true},"first_screen":{"enable":true,"background_img":"/images/bg.svg","description":"Keep writing and Keep loving."},"scroll":{"progress_bar":{"enable":true},"percent":{"enable":true}}},"local_search":{"enable":true,"preload":true},"code_copy":{"enable":true,"style":"mac"},"pjax":{"enable":false},"lazyload":{"enable":false},"version":"3.4.5"};
+    KEEP.language_ago = {"second":"%s 秒前","minute":"%s 分钟前","hour":"%s 小时前","day":"%s 天前","week":"%s 周前","month":"%s 个月前","year":"%s 年前"};
+  </script>
+<meta name="generator" content="Hexo 6.1.0"></head>
+
+
+<body>
+<div class="progress-bar-container">
+    
+        <span class="scroll-progress-bar"></span>
+    
+
+    
+</div>
+
+
+<main class="page-container">
+
+    
+
+    <div class="page-main-content">
+
+        <div class="page-main-content-top">
+            <header class="header-wrapper">
+
+    <div class="header-content">
+        <div class="left">
+            
+                <a class="logo-image" href="/">
+                    <img src="https://s3.bmp.ovh/imgs/2022/04/08/575dd80192f6d4c1.jpg">
+                </a>
+            
+            <a class="logo-title" href="/">
+                小小志の部落阁
+            </a>
+        </div>
+
+        <div class="right">
+            <div class="pc">
+                <ul class="menu-list">
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/"
+                            >
+                                首页
+                            </a>
+                        </li>
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/archives"
+                            >
+                                归档
+                            </a>
+                        </li>
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/categories"
+                            >
+                                分类
+                            </a>
+                        </li>
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/tags"
+                            >
+                                标签
+                            </a>
+                        </li>
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/links"
+                            >
+                                友链
+                            </a>
+                        </li>
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/about"
+                            >
+                                关于
+                            </a>
+                        </li>
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/changelog"
+                            >
+                                更新日志
+                            </a>
+                        </li>
+                    
+                    
+                        <li class="menu-item search search-popup-trigger">
+                            <i class="fas fa-search"></i>
+                        </li>
+                    
+                </ul>
+            </div>
+            <div class="mobile">
+                
+                    <div class="icon-item search search-popup-trigger"><i class="fas fa-search"></i></div>
+                
+                <div class="icon-item menu-bar">
+                    <div class="menu-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="header-drawer">
+        <ul class="drawer-menu-list">
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/">首页</a>
+                </li>
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/archives">归档</a>
+                </li>
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/categories">分类</a>
+                </li>
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/tags">标签</a>
+                </li>
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/links">友链</a>
+                </li>
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/about">关于</a>
+                </li>
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/changelog">更新日志</a>
+                </li>
+            
+        </ul>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="page-main-content-middle">
+
+            <div class="main-content">
+
+                
+                    <div class="fade-in-down-animation">
+    <div class="article-content-container">
+
+        <div class="article-title">
+            <span class="title-hover-animation">SQL学习笔记</span>
+        </div>
+
+        
+            <div class="article-header">
+                <div class="avatar">
+                    <img src="https://s3.bmp.ovh/imgs/2022/04/08/575dd80192f6d4c1.jpg">
+                </div>
+                <div class="info">
+                    <div class="author">
+                        <span class="name">小小志不憨</span>
+                        
+                            <span class="author-label">Lv2</span>
+                        
+                    </div>
+                    <div class="meta-info">
+                        <div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fas fa-edit"></i>&nbsp;
+        <span class="pc">2021-04-01 18:55:33</span>
+        <span class="mobile">2021-04-01 18:55</span>
+    </span>
+    
+        <span class="article-categories article-meta-item">
+            <i class="fas fa-folder"></i>&nbsp;
+            <ul>
+                
+                    <li>
+                        <a href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/">数据库</a>&nbsp;
+                    </li>
+                
+            </ul>
+        </span>
+    
+    
+        <span class="article-tags article-meta-item">
+            <i class="fas fa-tags"></i>&nbsp;
+            <ul>
+                
+                    <li>
+                        <a href="/tags/SQL/">SQL</a>&nbsp;
+                    </li>
+                
+            </ul>
+        </span>
+    
+
+    
+    
+    
+    
+        <span class="article-pv article-meta-item">
+            <i class="fas fa-eye"></i>&nbsp;<span id="busuanzi_value_page_pv"></span>
+        </span>
+    
+</div>
+
+                    </div>
+                </div>
+            </div>
+        
+
+        <div class="article-content markdown-body">
+            <h1 id="查询"><a href="#查询" class="headerlink" title="查询"></a>查询</h1><h2 id="SELECT语句"><a href="#SELECT语句" class="headerlink" title="SELECT语句"></a><code>SELECT</code>语句</h2><p><strong>可以用来从数据库中取出数据</strong></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="keyword">column</span>(列名),another_column,...</span><br><span class="line"><span class="keyword">FROM</span> mytable(表名);</span><br></pre></td></tr></table></figure>
+
+<h1 id="条件语句"><a href="#条件语句" class="headerlink" title="条件语句"></a>条件语句</h1><h2 id="WHERE语句"><a href="#WHERE语句" class="headerlink" title="WHERE语句"></a><code>WHERE</code>语句</h2><p>​      用来描述哪些行应该进入结果，具体就是通过 condition条件 限定这些行的属性满足某些具体条件。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="keyword">column</span>,another_column,...</span><br><span class="line"><span class="keyword">FROM</span> mytable</span><br><span class="line"><span class="keyword">WHERE</span> <span class="keyword">condition</span></span><br><span class="line">   <span class="keyword">AND</span> <span class="operator">/</span> <span class="keyword">OR</span> another_condition</span><br><span class="line">   <span class="keyword">AND</span> <span class="operator">/</span> <span class="keyword">OR</span> ...;</span><br><span class="line"> <span class="comment">--注：这里的 condition 都是描述属性列的，具体会在下面的表格体现。</span></span><br></pre></td></tr></table></figure>
+
+<table>
+<thead>
+<tr>
+<th align="left">Operator(关键字)</th>
+<th>Condition(解释)</th>
+<th align="center">SQL Example(例子)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">&#x3D; , !&#x3D; , &lt; , &lt;&#x3D; , &gt; , &gt;&#x3D;</td>
+<td>基础的 大于，等于等比较</td>
+<td align="center">col_name !&#x3D; 4</td>
+</tr>
+<tr>
+<td align="left">BETWEEN…AND…</td>
+<td>在两个数之间</td>
+<td align="center">col_name BETWEEN 1.5 AND 10.5</td>
+</tr>
+<tr>
+<td align="left">NOT BETWEEN … AND …</td>
+<td>不在两个数之间</td>
+<td align="center">col_name NOT BETWEEN 1 AND 10</td>
+</tr>
+<tr>
+<td align="left">IN (…)</td>
+<td>在一个列表</td>
+<td align="center">col_name IN (2, 4, 6)</td>
+</tr>
+<tr>
+<td align="left">NOT IN (…)</td>
+<td>不在一个列表</td>
+<td align="center">col_name NOT IN (1, 3, 5)</td>
+</tr>
+</tbody></table>
+<table>
+<thead>
+<tr>
+<th align="center">Operator(关键字)</th>
+<th>Condition(解释)</th>
+<th>SQL Example(例子)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">&#x3D;</td>
+<td>完全等于</td>
+<td>col_name &#x3D; “abc”</td>
+</tr>
+<tr>
+<td align="center">!&#x3D; or &lt;&gt;</td>
+<td>不等于</td>
+<td>col_name !&#x3D; “abcd”</td>
+</tr>
+<tr>
+<td align="center">%</td>
+<td>通配符，代表匹配0个以上的字符</td>
+<td>col_name LIKE “%AT%”<br />“%AT%” 代表AT 前后可以有任意字符</td>
+</tr>
+<tr>
+<td align="center">_</td>
+<td>和% 相似，代表1个字符</td>
+<td>col_name LIKE “AN_”</td>
+</tr>
+<tr>
+<td align="center">LIKE</td>
+<td><strong>（模糊查询）</strong>没有用通配符等价于 &#x3D;</td>
+<td>col_name LIKE “ABC”</td>
+</tr>
+<tr>
+<td align="center">NOT LIKE</td>
+<td>没有用通配符等价于 !&#x3D;</td>
+<td>col_name NOT LIKE “ABCD”</td>
+</tr>
+<tr>
+<td align="center">IN (…)</td>
+<td>在列表</td>
+<td>col_name IN (“A”, “B”, “C”)</td>
+</tr>
+<tr>
+<td align="center">NOT IN (…)</td>
+<td>不在列表</td>
+<td>col_name NOT IN (“D”, “E”, “F”)</td>
+</tr>
+</tbody></table>
+<h1 id="查询结果Filtering过滤-和-sorting排序"><a href="#查询结果Filtering过滤-和-sorting排序" class="headerlink" title="查询结果Filtering过滤 和 sorting排序"></a>查询结果Filtering过滤 和 sorting排序</h1><h2 id="查询结果过滤"><a href="#查询结果过滤" class="headerlink" title="查询结果过滤"></a>查询结果过滤</h2><h3 id="DISTINCT语句"><a href="#DISTINCT语句" class="headerlink" title="DISTINCT语句"></a><code>DISTINCT</code>语句</h3><p>​      <code>DISTINCT</code> 语法介绍，我们拿之前的 Movies表来说，可能很多电影都是同一年Year发布的，如果你想要按年份排重，一年只能出现一部电影到结果中， 你可以用 <strong>DISTINCT</strong> 关键字来指定某个或某些属性列唯一返回。写作：DISTINCT Year</p>
+<p>选取出唯一的结果的语法</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="keyword">DISTINCT</span> <span class="keyword">column</span>, another_column, … </span><br><span class="line"><span class="keyword">FROM</span> mytable </span><br><span class="line"><span class="keyword">WHERE</span> <span class="keyword">condition</span>(s);</span><br></pre></td></tr></table></figure>
+
+<h2 id="查询结果排序"><a href="#查询结果排序" class="headerlink" title="查询结果排序"></a>查询结果排序</h2><h3 id="ORDER-BY语句"><a href="#ORDER-BY语句" class="headerlink" title="ORDER BY语句"></a><code>ORDER BY</code>语句</h3><p>​      我们可以用 <code>ORDER BY col_name </code>排序的语法来让结果按一个或多个属性列做排序.</p>
+<p>​      <code>ORDER BY col_name</code> 这句话的意思就是让结果按照 col_name 列的具体值做 <code>ASC</code>升序 或 <code>DESC</code> 降序，对数字来说就是升序 1，2，3，… 或降序 … 3,2,1 . 对于文本列，升序和降序指的是按文本的字母序。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">结果排序（ordered results）</span><br><span class="line"><span class="keyword">SELECT</span> <span class="keyword">column</span>, another_column, …</span><br><span class="line"><span class="keyword">FROM</span> mytable</span><br><span class="line"><span class="keyword">WHERE</span> <span class="keyword">condition</span>(s)</span><br><span class="line"><span class="keyword">ORDER</span> <span class="keyword">BY</span> <span class="keyword">column</span> <span class="keyword">ASC</span> <span class="operator">/</span> <span class="keyword">DESC</span>;</span><br></pre></td></tr></table></figure>
+
+<h2 id="选取部分结果"><a href="#选取部分结果" class="headerlink" title="选取部分结果"></a>选取部分结果</h2><h3 id="LIMIT-和-OFFSET"><a href="#LIMIT-和-OFFSET" class="headerlink" title="LIMIT 和 OFFSET"></a><code>LIMIT</code> 和 <code>OFFSET</code></h3><p>​      <code>LIMIT</code> 和 <code>OFFSET</code> 子句通常和<code>ORDER BY</code> 语句一起使用，当我们对整个结果集排序之后，我们可以 <code>LIMIT</code>来指定只返回多少行结果 ,用 <code>OFFSET</code>来指定从哪一行开始返回。你可以想象一下从一条长绳子剪下一小段的过程，我们通过 <code>OFFSET</code> 指定从哪里开始剪，用 <code>LIMIT</code> 指定剪下多少长度。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">limited查询</span><br><span class="line"><span class="keyword">SELECT</span> <span class="keyword">column</span>, another_column, …</span><br><span class="line"><span class="keyword">FROM</span> mytable</span><br><span class="line"><span class="keyword">WHERE</span> <span class="keyword">condition</span>(s)</span><br><span class="line"><span class="keyword">ORDER</span> <span class="keyword">BY</span> <span class="keyword">column</span> <span class="keyword">ASC</span><span class="operator">/</span><span class="keyword">DESC</span></span><br><span class="line">LIMIT num_limit <span class="keyword">OFFSET</span> num_offset;</span><br></pre></td></tr></table></figure>
+
+<h3 id="例子"><a href="#例子" class="headerlink" title="例子"></a>例子</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">--按导演名排重列出所有电影(只显示导演)，并按导演名正序排列</span></span><br><span class="line"><span class="keyword">SELECT</span> <span class="keyword">DISTINCT</span> director <span class="keyword">FROM</span> Movies;</span><br><span class="line"></span><br><span class="line"><span class="comment">--列出按上映年份最新上线的4部电影</span></span><br><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> movies</span><br><span class="line"><span class="keyword">ORDER</span> <span class="keyword">BY</span> <span class="keyword">year</span> <span class="keyword">DESC</span></span><br><span class="line">LIMIT <span class="number">4</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">--按电影名字母序升序排列，列出前5部电影</span></span><br><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> movies</span><br><span class="line"><span class="keyword">ORDER</span> <span class="keyword">BY</span> title <span class="keyword">ASC</span></span><br><span class="line">LIMIT <span class="number">5</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">--按电影名字母序升序排列，列出上一题之后的5部电影</span></span><br><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> movies</span><br><span class="line"><span class="keyword">ORDER</span> <span class="keyword">BY</span> title <span class="keyword">ASC</span></span><br><span class="line">LIMIT <span class="number">5</span> <span class="keyword">OFFSET</span> <span class="number">5</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">--如果按片长排列，John Lasseter导演导过片长第3长的电影是哪部，列出名字即可</span></span><br><span class="line"><span class="keyword">SELECT</span> title <span class="keyword">FROM</span> movies</span><br><span class="line"><span class="keyword">WHERE</span> Director <span class="operator">=</span> &quot;John Lasseter&quot;</span><br><span class="line"><span class="keyword">ORDER</span> <span class="keyword">BY</span> Length_minutes <span class="keyword">ASC</span></span><br><span class="line">LIMIT <span class="number">1</span> <span class="keyword">OFFSET</span> <span class="number">2</span>;</span><br></pre></td></tr></table></figure>
+<h1 id="附件-1：Table-表-Movies"><a href="#附件-1：Table-表-Movies" class="headerlink" title="附件-1：Table(表): Movies"></a>附件-1：Table(表): Movies</h1><table>
+<thead>
+<tr>
+<th>Id</th>
+<th>Title</th>
+<th>Director</th>
+<th>Year</th>
+<th>Length_minutes</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>Toy Story</td>
+<td>John Lasseter</td>
+<td>1995</td>
+<td>81</td>
+</tr>
+<tr>
+<td>2</td>
+<td>A Bug’s Life</td>
+<td>John Lasseter</td>
+<td>1998</td>
+<td>95</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Toy Story 2</td>
+<td>John Lasseter</td>
+<td>1999</td>
+<td>93</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Monsters, Inc.</td>
+<td>Pete Docter</td>
+<td>2001</td>
+<td>92</td>
+</tr>
+<tr>
+<td>5</td>
+<td>Finding Nemo</td>
+<td>Finding Nemo</td>
+<td>2003</td>
+<td>107</td>
+</tr>
+<tr>
+<td>6</td>
+<td>The Incredibles</td>
+<td>Brad Bird</td>
+<td>2004</td>
+<td>116</td>
+</tr>
+<tr>
+<td>7</td>
+<td>Cars</td>
+<td>John Lasseter</td>
+<td>2006</td>
+<td>117</td>
+</tr>
+<tr>
+<td>8</td>
+<td>Ratatouille</td>
+<td>Brad Bird</td>
+<td>2007</td>
+<td>115</td>
+</tr>
+<tr>
+<td>9</td>
+<td>WALL-E</td>
+<td>Andrew Stanton</td>
+<td>2008</td>
+<td>104</td>
+</tr>
+<tr>
+<td>10</td>
+<td>Up</td>
+<td>Pete Docter</td>
+<td>2009</td>
+<td>101</td>
+</tr>
+<tr>
+<td>11</td>
+<td>Toy Story 3</td>
+<td>Lee Unkrich</td>
+<td>2010</td>
+<td>103</td>
+</tr>
+<tr>
+<td>12</td>
+<td>Cars 2</td>
+<td>John Lasseter</td>
+<td>2011</td>
+<td>120</td>
+</tr>
+<tr>
+<td>13</td>
+<td>Brave</td>
+<td>Brenda Chapman</td>
+<td>2012</td>
+<td>102</td>
+</tr>
+<tr>
+<td>14</td>
+<td>Monsters University</td>
+<td>Dan Scanlon</td>
+<td>2013</td>
+<td>110</td>
+</tr>
+</tbody></table>
+
+        </div>
+
+        
+            <div class="post-copyright-info">
+                <div class="article-copyright-info-container">
+    <ul>
+        <li>本文标题：SQL学习笔记</li>
+        <li>本文作者：小小志不憨</li>
+        <li>创建时间：2021-04-01 18:55:33</li>
+        <li>
+            本文链接：https://www.xxzhi.cn/2021/04/01/SQL学习笔记/
+        </li>
+        <li>
+            版权声明：本博客所有文章除特别声明外，均采用 <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">BY-NC-SA</a> 许可协议。转载请注明出处！
+        </li>
+    </ul>
+</div>
+
+            </div>
+        
+
+        
+            <ul class="post-tags-box">
+                
+                    <li class="tag-item">
+                        <a href="/tags/SQL/">#SQL</a>&nbsp;
+                    </li>
+                
+            </ul>
+        
+
+        
+            <div class="article-nav">
+                
+                    <div class="article-prev">
+                        <a class="prev"
+                           rel="prev"
+                           href="/2021/05/03/%E5%9F%BA%E4%BA%8EGitHub-Hexo%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/"
+                        >
+                            <span class="left arrow-icon flex-center">
+                              <i class="fas fa-chevron-left"></i>
+                            </span>
+                            <span class="title flex-center">
+                                <span class="post-nav-title-item">基于GitHub+Hexo搭建个人博客</span>
+                                <span class="post-nav-item">上一篇</span>
+                            </span>
+                        </a>
+                    </div>
+                
+                
+            </div>
+        
+
+        
+            <div class="comment-container">
+                <div class="comments-container">
+    <div id="comment-anchor"></div>
+    <div class="comment-area-title">
+        <i class="fas fa-comments">&nbsp;评论</i>
+    </div>
+    
+
+        
+            
+    <div class="valine-container">
+        <script 
+                src="//cdn.jsdelivr.net/npm/valine@latest/dist/Valine.min.js"></script>
+        <div id="vcomments"></div>
+        <script >
+            function loadValine() {
+                new Valine({
+                    el: '#vcomments',
+                    appId: 'Ufxxaotry4OiiXry9TnNSkev-gzGzoHsz',
+                    appKey: '74Hue6kozh8YVQFTtObWdDrX',
+                    meta: ['nick', 'mail', 'link'],
+                    avatar: 'wavatar',
+                    enableQQ: true,
+                    placeholder: '欢迎评论吖～',
+                    lang: 'zh-CN'.toLowerCase()
+                });
+
+                function getAuthor(language) {
+                    switch (language) {
+                        case 'en':
+                            return 'Author';
+                        case 'zh-CN':
+                            return '博主';
+                        default:
+                            return 'Master';
+                    }
+                }
+
+                // Add "Author" identify
+                const getValineDomTimer = setInterval(() => {
+                    const vcards = document.querySelectorAll('#vcomments .vcards .vcard');
+                    if (vcards.length > 0) {
+                        let author = '小小志不憨';
+
+                        if (author) {
+                            for (let vcard of vcards) {
+                                const vnick_dom = vcard.querySelector('.vhead .vnick');
+                                const vnick = vnick_dom.innerHTML;
+                                if (vnick === author) {
+                                    vnick_dom.innerHTML = `${vnick} <span class="author">${getAuthor(KEEP.hexo_config.language)}</span>`
+                                }
+                            }
+                        }
+                        clearInterval(getValineDomTimer);
+                    } else {
+                        clearInterval(getValineDomTimer);
+                    }
+                }, 2000);
+            }
+
+            if ('false') {
+                const loadValineTimeout = setTimeout(() => {
+                    loadValine();
+                    clearTimeout(loadValineTimeout);
+                }, 1000);
+            } else {
+                window.addEventListener('DOMContentLoaded', loadValine);
+            }
+        </script>
+    </div>
+
+
+
+        
+    
+</div>
+
+            </div>
+        
+    </div>
+</div>
+
+
+                
+            </div>
+
+        </div>
+
+        <div class="page-main-content-bottom">
+            <footer class="footer">
+    <div class="info-container">
+        <div class="copyright-info info-item">
+            &copy;
+            
+              <span>2020</span>
+              -
+            
+            2022&nbsp;<i class="fas fa-heart icon-animate"></i>&nbsp;<a href="/">小小志不憨</a>
+        </div>
+        
+            <script async  src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+            <div class="website-count info-item">
+                
+                    <span id="busuanzi_container_site_uv">
+                        访问人数&nbsp;<span id="busuanzi_value_site_uv"></span>&ensp;
+                    </span>
+                
+                
+                    <span id="busuanzi_container_site_pv">
+                        总访问量&nbsp;<span id="busuanzi_value_site_pv"></span>
+                    </span>
+                
+            </div>
+        
+        <div class="theme-info info-item">
+            由 <a target="_blank" href="https://hexo.io">Hexo</a> 驱动&nbsp;|&nbsp;主题&nbsp;<a class="theme-version" target="_blank" href="https://github.com/XPoet/hexo-theme-keep">Keep v3.4.5</a>
+        </div>
+        
+        
+    </div>
+</footer>
+
+        </div>
+    </div>
+
+    
+        <div class="post-tools">
+            <div class="post-tools-container">
+    <ul class="tools-list">
+        <!-- TOC aside toggle -->
+        
+            <li class="tools-item page-aside-toggle">
+                <i class="fas fa-outdent"></i>
+            </li>
+        
+
+        <!-- go comment -->
+        
+            <li class="go-comment">
+                <i class="fas fa-comment"></i>
+            </li>
+        
+    </ul>
+</div>
+
+        </div>
+    
+
+    <div class="right-bottom-side-tools">
+        <div class="side-tools-container">
+    <ul class="side-tools-list">
+        <li class="tools-item tool-font-adjust-plus flex-center">
+            <i class="fas fa-search-plus"></i>
+        </li>
+
+        <li class="tools-item tool-font-adjust-minus flex-center">
+            <i class="fas fa-search-minus"></i>
+        </li>
+
+        <li class="tools-item tool-expand-width flex-center">
+            <i class="fas fa-arrows-alt-h"></i>
+        </li>
+
+        <li class="tools-item tool-dark-light-toggle flex-center">
+            <i class="fas fa-moon"></i>
+        </li>
+
+        <!-- rss -->
+        
+
+        
+
+        <li class="tools-item tool-scroll-to-bottom flex-center">
+            <i class="fas fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="exposed-tools-list">
+        <li class="tools-item tool-toggle-show flex-center">
+            <i class="fas fa-cog fa-spin"></i>
+        </li>
+        
+            <li class="tools-item tool-scroll-to-top flex-center">
+                <i class="arrow-up fas fa-arrow-up"></i>
+                <span class="percent"></span>
+            </li>
+        
+    </ul>
+</div>
+
+    </div>
+
+    
+        <aside class="page-aside">
+            <div class="post-toc-wrap">
+    <div class="post-toc">
+        <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%9F%A5%E8%AF%A2"><span class="nav-number">1.</span> <span class="nav-text">查询</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#SELECT%E8%AF%AD%E5%8F%A5"><span class="nav-number">1.1.</span> <span class="nav-text">SELECT语句</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%9D%A1%E4%BB%B6%E8%AF%AD%E5%8F%A5"><span class="nav-number">2.</span> <span class="nav-text">条件语句</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#WHERE%E8%AF%AD%E5%8F%A5"><span class="nav-number">2.1.</span> <span class="nav-text">WHERE语句</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%9F%A5%E8%AF%A2%E7%BB%93%E6%9E%9CFiltering%E8%BF%87%E6%BB%A4-%E5%92%8C-sorting%E6%8E%92%E5%BA%8F"><span class="nav-number">3.</span> <span class="nav-text">查询结果Filtering过滤 和 sorting排序</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9F%A5%E8%AF%A2%E7%BB%93%E6%9E%9C%E8%BF%87%E6%BB%A4"><span class="nav-number">3.1.</span> <span class="nav-text">查询结果过滤</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#DISTINCT%E8%AF%AD%E5%8F%A5"><span class="nav-number">3.1.1.</span> <span class="nav-text">DISTINCT语句</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9F%A5%E8%AF%A2%E7%BB%93%E6%9E%9C%E6%8E%92%E5%BA%8F"><span class="nav-number">3.2.</span> <span class="nav-text">查询结果排序</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#ORDER-BY%E8%AF%AD%E5%8F%A5"><span class="nav-number">3.2.1.</span> <span class="nav-text">ORDER BY语句</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%80%89%E5%8F%96%E9%83%A8%E5%88%86%E7%BB%93%E6%9E%9C"><span class="nav-number">3.3.</span> <span class="nav-text">选取部分结果</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#LIMIT-%E5%92%8C-OFFSET"><span class="nav-number">3.3.1.</span> <span class="nav-text">LIMIT 和 OFFSET</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BE%8B%E5%AD%90"><span class="nav-number">3.3.2.</span> <span class="nav-text">例子</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%99%84%E4%BB%B6-1%EF%BC%9ATable-%E8%A1%A8-Movies"><span class="nav-number">4.</span> <span class="nav-text">附件-1：Table(表): Movies</span></a></li></ol>
+    </div>
+</div>
+        </aside>
+    
+
+    <div class="image-viewer-container">
+    <img src="">
+</div>
+
+
+    
+        <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+          <span class="search-input-field-pre">
+            <i class="fas fa-keyboard"></i>
+          </span>
+            <div class="search-input-container">
+                <input autocomplete="off"
+                       autocorrect="off"
+                       autocapitalize="off"
+                       placeholder="搜索..."
+                       spellcheck="false"
+                       type="search"
+                       class="search-input"
+                >
+            </div>
+            <span class="popup-btn-close">
+                <i class="fas fa-times"></i>
+            </span>
+        </div>
+        <div id="search-result">
+            <div id="no-result">
+                <i class="fas fa-spinner fa-pulse fa-5x fa-fw"></i>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+
+</main>
+
+
+
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/main.js"></script>
+
+<script src="/js/header-shrink.js"></script>
+
+<script src="/js/back2top.js"></script>
+
+<script src="/js/dark-light-toggle.js"></script>
+
+
+
+    
+<script src="/js/local-search.js"></script>
+
+
+
+
+    
+<script src="/js/code-copy.js"></script>
+
+
+
+
+
+<div class="post-scripts">
+    
+        
+<script src="/js/left-side-toggle.js"></script>
+
+<script src="/js/libs/anime.min.js"></script>
+
+<script src="/js/toc.js"></script>
+
+    
+</div>
+
+
+
+</body>
+</html>
