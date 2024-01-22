@@ -1,0 +1,470 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="format-detection" content="telephone=no"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black"><link rel="icon" href="/images/icons/favicon/favicon-16x16.png?v=2.8.0" type="image/png" sizes="16x16"><link rel="icon" href="/images/icons/favicon/favicon-32x32.png?v=2.8.0" type="image/png" sizes="32x32"><link rel="apple-touch-icon" href="/images/icons/favicon/apple-touch-icon.png?v=2.8.0" sizes="180x180"><meta name="description" content="Yaklang语言简介       Yaklang 是一门上下文无关文法定义的 图灵完备 的程序语言，他基于 YakVM 运行，语法规则定义了 Yaklang 的语言结构 Yaklang 是一个 动态强类型语言 ：  Yaklang 允许用户可以在改变变量的值的时候也改变变量的类型； 在进行表达式运算的时候 Yaklang 允许程序或函数识别运行时的准确类型，并进行对应计算；">
+<meta property="og:type" content="article">
+<meta property="og:title" content="yak学习笔记">
+<meta property="og:url" content="https://www.ixxzhi.cn/2023/09/03/yak%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/index.html">
+<meta property="og:site_name" content="冰糖の部落阁">
+<meta property="og:description" content="Yaklang语言简介       Yaklang 是一门上下文无关文法定义的 图灵完备 的程序语言，他基于 YakVM 运行，语法规则定义了 Yaklang 的语言结构 Yaklang 是一个 动态强类型语言 ：  Yaklang 允许用户可以在改变变量的值的时候也改变变量的类型； 在进行表达式运算的时候 Yaklang 允许程序或函数识别运行时的准确类型，并进行对应计算；">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2023-09-03T05:52:40.000Z">
+<meta property="article:modified_time" content="2023-09-04T06:59:36.593Z">
+<meta property="article:author" content="冰糖小混子">
+<meta property="article:tag" content="yakLang">
+<meta name="twitter:card" content="summary"><title>yak学习笔记 | 冰糖の部落阁</title><link ref="canonical" href="https://www.ixxzhi.cn/2023/09/03/yak%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.12.1/css/all.min.css" type="text/css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/instantsearch.js@2.1.1/dist/instantsearch.min.css" type="text/css"><link rel="stylesheet" href="/css/index.css?v=2.8.0"><link rel="stylesheet" href="css/custom.css"><script>var Stun = window.Stun || {};
+var CONFIG = {
+  root: '/',
+  algolia: {"appId":"AKOK4JB6FU","apiKey":"afe2853f80920ee4cdb1d45209c0ecf2","indexName":"blog_ixxzhi","hits":{"per_page":10},"languages":{"inputPlaceholder":"搜索文章","hitsEmpty":"没有找到任何搜索结果：${query}","hitsStats":"找到 ${hits} 条搜索结果，耗时 ${time} 毫秒"}},
+  assistSearch: undefined,
+  fontIcon: {"prompt":{"success":"fas fa-check-circle","info":"fas fa-arrow-circle-right","warning":"fas fa-exclamation-circle","error":"fas fa-times-circle"},"copyBtn":"fas fa-copy"},
+  sidebar: {"offsetTop":"20px","tocMaxDepth":6},
+  header: {"enable":true,"showOnPost":true,"scrollDownIcon":false},
+  postWidget: {"endText":true},
+  nightMode: {"enable":true},
+  back2top: {"enable":true},
+  codeblock: {"style":"default","highlight":"light","wordWrap":false},
+  reward: false,
+  fancybox: false,
+  zoomImage: {"gapAside":"20px"},
+  galleryWaterfall: undefined,
+  lazyload: false,
+  pjax: undefined,
+  externalLink: {"icon":{"enable":true,"name":"fas fa-external-link-alt"}},
+  shortcuts: undefined,
+  prompt: {"copyButton":"复制","copySuccess":"复制成功","copyError":"复制失败"},
+  sourcePath: {"js":"js","css":"css","images":"images"},
+};
+
+window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></head><body><div class="container" id="container"><header class="header" id="header"><div class="header-inner"><nav class="header-nav header-nav--fixed"><div class="header-nav-inner"><div class="header-nav-menubtn"><i class="fas fa-bars"></i></div><div class="header-nav-menu"><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/"><span class="header-nav-menu-item__icon"><i class="fas fa-home"></i></span><span class="header-nav-menu-item__text">首页</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/archives/"><span class="header-nav-menu-item__icon"><i class="fas fa-folder-open"></i></span><span class="header-nav-menu-item__text">归档</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/categories/"><span class="header-nav-menu-item__icon"><i class="fas fa-layer-group"></i></span><span class="header-nav-menu-item__text">分类</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/tags/"><span class="header-nav-menu-item__icon"><i class="fas fa-tags"></i></span><span class="header-nav-menu-item__text">标签</span></a></div></div><div class="header-nav-search"><span class="header-nav-search__icon"><i class="fas fa-search"></i></span><span class="header-nav-search__text">搜索</span></div><div class="header-nav-mode"><div class="mode"><div class="mode-track"><span class="mode-track-moon"></span><span class="mode-track-sun"></span></div><div class="mode-thumb"></div></div></div></div></nav><div class="header-banner"><div class="header-banner-info"><div class="header-banner-info__title">冰糖の部落阁</div><div class="header-banner-info__subtitle">冰糖的笔记和随笔</div></div></div></div></header><main class="main" id="main"><div class="main-inner"><div class="content-wrap" id="content-wrap"><div class="content" id="content"><!-- Just used to judge whether it is an article page--><div id="is-post"></div><div class="post"><header class="post-header"><h1 class="post-title">yak学习笔记</h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2023-09-03</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2023-09-04</span></span></div></header><div class="post-body">
+        <h1 id="Yaklang语言简介"   >
+          <a href="#Yaklang语言简介" class="heading-link"><i class="fas fa-link"></i></a><a href="#Yaklang语言简介" class="headerlink" title="Yaklang语言简介"></a>Yaklang语言简介</h1>
+      <p>Yaklang 是一门上下文无关文法定义的 <strong>图灵完备</strong> 的程序语言，他基于 YakVM 运行，语法规则定义了 Yaklang 的语言结构</p>
+<p>Yaklang 是一个 <strong>动态强类型语言</strong> ：</p>
+<ol>
+<li>Yaklang 允许用户可以在改变变量的值的时候也改变变量的类型；</li>
+<li>在进行表达式运算的时候 Yaklang 允许程序或函数识别运行时的准确类型，并进行对应计算；</li>
+</ol>
+<p>Yaklang 可以 <strong>编译</strong> 为 YakVM 可以支持的字节码运行；</p>
+<p>Yaklang 语法博采众长，非常容易上手与学习；</p>
+<p>Yaklang 可以作为一门“嵌入式语言”被其他语言调用或编译；</p>
+<p>Yaklang 是业内第一门 CDSL (Cybersecurity Domain Specific Language)，使用图灵完备特性融合原子化的安全能力。</p>
+<span id="more"></span>
+
+
+        <h1 id="Yaklang语法"   >
+          <a href="#Yaklang语法" class="heading-link"><i class="fas fa-link"></i></a><a href="#Yaklang语法" class="headerlink" title="Yaklang语法"></a>Yaklang语法</h1>
+      <p><strong>注释：</strong></p>
+<figure class="highlight plaintext"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"># Comment</span><br><span class="line">// Comment</span><br><span class="line">/* Comment*/</span><br></pre></td></tr></table></div></figure>
+
+<p><strong>声明变量：</strong></p>
+<figure class="highlight plaintext"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">var a	//声明变量a</span><br><span class="line">var b,c	//声明变量b,c</span><br><span class="line">var d,e=1,2	//声明变量d,e并分别赋值为1，2</span><br><span class="line">a,b = 1,2 //此时a=1，b=2</span><br></pre></td></tr></table></div></figure>
+
+<p><strong>字符串：</strong></p>
+<figure class="highlight plaintext"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&quot;hello world&quot;</span><br><span class="line">a = &quot;hello world&quot;</span><br><span class="line">a = `hello world`</span><br><span class="line">abc = `hello world</span><br><span class="line">hello BingTang`</span><br><span class="line">//单引号包裹一个字符</span><br><span class="line">c = &#x27;\x20&#x27;</span><br></pre></td></tr></table></div></figure>
+
+<p><strong>字节序列：</strong></p>
+<figure class="highlight js"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">name = b<span class="string">&quot;hello world&quot;</span></span><br><span class="line"><span class="title function_">dump</span>(name)]</span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">([]uint8) (len=11 cap=16) &#123;</span></span><br><span class="line"><span class="comment"> 00000000  68 65 6c 6c 6f 20 77 6f  72 6c 64                 |hello world|</span></span><br><span class="line"><span class="comment">&#125;</span></span><br><span class="line"><span class="comment">*/</span></span><br></pre></td></tr></table></div></figure>
+
+<p><strong>%格式化语法：</strong></p>
+<figure class="highlight js"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="title function_">println</span>(<span class="string">&quot;Hello %v&quot;</span> % <span class="string">&quot;World&quot;</span>)</span><br><span class="line"><span class="comment">//Hello World</span></span><br><span class="line"><span class="title function_">println</span>(<span class="string">&quot;Hello %v %v&quot;</span> % [<span class="string">&quot;World&quot;</span>,<span class="string">&quot;BingTang&quot;</span>])</span><br><span class="line"><span class="comment">//Hello World BingTang</span></span><br><span class="line"><span class="title function_">println</span>(<span class="string">&quot;Hello %v %05d&quot;</span> % [<span class="string">&quot;World&quot;</span>, <span class="number">4</span>])</span><br><span class="line"><span class="comment">//Hello World 00004</span></span><br></pre></td></tr></table></div></figure>
+
+<p><strong>模板字符串语法 f-string：</strong></p>
+<figure class="highlight js"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">a = <span class="string">&quot;World&quot;</span></span><br><span class="line">name = <span class="string">&quot;BingTang&quot;</span></span><br><span class="line"><span class="title function_">println</span>(f<span class="string">`Hello <span class="subst">$&#123;a&#125;</span>,Hello <span class="subst">$&#123;name&#125;</span>`</span>)</span><br><span class="line"><span class="title function_">println</span>(f<span class="string">`1+1 = <span class="subst">$&#123;<span class="number">1</span>+<span class="number">1</span>&#125;</span>`</span>)</span><br></pre></td></tr></table></div></figure>
+
+<figure class="highlight js"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> targetPath = <span class="string">&quot;admin.php?id=1&quot;</span></span><br><span class="line"><span class="keyword">var</span> addr = <span class="string">&quot;example.com:8080&quot;</span></span><br><span class="line"><span class="keyword">var</span> payload = codec.<span class="title class_">EncodeUrl</span>(<span class="string">&quot;1&#x27;or&#x27;&#x27;=&#x27;1&quot;</span>)</span><br><span class="line"></span><br><span class="line">packet = f<span class="string">`GET /<span class="subst">$&#123;targetPath&#125;</span> HTTP/1.1</span></span><br><span class="line"><span class="string">Host: <span class="subst">$&#123;addr&#125;</span></span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">key=value&amp;key2=<span class="subst">$&#123;payload&#125;</span>`</span></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">GET /admin.php?id=1 HTTP/1.1</span></span><br><span class="line"><span class="comment">Host: example.com:8080</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">key=value&amp;key2=%31%27%6f%72%27%27%3d%27%31</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"></span><br><span class="line">rsp, req, err = poc.<span class="title function_">HTTP</span>(packet)</span><br><span class="line"><span class="title function_">die</span>(err)</span><br></pre></td></tr></table></div></figure>
+
+<p><strong>Fuzztag 快速执行 x-string：</strong></p>
+<figure class="highlight js"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">a = x<span class="string">&quot;Fuzztag int(1-10): &#123;&#123;int(1-10)&#125;&#125;&quot;</span></span><br><span class="line"><span class="title function_">dump</span>(a)</span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">([]string) (len=10 cap=10) &#123;</span></span><br><span class="line"><span class="comment"> (string) (len=20) &quot;Fuzztag int(1-10): 1&quot;,</span></span><br><span class="line"><span class="comment"> (string) (len=20) &quot;Fuzztag int(1-10): 2&quot;,</span></span><br><span class="line"><span class="comment"> (string) (len=20) &quot;Fuzztag int(1-10): 3&quot;,</span></span><br><span class="line"><span class="comment"> (string) (len=20) &quot;Fuzztag int(1-10): 4&quot;,</span></span><br><span class="line"><span class="comment"> (string) (len=20) &quot;Fuzztag int(1-10): 5&quot;,</span></span><br><span class="line"><span class="comment"> (string) (len=20) &quot;Fuzztag int(1-10): 6&quot;,</span></span><br><span class="line"><span class="comment"> (string) (len=20) &quot;Fuzztag int(1-10): 7&quot;,</span></span><br><span class="line"><span class="comment"> (string) (len=20) &quot;Fuzztag int(1-10): 8&quot;,</span></span><br><span class="line"><span class="comment"> (string) (len=20) &quot;Fuzztag int(1-10): 9&quot;,</span></span><br><span class="line"><span class="comment"> (string) (len=21) &quot;Fuzztag int(1-10): 10&quot;</span></span><br><span class="line"><span class="comment">&#125;</span></span><br><span class="line"><span class="comment">*/</span></span><br></pre></td></tr></table></div></figure>
+
+<p><strong>字符串运算：</strong></p>
+<p><code>+</code> 号连接字符串</p>
+<figure class="highlight plaintext"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">a = &quot;Hello, &quot;</span><br><span class="line">b = &quot;World&quot;</span><br><span class="line">println(a+b)</span><br><span class="line">// Hello, World</span><br></pre></td></tr></table></div></figure>
+
+<p><code>*</code> 号重复字符串n次</p>
+<figure class="highlight plaintext"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">a = &quot;powerful &quot;</span><br><span class="line">println(a * 5 + &quot;yak&quot;)</span><br><span class="line">// powerful powerful powerful powerful powerful yak </span><br></pre></td></tr></table></div></figure>
+
+<p><strong>取子串或子元素：</strong></p>
+<figure class="highlight python"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">字符串[头下标:尾下标:步长]</span><br><span class="line">a = <span class="string">&quot;Hello, Yak&quot;</span></span><br><span class="line">println(a[<span class="number">0</span>]) 		// H</span><br><span class="line">println(a[<span class="number">1</span>:<span class="number">5</span>]) 	// ello</span><br><span class="line">println(a[<span class="number">3</span>:<span class="number">0</span>:-<span class="number">1</span>])  // lle</span><br></pre></td></tr></table></div></figure>
+
+<p><strong>字符串内置方法：</strong></p>
+<div class="table-container"><table>
+<thead>
+<tr>
+<th>方法名</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Reverse()</td>
+<td>翻转字符串</td>
+</tr>
+<tr>
+<td>Contains(substr)</td>
+<td>字符串是否包含substr，如果是则返回 True，否则返回 False</td>
+</tr>
+<tr>
+<td>ReplaceN(old, new, n)</td>
+<td>把 将字符串中的 old 替换成 new,最多替换不超过 n 次</td>
+</tr>
+<tr>
+<td>ReplaceAll(old, new) &#x2F; Replace(old, new)</td>
+<td>把 将字符串中所有的 old 替换成 new</td>
+</tr>
+<tr>
+<td>Split(substr)</td>
+<td>以 substr 为分隔符截取字符串</td>
+</tr>
+<tr>
+<td>SplitN(substr, n)</td>
+<td>以 substr 为分隔符截取字符串，最多切割为 n 份</td>
+</tr>
+<tr>
+<td>Join(seq)</td>
+<td>以字符串作为分隔符，将 seq 中所有的元素(的字符串表示)合并为一个新的字符串</td>
+</tr>
+<tr>
+<td>Trim(cutstr…)</td>
+<td>删除字符串头尾的空格和cutstr</td>
+</tr>
+<tr>
+<td>TrimLeft(cutstr…)</td>
+<td>删除字符串头部的cutstr</td>
+</tr>
+<tr>
+<td>TrimRight(cutstr…)</td>
+<td>删除字符串尾部的cutstr</td>
+</tr>
+<tr>
+<td>HasPrefix(substr) &#x2F; StartsWith(substr)</td>
+<td>检查字符串是否是以指定子字符串 substr 开头</td>
+</tr>
+<tr>
+<td>HasSuffix(substr) &#x2F; EndsWith(substr)</td>
+<td>检查字符串是否是以指定子字符串 substr 结尾</td>
+</tr>
+<tr>
+<td>Zfill(width)</td>
+<td>返回长度为 width 的字符串，原字符串右对齐，前面填充0</td>
+</tr>
+<tr>
+<td>Rzfill(width)</td>
+<td>返回长度为 width 的字符串，原字符串左对齐，后面填充0</td>
+</tr>
+<tr>
+<td>Ljust(width)</td>
+<td>返回一个原字符串左对齐,并使用空格填充至长度 width 的新字符串</td>
+</tr>
+<tr>
+<td>Rjust(width)</td>
+<td>返回一个原字符串右对齐,并使用空格填充至长度 width 的新字符串</td>
+</tr>
+<tr>
+<td>Count(n)</td>
+<td>返回 str 在 string 里面出现的次数</td>
+</tr>
+<tr>
+<td>Find(substr) &#x2F; IndexOf(substr)</td>
+<td>检测 str 是否包含在字符串中，并返回开始的索引值，如没找到则返回-1</td>
+</tr>
+<tr>
+<td>Rfind(substr) &#x2F; LastIndexOf(substr)</td>
+<td>类似于 find()函数，不过是从右边开始查找</td>
+</tr>
+<tr>
+<td>Lower()</td>
+<td>转换字符串中所有大写字符为小写</td>
+</tr>
+<tr>
+<td>Upper()</td>
+<td>转换字符串中的小写字母为大写</td>
+</tr>
+<tr>
+<td>Title()</td>
+<td>返回”标题化”的字符串,就是说所有单词都是以大写开始，其余字母均为小写</td>
+</tr>
+<tr>
+<td>IsLower()</td>
+<td>判断字符串是否全为小写，如果是则返回 True，否则返回 False</td>
+</tr>
+<tr>
+<td>IsUpwer()</td>
+<td>判断字符串是否全为大写，如果是则返回 True，否则返回 False</td>
+</tr>
+<tr>
+<td>IsTitle()</td>
+<td>如果字符串是标题化的则返回 True，否则返回 False</td>
+</tr>
+<tr>
+<td>IsAlpha()</td>
+<td>如果字符串所有字符都是字母则返回 True, 否则返回 False</td>
+</tr>
+<tr>
+<td>IsDigit()</td>
+<td>如果字符串所有字符都是数字则返回 True, 否则返回 False</td>
+</tr>
+<tr>
+<td>IsAlnum()</td>
+<td>如果字符串所有字符都是字母和数字则返回 True, 否则返回 False</td>
+</tr>
+<tr>
+<td>IsPrintable()</td>
+<td>如果字符串所有字符都是可见字符则返回 True, 否则返回 False</td>
+</tr>
+</tbody></table></div>
+<p><strong>整数浮点数运算：</strong></p>
+<figure class="highlight python"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">println(<span class="number">2</span> + <span class="number">2</span>)    // <span class="number">4</span></span><br><span class="line">println(<span class="number">50</span> - <span class="number">5</span>*<span class="number">6</span>) // <span class="number">20</span></span><br><span class="line">println(<span class="number">8</span> / <span class="number">5</span>)    // <span class="number">1</span></span><br><span class="line">println(<span class="number">17</span> % <span class="number">3</span>)   // <span class="number">2</span></span><br></pre></td></tr></table></div></figure>
+
+<p>多进制整数声明</p>
+<figure class="highlight js"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 二进制声明</span></span><br><span class="line">a = <span class="number">0b10</span>	<span class="comment">// 2</span></span><br><span class="line"><span class="comment">// 八进制声明</span></span><br><span class="line">b = <span class="number">0100</span>	<span class="comment">// 64</span></span><br><span class="line"><span class="comment">// 普通整数声明（十进制）</span></span><br><span class="line">c = <span class="number">100</span>		<span class="comment">// 100</span></span><br><span class="line"><span class="comment">// 十六进制声明</span></span><br><span class="line">d = <span class="number">0x10</span>	<span class="comment">// 16</span></span><br></pre></td></tr></table></div></figure>
+
+<p>浮点数声明</p>
+<figure class="highlight js"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">a = <span class="number">1.5</span>		<span class="comment">// 1.5</span></span><br><span class="line">b = a / <span class="number">0.5</span>	<span class="comment">// 3.0</span></span><br></pre></td></tr></table></div></figure>
+
+<p><strong>列表类型：创建与声明</strong></p>
+<figure class="highlight plaintext"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">a = [1, 2, 3]</span><br><span class="line">println(typeof(a)) // []int</span><br><span class="line">b = [&quot;qwe&quot;, &quot;asd&quot;]</span><br><span class="line">println(typeof(b)) // []string</span><br><span class="line">c = [1, 2, &quot;3&quot;]</span><br><span class="line">println(typeof(c)) // []any&#123;&#125;</span><br><span class="line"></span><br><span class="line">// 创建一个不带长度的 []int</span><br><span class="line">a = make([]int)</span><br><span class="line">println(typeof(a)) // []int</span><br><span class="line"></span><br><span class="line">// 创建一个带长度的 []int</span><br><span class="line">b = make([]int, 2)</span><br><span class="line">println(len(b)) // 2</span><br></pre></td></tr></table></div></figure>
+
+<div class="table-container"><table>
+<thead>
+<tr>
+<th>方法名</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Append(elem…) &#x2F; Push(elem…)</td>
+<td>在列表末尾追加新的elem元素</td>
+</tr>
+<tr>
+<td>Pop(n…)</td>
+<td>弹出数组&#x2F;切片的第n个元素,默认为最后一个</td>
+</tr>
+<tr>
+<td>Insert(n, elem)</td>
+<td>在指定位置n插入elem元素</td>
+</tr>
+<tr>
+<td>Extend(arr) &#x2F; Merge(arr)</td>
+<td>用一个新的列表扩展原列表</td>
+</tr>
+<tr>
+<td>Length() &#x2F; Len()</td>
+<td>返回列表的长度</td>
+</tr>
+<tr>
+<td>Capability() &#x2F; Cap()</td>
+<td>返回列表的容量</td>
+</tr>
+<tr>
+<td>StringSlice()</td>
+<td>将列表转换成[]string类型</td>
+</tr>
+<tr>
+<td>GeneralSlice()</td>
+<td>将列表转换成[]var类型(即[]interface{})</td>
+</tr>
+<tr>
+<td>Shift()</td>
+<td>从数据开头移除一个元素，相当于Pop(0)</td>
+</tr>
+<tr>
+<td>Unshift(elem)</td>
+<td>从数据开头插入一个elem元素，相当于Insert(0, elem)</td>
+</tr>
+<tr>
+<td>Map(func (elem)elem)</td>
+<td>会根据提供的函数对列表中的每一个函数做映射，返回映射后的列表</td>
+</tr>
+<tr>
+<td>Filter(func (elem)bool)</td>
+<td>会根据提供的函数对列表中的每一个函数做过滤（该函数返回true&#x2F;false，将返回false的元素筛除），返回过滤后的列表</td>
+</tr>
+<tr>
+<td>Remove(elem)</td>
+<td>删除在列表中第一次出现的elem元素</td>
+</tr>
+<tr>
+<td>Reverse()</td>
+<td>翻转列表</td>
+</tr>
+<tr>
+<td>Sort(reverse…)</td>
+<td>排序列表，默认为升序，若设置reverse&#x3D;true，则改为降序</td>
+</tr>
+<tr>
+<td>Clear()</td>
+<td>清空列表</td>
+</tr>
+<tr>
+<td>Count(elem)</td>
+<td>统计elem元素在列表中出现的次数</td>
+</tr>
+<tr>
+<td>Index(n)</td>
+<td>返回列表中第n个元素，n支持负数表示倒数第n个元素</td>
+</tr>
+</tbody></table></div>
+</div><footer class="post-footer"><div class="post-ending ending"><div class="ending__text">------ 本文结束，感谢您的阅读 ------</div></div><div class="post-copyright copyright"><div class="copyright-author"><span class="copyright-author__name">本文作者: </span><span class="copyright-author__value"><a href="https://www.ixxzhi.cn">冰糖小混子</a></span></div><div class="copyright-link"><span class="copyright-link__name">本文链接: </span><span class="copyright-link__value"><a href="https://www.ixxzhi.cn/2023/09/03/yak%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">https://www.ixxzhi.cn/2023/09/03/yak%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</a></span></div><div class="copyright-notice"><span class="copyright-notice__name">版权声明: </span><span class="copyright-notice__value">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" rel="external nofollow" target="_blank">BY-NC-SA</a> 许可协议。转载请注明出处！</span></div></div><div class="post-tags"><span class="post-tags-item"><span class="post-tags-item__icon"><i class="fas fa-tag"></i></span><a class="post-tags-item__link" href="https://www.ixxzhi.cn/tags/yakLang/">yakLang</a></span></div><nav class="post-paginator paginator"><div class="paginator-prev"><a class="paginator-prev__link" href="/2023/09/04/%E9%92%93%E9%B1%BC%E9%82%AE%E4%BB%B6%E5%88%86%E6%9E%90/"><span class="paginator-prev__icon"><i class="fas fa-angle-left"></i></span><span class="paginator-prev__text">钓鱼邮件分析</span></a></div><div class="paginator-next"><a class="paginator-next__link" href="/2023/09/01/winrar-RCE-cve-2023-38831-%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0/"><span class="paginator-prev__text">winrar_RCE(CVE-2023-38831)漏洞复现</span><span class="paginator-next__icon"><i class="fas fa-angle-right"></i></span></a></div></nav></footer></div></div><div class="comments" id="comments"><div id="utterances-container"></div></div></div><div class="sidebar-wrap" id="sidebar-wrap"><aside class="sidebar" id="sidebar"><div class="sidebar-nav"><span class="sidebar-nav-toc current">文章目录</span><span class="sidebar-nav-ov">站点概览</span></div><section class="sidebar-toc"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Yaklang%E8%AF%AD%E8%A8%80%E7%AE%80%E4%BB%8B"><span class="toc-number">1.</span> <span class="toc-text">
+          Yaklang语言简介</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Yaklang%E8%AF%AD%E6%B3%95"><span class="toc-number">2.</span> <span class="toc-text">
+          Yaklang语法</span></a></li></ol></section><!-- ov = overview--><section class="sidebar-ov hide"><div class="sidebar-ov-author"><div class="sidebar-ov-author__avatar"><img class="sidebar-ov-author__avatar_img" src="/images/icons/avatar.jpg" alt="avatar"></div><p class="sidebar-ov-author__text">冰糖小混子</p></div><div class="sidebar-ov-state"><a class="sidebar-ov-state-item sidebar-ov-state-item--posts" href="/archives/"><div class="sidebar-ov-state-item__count">31</div><div class="sidebar-ov-state-item__name">归档</div></a><a class="sidebar-ov-state-item sidebar-ov-state-item--categories" href="/categories/"><div class="sidebar-ov-state-item__count">8</div><div class="sidebar-ov-state-item__name">分类</div></a><a class="sidebar-ov-state-item sidebar-ov-state-item--tags" href="/tags/"><div class="sidebar-ov-state-item__count">23</div><div class="sidebar-ov-state-item__name">标签</div></a></div><div class="sidebar-ov-cc"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" target="_blank" rel="noopener" data-popover="知识共享许可协议" data-popover-pos="up"><img src="/images/cc-by-nc-sa.svg"></a></div></section><div class="sidebar-reading"><div class="sidebar-reading-info"><span class="sidebar-reading-info__text">你已阅读了 </span><span class="sidebar-reading-info__num">0</span><span class="sidebar-reading-info__perc">%</span></div><div class="sidebar-reading-line"></div></div></aside></div><div class="clearfix"></div></div></main><footer class="footer" id="footer"><div class="footer-inner"><div><span>Copyright © 2024</span><span class="footer__icon"><i class="fas fa-heart"></i></span><span>冰糖小混子</span><span class="footer__devider">|</span><span><a href="https://beian.miit.gov.cn/" rel="noopener" target="_blank">蒙ICP备20002846号</a></span></div><div><span>由 <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a> 强力驱动</span><span> v6.3.0</span><span class="footer__devider">|</span><span>主题 - <a href="https://github.com/liuyib/hexo-theme-stun/" title="Stun" target="_blank" rel="noopener">Stun</a></span><span> v2.8.0</span></div></div></footer><div class="loading-bar" id="loading-bar"><div class="loading-bar__progress"></div></div><div class="back2top" id="back2top"><span class="back2top__icon"><i class="fas fa-rocket"></i></span></div></div><div class="search-mask"></div><div class="search-popup"><span class="search-close"></span><div class="search-input"></div><div class="search-results"><div id="algolia-hits"></div></div><div id="algolia-pagination"></div><div id="algolia-stats"></div></div><script src="https://cdn.jsdelivr.net/npm/jquery@v3.4.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.ui.min.js"></script><script src="https://cdn.jsdelivr.net/npm/ribbon.js@latest/dist/ribbon.min.js" size="120" alpha="0.6" zIndex="-1"></script><script src="https://cdn.jsdelivr.net/npm/instantsearch.js@2.1.1/dist/instantsearch.min.js" defer></script><script>window.addEventListener('DOMContentLoaded', function () {
+  $('.header-nav-search').on('click', function (e) {
+    e.stopPropagation();
+
+    $('body').css('overflow', 'hidden');
+    $('.search-popup')
+      .velocity('stop')
+      .velocity('transition.expandIn', {
+        duration: 300,
+        complete: function () {
+          $('.search-popup input').focus();
+        }
+      });
+    $('.search-mask')
+      .velocity('stop')
+      .velocity('transition.fadeIn', {
+        duration: 300
+      });
+  });
+
+  function closeSearch () {
+    $('body').css({ overflow: 'auto' });
+    $('.search-popup').css({ display: 'none' });
+    $('.search-mask').css({ display: 'none' });
+  }
+
+  $('.search-mask, .search-close').on('click', function () {
+    closeSearch();
+  });
+
+  $(document).on('keydown', function (e) {
+    // Escape <=> 27
+    if (e.keyCode === Stun.utils.codeToKeyCode('Escape')) {
+      closeSearch();
+    }
+  });
+
+  var algolia = CONFIG.algolia;
+  if (!algolia && !(algolia.appId && algolia.apiKey && algolia.indexName)) {
+    return console.error('Algolia setting is invalid.');
+  }
+
+  var search = instantsearch({
+    appId: algolia.appId,
+    apiKey: algolia.apiKey,
+    indexName: algolia.indexName,
+    searchParameters: {
+      hitsPerPage: algolia.hits.per_page || 10
+    },
+    searchFunction: function (helper) {
+      var searchInput = $('.search-input').find('input');
+
+      if (searchInput.val()) {
+        helper.search();
+      }
+    }
+  });
+
+  search.addWidget(
+    instantsearch.widgets.searchBox({
+      container: '.search-input',
+      reset: false,
+      magnifier: false,
+      placeholder: algolia.languages.inputPlaceholder
+    })
+  );
+
+  // The hits of search results.
+  search.addWidget(
+    instantsearch.widgets.hits({
+      container: '#algolia-hits',
+      templates: {
+        item: function (data) {
+          var link = data.permalink ? data.permalink : CONFIG.root + data.path;
+          return (
+            '<a href="' + link + '" class="algolia-hit-item-link">' +
+              data._highlightResult.title.value +
+            '</a>'
+          );
+        },
+        empty: function (data) {
+          return (
+            '<div id="algolia-hits-empty">' +
+              algolia.languages.hitsEmpty.replace(/\$\{query}/, data.query) +
+            '</div>'
+          );
+        }
+      },
+      cssClasses: {
+        item: 'algolia-hit-item'
+      }
+    })
+  );
+
+  // The stats of search results.
+  if ($('#algolia-stats')[0]) {
+    search.addWidget(
+      instantsearch.widgets.stats({
+        container: '#algolia-stats',
+        templates: {
+          body: function (data) {
+            var stats = algolia.languages.hitsStats
+              .replace(/\$\{hits}/, data.nbHits)
+              .replace(/\$\{time}/, data.processingTimeMS);
+            return (
+              stats +
+              '<span class="algolia-logo pull-right">' +
+                '<img src="' + CONFIG.root +
+                `${CONFIG.sourcePath.images}/algolia.svg" alt="Algolia" />` +
+              '</span>'
+            );
+          }
+        }
+      })
+    );
+  }
+
+  // The pagination of the results.
+  search.addWidget(
+    instantsearch.widgets.pagination({
+      container: '#algolia-pagination',
+      scrollTo: false,
+      showFirstLast: false,
+      labels: {
+        first: '<i class="fa fa-angle-double-left"></i>',
+        last: '<i class="fa fa-angle-double-right"></i>',
+        previous: '<i class="fa fa-angle-left"></i>',
+        next: '<i class="fa fa-angle-right"></i>'
+      },
+      cssClasses: {
+        root: 'pagination',
+        item: 'pagination-item',
+        link: 'page-number',
+        active: 'current',
+        disabled: 'disabled-item'
+      }
+    })
+  );
+
+  search.start();
+});</script><script>function loadUtterances() {
+  var d = document, s = d.createElement('script');
+  var container = d.getElementById('utterances-container');
+
+  if (!container) {
+    return;
+  }
+  s.src = 'https://utteranc.es/client.js';
+  s.setAttribute('repo', 'ixxzhi/ixxzhi.github.io');
+  s.setAttribute('issue-term', 'title');
+  s.setAttribute('label', 'utterances');
+  s.setAttribute('theme', 'github-light');
+  s.setAttribute('crossorigin', 'anonymous');
+  s.setAttribute('async', '');
+  if (false) {
+    s.setAttribute('data-pjax-rm', '');
+  }
+  container.append(s);
+}
+
+if (false) {
+  loadUtterances();
+} else {
+  window.addEventListener('DOMContentLoaded', loadUtterances, false);
+}</script><script src="/js/utils.js?v=2.8.0"></script><script src="/js/stun-boot.js?v=2.8.0"></script><script src="/js/scroll.js?v=2.8.0"></script><script src="/js/header.js?v=2.8.0"></script><script src="/js/sidebar.js?v=2.8.0"></script></body></html>

@@ -1,0 +1,434 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="format-detection" content="telephone=no"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black"><link rel="icon" href="/images/icons/favicon/favicon-16x16.png?v=2.8.0" type="image/png" sizes="16x16"><link rel="icon" href="/images/icons/favicon/favicon-32x32.png?v=2.8.0" type="image/png" sizes="32x32"><link rel="apple-touch-icon" href="/images/icons/favicon/apple-touch-icon.png?v=2.8.0" sizes="180x180"><meta name="description" content="什么是DNS协议       ​	DNS是一种可以将域名和IP地址相互映射的以层次结构分布的数据库系统。DNS系统采用递归查询请求的方式来响应用户的查询，为互联网的运行提供关键性的基础服务。目前绝大多数的防火墙和网络都会开放DNS服务，DNS数据包不会被拦截，因此可以基于DNS协议建立隐蔽信道，从而顺利穿过防火墙，在客户端和服务器之间传输数据。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="DNS协议详解">
+<meta property="og:url" content="https://www.ixxzhi.cn/2023/09/12/DNS%E5%8D%8F%E8%AE%AE%E8%AF%A6%E8%A7%A3/index.html">
+<meta property="og:site_name" content="冰糖の部落阁">
+<meta property="og:description" content="什么是DNS协议       ​	DNS是一种可以将域名和IP地址相互映射的以层次结构分布的数据库系统。DNS系统采用递归查询请求的方式来响应用户的查询，为互联网的运行提供关键性的基础服务。目前绝大多数的防火墙和网络都会开放DNS服务，DNS数据包不会被拦截，因此可以基于DNS协议建立隐蔽信道，从而顺利穿过防火墙，在客户端和服务器之间传输数据。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://qiniu2.ixxzhi.cn/image-20230912163342906.png">
+<meta property="og:image" content="http://qiniu2.ixxzhi.cn/image-20230912165318807.png">
+<meta property="og:image" content="http://qiniu2.ixxzhi.cn/image-20230913105209449.png">
+<meta property="og:image" content="http://qiniu2.ixxzhi.cn/image-20230913103741488.png">
+<meta property="og:image" content="http://qiniu2.ixxzhi.cn/image-20230913104041804.png">
+<meta property="og:image" content="http://qiniu2.ixxzhi.cn/image-20230913104133177.png">
+<meta property="og:image" content="http://qiniu2.ixxzhi.cn/image-20230913104420896.png">
+<meta property="og:image" content="http://qiniu2.ixxzhi.cn/image-20230913104604844.png">
+<meta property="og:image" content="http://qiniu2.ixxzhi.cn/1575819614.png">
+<meta property="og:image" content="http://qiniu2.ixxzhi.cn/image-20230919162801057.png">
+<meta property="og:image" content="http://qiniu2.ixxzhi.cn/image-20230918171219518.png">
+<meta property="og:image" content="http://qiniu2.ixxzhi.cn/image-20230919092609933.png">
+<meta property="og:image" content="http://qiniu2.ixxzhi.cn/image-20230919092814188.png">
+<meta property="og:image" content="http://qiniu2.ixxzhi.cn/image-20230919162753779.png">
+<meta property="og:image" content="http://qiniu2.ixxzhi.cn/image-20230919100154028.png">
+<meta property="og:image" content="http://qiniu2.ixxzhi.cn/image-20230919100707957.png">
+<meta property="og:image" content="http://qiniu2.ixxzhi.cn/image-20230919100848568.png">
+<meta property="article:published_time" content="2023-09-12T08:14:42.000Z">
+<meta property="article:modified_time" content="2023-09-19T08:29:20.655Z">
+<meta property="article:author" content="冰糖小混子">
+<meta property="article:tag" content="DNS">
+<meta property="article:tag" content="网络协议">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://qiniu2.ixxzhi.cn/image-20230912163342906.png"><title>DNS协议详解 | 冰糖の部落阁</title><link ref="canonical" href="https://www.ixxzhi.cn/2023/09/12/DNS%E5%8D%8F%E8%AE%AE%E8%AF%A6%E8%A7%A3/"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.12.1/css/all.min.css" type="text/css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/instantsearch.js@2.1.1/dist/instantsearch.min.css" type="text/css"><link rel="stylesheet" href="/css/index.css?v=2.8.0"><link rel="stylesheet" href="css/custom.css"><script>var Stun = window.Stun || {};
+var CONFIG = {
+  root: '/',
+  algolia: {"appId":"AKOK4JB6FU","apiKey":"afe2853f80920ee4cdb1d45209c0ecf2","indexName":"blog_ixxzhi","hits":{"per_page":10},"languages":{"inputPlaceholder":"搜索文章","hitsEmpty":"没有找到任何搜索结果：${query}","hitsStats":"找到 ${hits} 条搜索结果，耗时 ${time} 毫秒"}},
+  assistSearch: undefined,
+  fontIcon: {"prompt":{"success":"fas fa-check-circle","info":"fas fa-arrow-circle-right","warning":"fas fa-exclamation-circle","error":"fas fa-times-circle"},"copyBtn":"fas fa-copy"},
+  sidebar: {"offsetTop":"20px","tocMaxDepth":6},
+  header: {"enable":true,"showOnPost":true,"scrollDownIcon":false},
+  postWidget: {"endText":true},
+  nightMode: {"enable":true},
+  back2top: {"enable":true},
+  codeblock: {"style":"default","highlight":"light","wordWrap":false},
+  reward: false,
+  fancybox: false,
+  zoomImage: {"gapAside":"20px"},
+  galleryWaterfall: undefined,
+  lazyload: false,
+  pjax: undefined,
+  externalLink: {"icon":{"enable":true,"name":"fas fa-external-link-alt"}},
+  shortcuts: undefined,
+  prompt: {"copyButton":"复制","copySuccess":"复制成功","copyError":"复制失败"},
+  sourcePath: {"js":"js","css":"css","images":"images"},
+};
+
+window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></head><body><div class="container" id="container"><header class="header" id="header"><div class="header-inner"><nav class="header-nav header-nav--fixed"><div class="header-nav-inner"><div class="header-nav-menubtn"><i class="fas fa-bars"></i></div><div class="header-nav-menu"><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/"><span class="header-nav-menu-item__icon"><i class="fas fa-home"></i></span><span class="header-nav-menu-item__text">首页</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/archives/"><span class="header-nav-menu-item__icon"><i class="fas fa-folder-open"></i></span><span class="header-nav-menu-item__text">归档</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/categories/"><span class="header-nav-menu-item__icon"><i class="fas fa-layer-group"></i></span><span class="header-nav-menu-item__text">分类</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/tags/"><span class="header-nav-menu-item__icon"><i class="fas fa-tags"></i></span><span class="header-nav-menu-item__text">标签</span></a></div></div><div class="header-nav-search"><span class="header-nav-search__icon"><i class="fas fa-search"></i></span><span class="header-nav-search__text">搜索</span></div><div class="header-nav-mode"><div class="mode"><div class="mode-track"><span class="mode-track-moon"></span><span class="mode-track-sun"></span></div><div class="mode-thumb"></div></div></div></div></nav><div class="header-banner"><div class="header-banner-info"><div class="header-banner-info__title">冰糖の部落阁</div><div class="header-banner-info__subtitle">冰糖的笔记和随笔</div></div></div></div></header><main class="main" id="main"><div class="main-inner"><div class="content-wrap" id="content-wrap"><div class="content" id="content"><!-- Just used to judge whether it is an article page--><div id="is-post"></div><div class="post"><header class="post-header"><h1 class="post-title">DNS协议详解</h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2023-09-12</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2023-09-19</span></span></div></header><div class="post-body">
+        <h1 id="什么是DNS协议"   >
+          <a href="#什么是DNS协议" class="heading-link"><i class="fas fa-link"></i></a><a href="#什么是DNS协议" class="headerlink" title="什么是DNS协议"></a>什么是DNS协议</h1>
+      <p>​	DNS是一种可以将域名和IP地址相互映射的以层次结构分布的数据库系统。DNS系统采用递归查询请求的方式来响应用户的查询，为互联网的运行提供关键性的基础服务。目前绝大多数的防火墙和网络都会开放DNS服务，DNS数据包不会被拦截，因此可以基于DNS协议建立隐蔽信道，从而顺利穿过防火墙，在客户端和服务器之间传输数据。</p>
+
+        <h1 id="DNS服务器"   >
+          <a href="#DNS服务器" class="heading-link"><i class="fas fa-link"></i></a><a href="#DNS服务器" class="headerlink" title="DNS服务器"></a>DNS服务器</h1>
+      <p>​	域名对应的IP地址都保存在DNS服务器。我们输入域名，浏览器就会在后台自动向DNS服务器发出请求，获取对应的IP地址。这就是DNS查询。</p>
+<p><img src="http://qiniu2.ixxzhi.cn/image-20230912163342906.png" alt="image-20230912163342906"></p>
+<p>​	举个栗子，当我在浏览器输入<code>www.ixxzhi.cn</code>这个域名，浏览器就要像DNS服务器查询<code>www.ixxzhi.cn</code>对应的IP地址是什么，然后向该IP发出访问请求。</p>
+<p>​	网上有很多公用的DNS服务器，我们选择Cloudflare公司提供的<code>1.1.1.1</code>进行演示。</p>
+<span id="more"></span>
+
+
+        <h1 id="dig命令"   >
+          <a href="#dig命令" class="heading-link"><i class="fas fa-link"></i></a><a href="#dig命令" class="headerlink" title="dig命令"></a>dig命令</h1>
+      <p>命令行工具dig可以跟DNS服务器互动，我们就用它演示DNS查询。</p>
+<p>它的查询语法如下：</p>
+<figure class="highlight sh"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dig @[DNS服务器] [域名]</span><br></pre></td></tr></table></div></figure>
+
+<p>假设我们要向<code>1.1.1.1</code>查询<code>www.ixxzhi.cn</code>这个域名，就可以执行下面的命令：</p>
+<figure class="highlight sh"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dig @1.1.1.1 www.ixxzhi.cn</span><br></pre></td></tr></table></div></figure>
+
+<p>正常情况下它会输出一大堆内容：</p>
+<p><img src="http://qiniu2.ixxzhi.cn/image-20230912165318807.png" alt="image-20230912165318807"></p>
+<p>其中 “ANSWER SECTION”部分，给出了查询到的A记录和CNAME记录等信息。</p>
+
+        <h1 id="域名的树状结构"   >
+          <a href="#域名的树状结构" class="heading-link"><i class="fas fa-link"></i></a><a href="#域名的树状结构" class="headerlink" title="域名的树状结构"></a>域名的树状结构</h1>
+      <p>要说清楚DNS完整的查询过程，就必须了解**<font color="red">域名是一个树状结构</font>**。</p>
+<p><img src="http://qiniu2.ixxzhi.cn/image-20230913105209449.png" alt="image-20230913105209449"></p>
+<ol>
+<li><p><strong><font color=red>根</font></strong></p>
+<p>在最上面的是根，但是<strong>没有对应的名字</strong>。</p>
+</li>
+<li><p><strong><font color=red>顶级域名</font></strong></p>
+<p>根下面一级的节点就是最高一级的顶级域名（由于根没有名字，所以在根下面一级的域名就叫做顶级域名）。它分成两种：</p>
+<ul>
+<li><font color="red">通用顶级域名</font>（gTLD，比如<code>.com</code>和<code>.net</code>）</li>
+<li><font color=red>国别顶级域名</font>（ccTLD，比如<code>.cn</code>和<code>.us</code>）</li>
+</ul>
+<p>顶级域名又国际域名管理机构ICANN控制，它委托商业公司管理gTLD，委托各国管理自己的国别域名。</p>
+</li>
+<li><p><strong><font color=red>二级域名</font></strong></p>
+<p>二级域名就是你在某个顶级域名下面，自己注册的域名。比如，<code>ixxzhi.cn</code>就是我在顶级域名<code>.cn</code>下面注册的。</p>
+</li>
+<li><p><strong><font color=red>三级域名</font></strong></p>
+<p>三级域名是二级域名的子域名，是域名拥有者自行设置的，不用得到许可。比如，<code>alist</code>就是<code>ixxzhi.cn</code>的三级域名</p>
+</li>
+</ol>
+
+        <h1 id="域名的逐级查询"   >
+          <a href="#域名的逐级查询" class="heading-link"><i class="fas fa-link"></i></a><a href="#域名的逐级查询" class="headerlink" title="域名的逐级查询"></a>域名的逐级查询</h1>
+      <p>这种树状结构的意义在于，**<font color=red>只有上级域名，才知道下一级域名的IP地址，需要逐级查询</font>**。</p>
+<p>每一级域名都有自己的DNS服务器，存放下一级域名的IP地址。</p>
+<p>所以想要查询三级域名<code>www.ixxzhi.cn</code>的IP地址，需要三个步骤：</p>
+<ol>
+<li>查询根域名服务器，获得顶级域名服务器<code>.cn</code>（又称TLD服务器）的IP地址。</li>
+<li>查询TLD服务器<code>.cn</code>，获得二级域名服务器<code>ixxzhi.cn</code>的IP地址。</li>
+<li>查询二级域名服务器<code>ixxzhi.cn</code>，获得三级域名<code>www.ixxzhi.cn</code>的IP地址。</li>
+</ol>
+<p>下面依次演示三个步骤：</p>
+<blockquote>
+<p><strong><font color=red>做实验之前我们添加一个A记录把test.ixxzhi.cn指向 11.22.33.44</font></strong></p>
+<p><img src="http://qiniu2.ixxzhi.cn/image-20230913103741488.png" alt="image-20230913103741488"></p>
+</blockquote>
+
+        <h1 id="根域名服务器"   >
+          <a href="#根域名服务器" class="heading-link"><i class="fas fa-link"></i></a><a href="#根域名服务器" class="headerlink" title="根域名服务器"></a>根域名服务器</h1>
+      <ol>
+<li>根域名服务器是最高层次的域名服务器，所有的根域名服务器都知道所有的顶级域名服务器的IP地址。</li>
+<li>根域名服务器也是最重要的域名服务器，不管是哪个本地域名服务器，若要对Internet上任何一个域名进行解析，只要自己无法解析，就首先请求根域名服务器。</li>
+<li>Internet上有13个根域名服务器，尽管我们将这13个根域名服务器中的每一个都视为单个服务器，但是每个”服务器“实际上是冗余服务器的集群，以提供安全性和可靠性。</li>
+</ol>
+<figure class="highlight text"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">A 根：198.41.0.4           A.root-servers.net：美国加利福尼亚州洛杉矶</span><br><span class="line">B 根：192.228.79.201       B.root-servers.net：美国弗吉尼亚州马里兰</span><br><span class="line">C 根：192.33.4.12          C.root-servers.net：美国纽约州纽约市</span><br><span class="line">D 根：199.7.91.13          D.root-servers.net：美国新泽西州贝德明斯特</span><br><span class="line">E 根：192.203.230.10       E.root-servers.net：瑞典斯德哥尔摩</span><br><span class="line">F 根：192.5.5.241          F.root-servers.net：美国加利福尼亚州棕榈泉</span><br><span class="line">G 根：192.112.36.4         G.root-servers.net：荷兰阿姆斯特丹</span><br><span class="line">H 根：198.97.190.53        H.root-servers.net：美国华盛顿州西雅图</span><br><span class="line">I 根：192.36.148.17        I.root-servers.net：瑞士日内瓦</span><br><span class="line">J 根：192.58.128.30        J.root-servers.net：日本东京</span><br><span class="line">K 根：193.0.14.129         K.root-servers.net：美国密歇根州兰辛</span><br><span class="line">L 根：199.7.83.42          L.root-servers.net：美国加利福尼亚州埃尔塞贡多</span><br><span class="line">M 根：202.12.27.33         M.root-servers.net：美国弗吉尼亚州达勒姆</span><br></pre></td></tr></table></div></figure>
+
+<p>根域名服务器的IP地址是不变的，集成在操作系统里面。操作系统会选其中一台查询TLD服务器的IP地址。</p>
+<figure class="highlight sh"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dig @198.41.0.4 test.ixxzhi.cn</span><br></pre></td></tr></table></div></figure>
+
+<p>上面示例中，我们选择<code>198.41.0.4</code>，向它发出请求，询问<code>test.ixxzhi.cn</code>的TLD服务器的IP地址。</p>
+<p>dig命令的输出结果如下：</p>
+<p><img src="http://qiniu2.ixxzhi.cn/image-20230913104041804.png" alt="image-20230913104041804"></p>
+<p>因为它给不了 <code>test.ixxzhi.cn</code> 的IP地址，所以输出结果中没有ANSWER SECTION，只有一个AUTHRITY SECTION，给出了 <code>cn.</code>的TLD服务器的域名。下面还有一个ADDITIONAL SECTION，给出了这几台服务器的IP地址（包含IPv4和IPv6两个地址）。</p>
+
+        <h1 id="TLD服务器"   >
+          <a href="#TLD服务器" class="heading-link"><i class="fas fa-link"></i></a><a href="#TLD服务器" class="headerlink" title="TLD服务器"></a>TLD服务器</h1>
+      <p>有了TLD服务器的IP地址以后，我们再选一台接着查询：</p>
+<figure class="highlight sh"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dig @203.119.27.1 test.ixxzhi.cn</span><br></pre></td></tr></table></div></figure>
+
+<p>上面示例中，<code>203.119.27.1</code> 是随便选的一台 <code>.cn</code> 的TLD服务器，我们向它询问 <code>test.ixxzhi.cn</code> 的IP地址。</p>
+<p><img src="http://qiniu2.ixxzhi.cn/image-20230913104133177.png" alt="image-20230913104133177"></p>
+<p>它依然没有ANSWER SECTION 的部分，只有AUTHORITY SECTION，给出了二级域名 <code>ixxzhi.cn</code> 的两台DNS服务器。</p>
+
+        <h1 id="二级域名的DNS服务器"   >
+          <a href="#二级域名的DNS服务器" class="heading-link"><i class="fas fa-link"></i></a><a href="#二级域名的DNS服务器" class="headerlink" title="二级域名的DNS服务器"></a>二级域名的DNS服务器</h1>
+      <p>上面只给出了NS记录？没关系，我们可以通过下面的命令来查询该服务器的IP地址：</p>
+<figure class="highlight sh"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dig zahir.ns.cloudflare.com</span><br></pre></td></tr></table></div></figure>
+
+<p><img src="http://qiniu2.ixxzhi.cn/image-20230913104420896.png" alt="image-20230913104420896"></p>
+<p>我们再向二级域名的DNS服务器查询三级域名的IP地址。</p>
+<figure class="highlight sh"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dig @172.64.35.145 test.ixxzhi.cn</span><br></pre></td></tr></table></div></figure>
+
+<p>返回结果如下：</p>
+<p><img src="http://qiniu2.ixxzhi.cn/image-20230913104604844.png" alt="image-20230913104604844"></p>
+<p>这次终于有了ANSWER SECTION，得到了三级域名<code>test.ixxzhi.cn</code> 的IP地址为 <code>11.22.33.44</code>，至此三个步骤的DNS查询全部完成。</p>
+
+        <h1 id="DNS递归和迭代查询"   >
+          <a href="#DNS递归和迭代查询" class="heading-link"><i class="fas fa-link"></i></a><a href="#DNS递归和迭代查询" class="headerlink" title="DNS递归和迭代查询"></a>DNS递归和迭代查询</h1>
+      
+        <h2 id="迭代查询"   >
+          <a href="#迭代查询" class="heading-link"><i class="fas fa-link"></i></a><a href="#迭代查询" class="headerlink" title="迭代查询"></a>迭代查询</h2>
+      <p>​	本地域名服务器向根域名服务器的查询通常是采用迭代查询。迭代查询的特点：当根域名服务器收到本地域名服务器发出的迭代查询请求报文时，要么给出所要查询的IP地址，要么告诉本地服务器：“你下一步应当向哪个域名服务器进行查询”。然后让本地服务器进行后续的查询。根域名服务器通常是把自己知道的顶级域名服务器的IP地址告诉本地域名服务器，让本地域名服务器再向顶级域名服务器查询。顶级域名服务器收到本地域名服务器的查询请求后，要么给出所要查询的IP地址，要么告诉本地域名服务器下一步应当向哪一个权威域名服务器进行查询。最后，知道了所要解析的IP地址或报错，然后把这个结果返回给发起查询的主机。</p>
+
+        <h2 id="递归查询"   >
+          <a href="#递归查询" class="heading-link"><i class="fas fa-link"></i></a><a href="#递归查询" class="headerlink" title="递归查询"></a>递归查询</h2>
+      <p>​	主机向本地域名服务器的查询一般都是采用递归查询。所谓递归查询就是：如果所询问的本地域名服务器不知道被查询域名的IP地址，那么本地域名服务器就以DNS客户端的身份，向其它根域名服务器继续发出查询请求报文，而不是让该主机自己进行下一步查询。递归查询时返回的结果只有两种：查询成功或查询失败。</p>
+<p><img src="http://qiniu2.ixxzhi.cn/1575819614.png" alt="1575819614"></p>
+
+        <h1 id="DNS缓存机制"   >
+          <a href="#DNS缓存机制" class="heading-link"><i class="fas fa-link"></i></a><a href="#DNS缓存机制" class="headerlink" title="DNS缓存机制"></a>DNS缓存机制</h1>
+      <p>​	一条域名的DNS记录会在本地有两种缓存：</p>
+<ul>
+<li>浏览器缓存</li>
+<li>操作系统（OS）缓存</li>
+</ul>
+<p>​	在浏览器中访问的时候，会优先访问浏览器缓存，如果未命中则访问OS缓存，最后再访问DNS服务器（一般是ISP提供）。同时本地的<code>etc/hosts</code> 中也可以记录DNS解析记录。Windows系统在 <code>C:\Windows\System32\drivers\etc\hosts</code>。</p>
+<p>Windows中刷新dns缓存命令：</p>
+<figure class="highlight cmd"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">ipconfig</span> /flushdns</span><br></pre></td></tr></table></div></figure>
+
+<p>​	而由于很多Linux发行版都没有内置DNS本地缓存，所以无需刷新。DNS记录会有一个<code>TTL</code>值（time to live），单位是秒，意思是这个记录最大有效期是多少。经过实验，OS缓存会参考ttl值，但是不完全等于TTL值，而浏览器DNS缓存的时间跟TTL值无关，每种浏览器都使用一个固定值。</p>
+
+        <h1 id="DNS隧道"   >
+          <a href="#DNS隧道" class="heading-link"><i class="fas fa-link"></i></a><a href="#DNS隧道" class="headerlink" title="DNS隧道"></a>DNS隧道</h1>
+      
+        <h2 id="设置域名服务器"   >
+          <a href="#设置域名服务器" class="heading-link"><i class="fas fa-link"></i></a><a href="#设置域名服务器" class="headerlink" title="设置域名服务器"></a>设置域名服务器</h2>
+      <p>登录你的域名服务商，比如：<span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://dash.cloudflare.com/" >https://dash.cloudflare.com/</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+<p>在自己的域名下面添加一条A记录，名称任意（如 test2.ixxzhi.cn），值为你的VPS服务器的IP地址。</p>
+<p>再添加一条NS记录，名称任意（如ns1.ixxzhi.cn），值为上面A记录的名称：test2.ixxzhi.cn</p>
+<p><img src="http://qiniu2.ixxzhi.cn/image-20230919162801057.png" alt="image-20230919162801057"></p>
+
+        <h2 id="在服务器上运行dns2tcpd"   >
+          <a href="#在服务器上运行dns2tcpd" class="heading-link"><i class="fas fa-link"></i></a><a href="#在服务器上运行dns2tcpd" class="headerlink" title="在服务器上运行dns2tcpd"></a>在服务器上运行dns2tcpd</h2>
+      <p>如果安装了dns2tcp，编辑<code>/etc/dns2tcpd.conf</code>，改成如下配置：</p>
+<figure class="highlight plaintext"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">listen = 0.0.0.0</span><br><span class="line">port = 53</span><br><span class="line"># If you change this value, also change the USER variable in /etc/default/dns2tcpd</span><br><span class="line">user = nobody</span><br><span class="line">chroot = /tmp</span><br><span class="line">domain = ns1.ixxzhi.cn #（上面配置NS记录的域名）</span><br><span class="line">resources = ssh:127.0.0.1:22 , smtp:127.0.0.1:25</span><br></pre></td></tr></table></div></figure>
+
+<p>服务端启动如下命令启动dns2tcpd：</p>
+<figure class="highlight sh"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dns2tcpd -f /etc/dns2tcpd.conf -F -d 2</span><br></pre></td></tr></table></div></figure>
+
+<p><img src="http://qiniu2.ixxzhi.cn/image-20230918171219518.png" alt="image-20230918171219518"></p>
+
+        <h2 id="客户端运行dns2tcpc"   >
+          <a href="#客户端运行dns2tcpc" class="heading-link"><i class="fas fa-link"></i></a><a href="#客户端运行dns2tcpc" class="headerlink" title="客户端运行dns2tcpc"></a>客户端运行dns2tcpc</h2>
+      <p>DNS2TCP 的客户端配置较为简单, 一条命令就行：</p>
+<figure class="highlight sh"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dns2tcpc -r ssh -z ns1.ixxzhi.cn 1.2.3.4 -l 8888 -d 2</span><br></pre></td></tr></table></div></figure>
+
+<blockquote>
+<p>-r 后接服务名称, 这里我们用ssh<br>-z 后接NS记录的网址、ip, 注意IP地址最好写上, 可以不写<br>-l 后接本地端口<br>-d 开启 Debug</p>
+</blockquote>
+<p><img src="http://qiniu2.ixxzhi.cn/image-20230919092609933.png" alt="image-20230919092609933"></p>
+
+        <h2 id="ssh连接测试"   >
+          <a href="#ssh连接测试" class="heading-link"><i class="fas fa-link"></i></a><a href="#ssh连接测试" class="headerlink" title="ssh连接测试"></a>ssh连接测试</h2>
+      <p>至此我们已经成功搭建了DNS隧道。现在我们尝试ssh连接到客户端主机的8888端口：</p>
+<figure class="highlight sh"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh root@127.0.0.1 -p 8888 -i rsa.key</span><br></pre></td></tr></table></div></figure>
+
+<p><img src="http://qiniu2.ixxzhi.cn/image-20230919092814188.png" alt="image-20230919092814188"></p>
+
+        <h1 id="自己搭建DNSLOG"   >
+          <a href="#自己搭建DNSLOG" class="heading-link"><i class="fas fa-link"></i></a><a href="#自己搭建DNSLOG" class="headerlink" title="自己搭建DNSLOG"></a>自己搭建DNSLOG</h1>
+      
+        <h2 id="设置域名服务器-1"   >
+          <a href="#设置域名服务器-1" class="heading-link"><i class="fas fa-link"></i></a><a href="#设置域名服务器-1" class="headerlink" title="设置域名服务器"></a>设置域名服务器</h2>
+      <p>登录你的域名服务商，比如：<span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://dash.cloudflare.com/" >https://dash.cloudflare.com/</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+<p>在自己的域名下面添加一条A记录，名称任意（如 test2.ixxzhi.cn），值为你的VPS服务器的IP地址。</p>
+<p>再添加一条NS记录，名称任意（如ns1.ixxzhi.cn），值为上面A记录的名称：test2.ixxzhi.cn</p>
+<p><img src="http://qiniu2.ixxzhi.cn/image-20230919162753779.png" alt="image-20230919162753779"></p>
+
+        <h2 id="监听53端口"   >
+          <a href="#监听53端口" class="heading-link"><i class="fas fa-link"></i></a><a href="#监听53端口" class="headerlink" title="监听53端口"></a>监听53端口</h2>
+      <figure class="highlight sh"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tcpdump -n -i eth0 udp dst port 53</span><br></pre></td></tr></table></div></figure>
+
+<p><img src="http://qiniu2.ixxzhi.cn/image-20230919100154028.png" alt="image-20230919100154028"></p>
+
+        <h2 id="发包测试"   >
+          <a href="#发包测试" class="heading-link"><i class="fas fa-link"></i></a><a href="#发包测试" class="headerlink" title="发包测试"></a>发包测试</h2>
+      <p>现在尝试dig 获取一下<code>test1111.ns1.ixxzhi.cn</code>的IP：</p>
+<figure class="highlight sh"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dig test111.ns1.ixxzhi.cn</span><br></pre></td></tr></table></div></figure>
+
+<p><img src="http://qiniu2.ixxzhi.cn/image-20230919100707957.png" alt="image-20230919100707957"></p>
+<p>此时到VPS上查看请求日志：</p>
+<p><img src="http://qiniu2.ixxzhi.cn/image-20230919100848568.png" alt="image-20230919100848568"></p>
+<p>在这里我们可以看到解析的记录了。</p>
+<p>但是由于<font color="red">缓存的原因</font>第一次请求<code>test1111.ns1.ixxzhi.cn</code>之后短时间内请求同一域名不会请求到DNS服务器，所以为了避免重复我们可以第一次请求<code>test1111.a.ns1.ixxzhi.cn</code>，第二次请求<code>test1111.b.ns1.ixxzhi.cn</code> 以此类推。。。</p>
+</div><footer class="post-footer"><div class="post-ending ending"><div class="ending__text">------ 本文结束，感谢您的阅读 ------</div></div><div class="post-copyright copyright"><div class="copyright-author"><span class="copyright-author__name">本文作者: </span><span class="copyright-author__value"><a href="https://www.ixxzhi.cn">冰糖小混子</a></span></div><div class="copyright-link"><span class="copyright-link__name">本文链接: </span><span class="copyright-link__value"><a href="https://www.ixxzhi.cn/2023/09/12/DNS%E5%8D%8F%E8%AE%AE%E8%AF%A6%E8%A7%A3/">https://www.ixxzhi.cn/2023/09/12/DNS%E5%8D%8F%E8%AE%AE%E8%AF%A6%E8%A7%A3/</a></span></div><div class="copyright-notice"><span class="copyright-notice__name">版权声明: </span><span class="copyright-notice__value">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" rel="external nofollow" target="_blank">BY-NC-SA</a> 许可协议。转载请注明出处！</span></div></div><div class="post-tags"><span class="post-tags-item"><span class="post-tags-item__icon"><i class="fas fa-tag"></i></span><a class="post-tags-item__link" href="https://www.ixxzhi.cn/tags/DNS/">DNS</a></span><span class="post-tags-item"><span class="post-tags-item__icon"><i class="fas fa-tag"></i></span><a class="post-tags-item__link" href="https://www.ixxzhi.cn/tags/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/">网络协议</a></span></div><nav class="post-paginator paginator"><div class="paginator-prev"><a class="paginator-prev__link" href="/2023/09/13/TCP%E5%8D%8F%E8%AE%AE%E8%AF%A6%E8%A7%A3/"><span class="paginator-prev__icon"><i class="fas fa-angle-left"></i></span><span class="paginator-prev__text">TCP协议详解</span></a></div><div class="paginator-next"><a class="paginator-next__link" href="/2023/09/08/kerberos/"><span class="paginator-prev__text">kerberos（待更新）</span><span class="paginator-next__icon"><i class="fas fa-angle-right"></i></span></a></div></nav></footer></div></div><div class="comments" id="comments"><div id="utterances-container"></div></div></div><div class="sidebar-wrap" id="sidebar-wrap"><aside class="sidebar" id="sidebar"><div class="sidebar-nav"><span class="sidebar-nav-toc current">文章目录</span><span class="sidebar-nav-ov">站点概览</span></div><section class="sidebar-toc"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%98%AFDNS%E5%8D%8F%E8%AE%AE"><span class="toc-number">1.</span> <span class="toc-text">
+          什么是DNS协议</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#DNS%E6%9C%8D%E5%8A%A1%E5%99%A8"><span class="toc-number">2.</span> <span class="toc-text">
+          DNS服务器</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#dig%E5%91%BD%E4%BB%A4"><span class="toc-number">3.</span> <span class="toc-text">
+          dig命令</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%9F%9F%E5%90%8D%E7%9A%84%E6%A0%91%E7%8A%B6%E7%BB%93%E6%9E%84"><span class="toc-number">4.</span> <span class="toc-text">
+          域名的树状结构</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%9F%9F%E5%90%8D%E7%9A%84%E9%80%90%E7%BA%A7%E6%9F%A5%E8%AF%A2"><span class="toc-number">5.</span> <span class="toc-text">
+          域名的逐级查询</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%A0%B9%E5%9F%9F%E5%90%8D%E6%9C%8D%E5%8A%A1%E5%99%A8"><span class="toc-number">6.</span> <span class="toc-text">
+          根域名服务器</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#TLD%E6%9C%8D%E5%8A%A1%E5%99%A8"><span class="toc-number">7.</span> <span class="toc-text">
+          TLD服务器</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BA%8C%E7%BA%A7%E5%9F%9F%E5%90%8D%E7%9A%84DNS%E6%9C%8D%E5%8A%A1%E5%99%A8"><span class="toc-number">8.</span> <span class="toc-text">
+          二级域名的DNS服务器</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#DNS%E9%80%92%E5%BD%92%E5%92%8C%E8%BF%AD%E4%BB%A3%E6%9F%A5%E8%AF%A2"><span class="toc-number">9.</span> <span class="toc-text">
+          DNS递归和迭代查询</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%AD%E4%BB%A3%E6%9F%A5%E8%AF%A2"><span class="toc-number">9.1.</span> <span class="toc-text">
+          迭代查询</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%80%92%E5%BD%92%E6%9F%A5%E8%AF%A2"><span class="toc-number">9.2.</span> <span class="toc-text">
+          递归查询</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#DNS%E7%BC%93%E5%AD%98%E6%9C%BA%E5%88%B6"><span class="toc-number">10.</span> <span class="toc-text">
+          DNS缓存机制</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#DNS%E9%9A%A7%E9%81%93"><span class="toc-number">11.</span> <span class="toc-text">
+          DNS隧道</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AE%BE%E7%BD%AE%E5%9F%9F%E5%90%8D%E6%9C%8D%E5%8A%A1%E5%99%A8"><span class="toc-number">11.1.</span> <span class="toc-text">
+          设置域名服务器</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9C%A8%E6%9C%8D%E5%8A%A1%E5%99%A8%E4%B8%8A%E8%BF%90%E8%A1%8Cdns2tcpd"><span class="toc-number">11.2.</span> <span class="toc-text">
+          在服务器上运行dns2tcpd</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%A2%E6%88%B7%E7%AB%AF%E8%BF%90%E8%A1%8Cdns2tcpc"><span class="toc-number">11.3.</span> <span class="toc-text">
+          客户端运行dns2tcpc</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ssh%E8%BF%9E%E6%8E%A5%E6%B5%8B%E8%AF%95"><span class="toc-number">11.4.</span> <span class="toc-text">
+          ssh连接测试</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%87%AA%E5%B7%B1%E6%90%AD%E5%BB%BADNSLOG"><span class="toc-number">12.</span> <span class="toc-text">
+          自己搭建DNSLOG</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AE%BE%E7%BD%AE%E5%9F%9F%E5%90%8D%E6%9C%8D%E5%8A%A1%E5%99%A8-1"><span class="toc-number">12.1.</span> <span class="toc-text">
+          设置域名服务器</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%9B%91%E5%90%AC53%E7%AB%AF%E5%8F%A3"><span class="toc-number">12.2.</span> <span class="toc-text">
+          监听53端口</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%91%E5%8C%85%E6%B5%8B%E8%AF%95"><span class="toc-number">12.3.</span> <span class="toc-text">
+          发包测试</span></a></li></ol></li></ol></section><!-- ov = overview--><section class="sidebar-ov hide"><div class="sidebar-ov-author"><div class="sidebar-ov-author__avatar"><img class="sidebar-ov-author__avatar_img" src="/images/icons/avatar.jpg" alt="avatar"></div><p class="sidebar-ov-author__text">冰糖小混子</p></div><div class="sidebar-ov-state"><a class="sidebar-ov-state-item sidebar-ov-state-item--posts" href="/archives/"><div class="sidebar-ov-state-item__count">31</div><div class="sidebar-ov-state-item__name">归档</div></a><a class="sidebar-ov-state-item sidebar-ov-state-item--categories" href="/categories/"><div class="sidebar-ov-state-item__count">8</div><div class="sidebar-ov-state-item__name">分类</div></a><a class="sidebar-ov-state-item sidebar-ov-state-item--tags" href="/tags/"><div class="sidebar-ov-state-item__count">23</div><div class="sidebar-ov-state-item__name">标签</div></a></div><div class="sidebar-ov-cc"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" target="_blank" rel="noopener" data-popover="知识共享许可协议" data-popover-pos="up"><img src="/images/cc-by-nc-sa.svg"></a></div></section><div class="sidebar-reading"><div class="sidebar-reading-info"><span class="sidebar-reading-info__text">你已阅读了 </span><span class="sidebar-reading-info__num">0</span><span class="sidebar-reading-info__perc">%</span></div><div class="sidebar-reading-line"></div></div></aside></div><div class="clearfix"></div></div></main><footer class="footer" id="footer"><div class="footer-inner"><div><span>Copyright © 2024</span><span class="footer__icon"><i class="fas fa-heart"></i></span><span>冰糖小混子</span><span class="footer__devider">|</span><span><a href="https://beian.miit.gov.cn/" rel="noopener" target="_blank">蒙ICP备20002846号</a></span></div><div><span>由 <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a> 强力驱动</span><span> v6.3.0</span><span class="footer__devider">|</span><span>主题 - <a href="https://github.com/liuyib/hexo-theme-stun/" title="Stun" target="_blank" rel="noopener">Stun</a></span><span> v2.8.0</span></div></div></footer><div class="loading-bar" id="loading-bar"><div class="loading-bar__progress"></div></div><div class="back2top" id="back2top"><span class="back2top__icon"><i class="fas fa-rocket"></i></span></div></div><div class="search-mask"></div><div class="search-popup"><span class="search-close"></span><div class="search-input"></div><div class="search-results"><div id="algolia-hits"></div></div><div id="algolia-pagination"></div><div id="algolia-stats"></div></div><script src="https://cdn.jsdelivr.net/npm/jquery@v3.4.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.ui.min.js"></script><script src="https://cdn.jsdelivr.net/npm/ribbon.js@latest/dist/ribbon.min.js" size="120" alpha="0.6" zIndex="-1"></script><script src="https://cdn.jsdelivr.net/npm/instantsearch.js@2.1.1/dist/instantsearch.min.js" defer></script><script>window.addEventListener('DOMContentLoaded', function () {
+  $('.header-nav-search').on('click', function (e) {
+    e.stopPropagation();
+
+    $('body').css('overflow', 'hidden');
+    $('.search-popup')
+      .velocity('stop')
+      .velocity('transition.expandIn', {
+        duration: 300,
+        complete: function () {
+          $('.search-popup input').focus();
+        }
+      });
+    $('.search-mask')
+      .velocity('stop')
+      .velocity('transition.fadeIn', {
+        duration: 300
+      });
+  });
+
+  function closeSearch () {
+    $('body').css({ overflow: 'auto' });
+    $('.search-popup').css({ display: 'none' });
+    $('.search-mask').css({ display: 'none' });
+  }
+
+  $('.search-mask, .search-close').on('click', function () {
+    closeSearch();
+  });
+
+  $(document).on('keydown', function (e) {
+    // Escape <=> 27
+    if (e.keyCode === Stun.utils.codeToKeyCode('Escape')) {
+      closeSearch();
+    }
+  });
+
+  var algolia = CONFIG.algolia;
+  if (!algolia && !(algolia.appId && algolia.apiKey && algolia.indexName)) {
+    return console.error('Algolia setting is invalid.');
+  }
+
+  var search = instantsearch({
+    appId: algolia.appId,
+    apiKey: algolia.apiKey,
+    indexName: algolia.indexName,
+    searchParameters: {
+      hitsPerPage: algolia.hits.per_page || 10
+    },
+    searchFunction: function (helper) {
+      var searchInput = $('.search-input').find('input');
+
+      if (searchInput.val()) {
+        helper.search();
+      }
+    }
+  });
+
+  search.addWidget(
+    instantsearch.widgets.searchBox({
+      container: '.search-input',
+      reset: false,
+      magnifier: false,
+      placeholder: algolia.languages.inputPlaceholder
+    })
+  );
+
+  // The hits of search results.
+  search.addWidget(
+    instantsearch.widgets.hits({
+      container: '#algolia-hits',
+      templates: {
+        item: function (data) {
+          var link = data.permalink ? data.permalink : CONFIG.root + data.path;
+          return (
+            '<a href="' + link + '" class="algolia-hit-item-link">' +
+              data._highlightResult.title.value +
+            '</a>'
+          );
+        },
+        empty: function (data) {
+          return (
+            '<div id="algolia-hits-empty">' +
+              algolia.languages.hitsEmpty.replace(/\$\{query}/, data.query) +
+            '</div>'
+          );
+        }
+      },
+      cssClasses: {
+        item: 'algolia-hit-item'
+      }
+    })
+  );
+
+  // The stats of search results.
+  if ($('#algolia-stats')[0]) {
+    search.addWidget(
+      instantsearch.widgets.stats({
+        container: '#algolia-stats',
+        templates: {
+          body: function (data) {
+            var stats = algolia.languages.hitsStats
+              .replace(/\$\{hits}/, data.nbHits)
+              .replace(/\$\{time}/, data.processingTimeMS);
+            return (
+              stats +
+              '<span class="algolia-logo pull-right">' +
+                '<img src="' + CONFIG.root +
+                `${CONFIG.sourcePath.images}/algolia.svg" alt="Algolia" />` +
+              '</span>'
+            );
+          }
+        }
+      })
+    );
+  }
+
+  // The pagination of the results.
+  search.addWidget(
+    instantsearch.widgets.pagination({
+      container: '#algolia-pagination',
+      scrollTo: false,
+      showFirstLast: false,
+      labels: {
+        first: '<i class="fa fa-angle-double-left"></i>',
+        last: '<i class="fa fa-angle-double-right"></i>',
+        previous: '<i class="fa fa-angle-left"></i>',
+        next: '<i class="fa fa-angle-right"></i>'
+      },
+      cssClasses: {
+        root: 'pagination',
+        item: 'pagination-item',
+        link: 'page-number',
+        active: 'current',
+        disabled: 'disabled-item'
+      }
+    })
+  );
+
+  search.start();
+});</script><script>function loadUtterances() {
+  var d = document, s = d.createElement('script');
+  var container = d.getElementById('utterances-container');
+
+  if (!container) {
+    return;
+  }
+  s.src = 'https://utteranc.es/client.js';
+  s.setAttribute('repo', 'ixxzhi/ixxzhi.github.io');
+  s.setAttribute('issue-term', 'title');
+  s.setAttribute('label', 'utterances');
+  s.setAttribute('theme', 'github-light');
+  s.setAttribute('crossorigin', 'anonymous');
+  s.setAttribute('async', '');
+  if (false) {
+    s.setAttribute('data-pjax-rm', '');
+  }
+  container.append(s);
+}
+
+if (false) {
+  loadUtterances();
+} else {
+  window.addEventListener('DOMContentLoaded', loadUtterances, false);
+}</script><script src="/js/utils.js?v=2.8.0"></script><script src="/js/stun-boot.js?v=2.8.0"></script><script src="/js/scroll.js?v=2.8.0"></script><script src="/js/header.js?v=2.8.0"></script><script src="/js/sidebar.js?v=2.8.0"></script></body></html>

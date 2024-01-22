@@ -1,0 +1,416 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="format-detection" content="telephone=no"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black"><link rel="icon" href="/images/icons/favicon/favicon-16x16.png?v=2.8.0" type="image/png" sizes="16x16"><link rel="icon" href="/images/icons/favicon/favicon-32x32.png?v=2.8.0" type="image/png" sizes="32x32"><link rel="apple-touch-icon" href="/images/icons/favicon/apple-touch-icon.png?v=2.8.0" sizes="180x180"><meta name="description" content="Web资产信息收集                           web基本架构：        开发语言：asp，aspx，php，java，jsp，python，ruby，go等. . .  程序源码：根据开发语言分类，应用分类，开源CMS分类，开发框架分类. . .  数据库类型：Access，Mysql，Mssql，Oracle，DB2，Redis，. . .">
+<meta property="og:type" content="article">
+<meta property="og:title" content="信息收集">
+<meta property="og:url" content="https://www.ixxzhi.cn/2023/08/20/%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86/index.html">
+<meta property="og:site_name" content="冰糖の部落阁">
+<meta property="og:description" content="Web资产信息收集                           web基本架构：        开发语言：asp，aspx，php，java，jsp，python，ruby，go等. . .  程序源码：根据开发语言分类，应用分类，开源CMS分类，开发框架分类. . .  数据库类型：Access，Mysql，Mssql，Oracle，DB2，Redis，. . .">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2023-08-20T00:04:03.000Z">
+<meta property="article:modified_time" content="2023-08-22T16:24:03.136Z">
+<meta property="article:author" content="冰糖小混子">
+<meta property="article:tag" content="工具">
+<meta name="twitter:card" content="summary"><title>信息收集 | 冰糖の部落阁</title><link ref="canonical" href="https://www.ixxzhi.cn/2023/08/20/%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86/"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.12.1/css/all.min.css" type="text/css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/instantsearch.js@2.1.1/dist/instantsearch.min.css" type="text/css"><link rel="stylesheet" href="/css/index.css?v=2.8.0"><link rel="stylesheet" href="css/custom.css"><script>var Stun = window.Stun || {};
+var CONFIG = {
+  root: '/',
+  algolia: {"appId":"AKOK4JB6FU","apiKey":"afe2853f80920ee4cdb1d45209c0ecf2","indexName":"blog_ixxzhi","hits":{"per_page":10},"languages":{"inputPlaceholder":"搜索文章","hitsEmpty":"没有找到任何搜索结果：${query}","hitsStats":"找到 ${hits} 条搜索结果，耗时 ${time} 毫秒"}},
+  assistSearch: undefined,
+  fontIcon: {"prompt":{"success":"fas fa-check-circle","info":"fas fa-arrow-circle-right","warning":"fas fa-exclamation-circle","error":"fas fa-times-circle"},"copyBtn":"fas fa-copy"},
+  sidebar: {"offsetTop":"20px","tocMaxDepth":6},
+  header: {"enable":true,"showOnPost":true,"scrollDownIcon":false},
+  postWidget: {"endText":true},
+  nightMode: {"enable":true},
+  back2top: {"enable":true},
+  codeblock: {"style":"default","highlight":"light","wordWrap":false},
+  reward: false,
+  fancybox: false,
+  zoomImage: {"gapAside":"20px"},
+  galleryWaterfall: undefined,
+  lazyload: false,
+  pjax: undefined,
+  externalLink: {"icon":{"enable":true,"name":"fas fa-external-link-alt"}},
+  shortcuts: undefined,
+  prompt: {"copyButton":"复制","copySuccess":"复制成功","copyError":"复制失败"},
+  sourcePath: {"js":"js","css":"css","images":"images"},
+};
+
+window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></head><body><div class="container" id="container"><header class="header" id="header"><div class="header-inner"><nav class="header-nav header-nav--fixed"><div class="header-nav-inner"><div class="header-nav-menubtn"><i class="fas fa-bars"></i></div><div class="header-nav-menu"><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/"><span class="header-nav-menu-item__icon"><i class="fas fa-home"></i></span><span class="header-nav-menu-item__text">首页</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/archives/"><span class="header-nav-menu-item__icon"><i class="fas fa-folder-open"></i></span><span class="header-nav-menu-item__text">归档</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/categories/"><span class="header-nav-menu-item__icon"><i class="fas fa-layer-group"></i></span><span class="header-nav-menu-item__text">分类</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/tags/"><span class="header-nav-menu-item__icon"><i class="fas fa-tags"></i></span><span class="header-nav-menu-item__text">标签</span></a></div></div><div class="header-nav-search"><span class="header-nav-search__icon"><i class="fas fa-search"></i></span><span class="header-nav-search__text">搜索</span></div><div class="header-nav-mode"><div class="mode"><div class="mode-track"><span class="mode-track-moon"></span><span class="mode-track-sun"></span></div><div class="mode-thumb"></div></div></div></div></nav><div class="header-banner"><div class="header-banner-info"><div class="header-banner-info__title">冰糖の部落阁</div><div class="header-banner-info__subtitle">冰糖的笔记和随笔</div></div></div></div></header><main class="main" id="main"><div class="main-inner"><div class="content-wrap" id="content-wrap"><div class="content" id="content"><!-- Just used to judge whether it is an article page--><div id="is-post"></div><div class="post"><header class="post-header"><h1 class="post-title">信息收集</h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2023-08-20</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2023-08-23</span></span></div></header><div class="post-body">
+        <h1 id="Web资产信息收集"   >
+          <a href="#Web资产信息收集" class="heading-link"><i class="fas fa-link"></i></a><a href="#Web资产信息收集" class="headerlink" title="Web资产信息收集"></a>Web资产信息收集</h1>
+      
+        <h2 id="web基本架构："   >
+          <a href="#web基本架构：" class="heading-link"><i class="fas fa-link"></i></a><a href="#web基本架构：" class="headerlink" title="web基本架构："></a>web基本架构：</h2>
+      <blockquote>
+<p><strong>开发语言：</strong>asp，aspx，php，java，jsp，python，ruby，go等. . . </p>
+<p><strong>程序源码：</strong>根据开发语言分类，应用分类，开源CMS分类，开发框架分类. . . </p>
+<p><strong>数据库类型：</strong>Access，Mysql，Mssql，Oracle，DB2，Redis，. . . </p>
+<p><strong>中间件容器：</strong>IIS，Apache，Nginx，Tomcat，Weblogic，Jboss，glasshfish. . . </p>
+<p><strong>服务器操作系统：</strong>Windows，Linux，Mac. . .</p>
+<p><strong>第三方软件：</strong>phpadmin，vs-ftpd，VNC，Openssh，ELK . . .</p>
+</blockquote>
+<span id="more"></span>
+
+<p><strong>收集方法：</strong></p>
+<ul>
+<li>通过header头部信息收集</li>
+<li>通过目录收集</li>
+<li>通过端口收集</li>
+<li>通过CMS收集</li>
+<li>通过第三方搜索引擎收集</li>
+</ul>
+
+        <h2 id="子域名信息收集"   >
+          <a href="#子域名信息收集" class="heading-link"><i class="fas fa-link"></i></a><a href="#子域名信息收集" class="headerlink" title="子域名信息收集"></a>子域名信息收集</h2>
+      <figure class="highlight plaintext"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">⼦域名也是⼆级域名，是指顶级域名的域名。假设⽬标⽹络规模⽐较⼤，直接从主域名⼊⼿很难， 因为⼀般主域名是重点防护区域，所以可以从⼦域名⼊⼿，然后在想办法迂回接近真正的⽬标。</span><br></pre></td></tr></table></div></figure>
+
+<p><strong>收集方法：</strong></p>
+<ul>
+<li>第三方搜索引擎</li>
+<li>google hacking语法</li>
+<li>在线子域名爆破：<span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://phpinfo.me/domain/" >https://phpinfo.me/domain/</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></li>
+<li>layer子域名挖掘机，OneForAll工具</li>
+</ul>
+
+        <h2 id="旁站和C段信息收集"   >
+          <a href="#旁站和C段信息收集" class="heading-link"><i class="fas fa-link"></i></a><a href="#旁站和C段信息收集" class="headerlink" title="旁站和C段信息收集"></a>旁站和C段信息收集</h2>
+      <figure class="highlight plaintext"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">旁站往往存在业务功能站点，建议先收集已有IP的旁站，再探测C段，确认C段⽬标后，再在C 段的基础上再收集⼀次旁站。 </span><br></pre></td></tr></table></div></figure>
+
+<p><strong>收集方法：</strong></p>
+<ul>
+<li>旁站在线查询：<span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://www.webscan.cc/" >https://www.webscan.cc/</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span> </li>
+<li>C段在线查询：<span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://c.webscan.cc/" >https://c.webscan.cc/</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span> </li>
+<li>FOFA：<span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://fofa.info/" >https://fofa.info/</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></li>
+</ul>
+
+        <h2 id="目录和敏感文件扫描"   >
+          <a href="#目录和敏感文件扫描" class="heading-link"><i class="fas fa-link"></i></a><a href="#目录和敏感文件扫描" class="headerlink" title="目录和敏感文件扫描"></a>目录和敏感文件扫描</h2>
+      <figure class="highlight plaintext"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">在渗透测试中，探测web⽬录结构和隐藏的敏感⽂件是⼀个必不可少的环节，从中可以获取⽹ 站的后台管理⻚⾯、⽂件上传⻚⾯、甚⾄可以扫描出⽹站的源代码。</span><br></pre></td></tr></table></div></figure>
+
+<p><strong>工具：</strong></p>
+<ul>
+<li>7kbscan</li>
+<li>dirsearch</li>
+<li>dirmap</li>
+<li>dirb</li>
+</ul>
+<p><strong>常见收集的文件：</strong></p>
+<blockquote>
+<p>robots.txt、后台⽬录、⽹站安装包、⽹站上传⽬录、mysql管理⻚⾯、phpinfo、⽹站⽂本编辑 器、测试⽂件、⽹站备份⽂件(.rar、zip、7z、tar.gz、.bak)、DS_Store⽂件、vim编辑器备份 ⽂件(.swp)、.git、.svn等</p>
+</blockquote>
+
+        <h2 id="CMS识别"   >
+          <a href="#CMS识别" class="heading-link"><i class="fas fa-link"></i></a><a href="#CMS识别" class="headerlink" title="CMS识别"></a>CMS识别</h2>
+      <figure class="highlight plaintext"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">CMS(Content Management System)⼜称整站系统或⽂章系统。在2004年以前，如果想要进⾏⽹站内容管理，基本上都靠⼿⼯维护，但在信息爆炸的时代，完全靠⼈维护相当困难。所以就出现了CMS，开放者只要给客户⼀个软件包，客户⾃⼰安装配置好，就可以定期更新数据来维护⽹站，节省了⼤量的⼈⼒和物⼒。</span><br></pre></td></tr></table></div></figure>
+
+<p><strong>工具：</strong></p>
+<ul>
+<li>whatweb</li>
+<li>御剑cms识别</li>
+</ul>
+
+        <h2 id="判断网站中间件等信息"   >
+          <a href="#判断网站中间件等信息" class="heading-link"><i class="fas fa-link"></i></a><a href="#判断网站中间件等信息" class="headerlink" title="判断网站中间件等信息"></a>判断网站中间件等信息</h2>
+      <ul>
+<li>通过headers头部来判断</li>
+<li>一些在线网站识别：<span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="http://whatweb.bugscaner.com/look/" >http://whatweb.bugscaner.com/look/</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></li>
+<li>插件识别：Wappalyzer</li>
+</ul>
+
+        <h2 id="端口扫描"   >
+          <a href="#端口扫描" class="heading-link"><i class="fas fa-link"></i></a><a href="#端口扫描" class="headerlink" title="端口扫描"></a>端口扫描</h2>
+      <figure class="highlight plaintext"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">确定了⽬标⼤概的ip段后，可以先对ip的开放端⼝进⾏探测，⼀些特定服务可能开起在默认端⼝上，探测开放端⼝有利于快速收集⽬标资产，找到⽬标⽹站的其他功能站点。</span><br></pre></td></tr></table></div></figure>
+
+<p><strong>工具：</strong></p>
+<ul>
+<li>御剑</li>
+<li>Nmap</li>
+</ul>
+<p><font color=red>📌注意常见端口对应服务见附件</font></p>
+
+        <h1 id="CDN绕过"   >
+          <a href="#CDN绕过" class="heading-link"><i class="fas fa-link"></i></a><a href="#CDN绕过" class="headerlink" title="CDN绕过"></a>CDN绕过</h1>
+      <figure class="highlight plaintext"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">CDN就是内容发布⽹站，主要解决因传输距离和不同运营商节点造成的⽹络速度性能低下的问题。说的简单点，就是⼀组在不同运营商之间的对接点上的告诉缓存服务器，把⽤户经常访问的静态数据资源（html,css,js图⽚，视频，声⾳等⽂）直接缓存到节点服务器上，当⽤户再次请求时，会直接发到离⽤户最近的节点服务器响应给⽤户，当⽤户⼜实际数据交互时才会从远程web服务器上响应，这样可以⼤⼤提⾼⽹站的响应速度及⽤户体验。</span><br></pre></td></tr></table></div></figure>
+
+<p><strong>判断是否存在CDN：</strong></p>
+<ul>
+<li>ping测试</li>
+<li>nsloogup</li>
+</ul>
+<p><strong>绕过CDN的方法：</strong></p>
+<ol>
+<li>查询子域</li>
+<li>国外ip访问</li>
+<li>历史解析记录</li>
+<li>查询邮件ip</li>
+<li>通过小程序，App</li>
+<li>接口查询：<span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://get-site-ip.com/" >https://get-site-ip.com/</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></li>
+<li>搜索faction.ico图标</li>
+<li>一些敏感文件：文件探针、phpinfo、网站源代码、信息泄露等</li>
+</ol>
+
+        <h1 id="信息泄露收集"   >
+          <a href="#信息泄露收集" class="heading-link"><i class="fas fa-link"></i></a><a href="#信息泄露收集" class="headerlink" title="信息泄露收集"></a>信息泄露收集</h1>
+      
+        <h2 id="Github搜索"   >
+          <a href="#Github搜索" class="heading-link"><i class="fas fa-link"></i></a><a href="#Github搜索" class="headerlink" title="Github搜索"></a>Github搜索</h2>
+      <figure class="highlight plaintext"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">尝试在GitHub上寻找相关的敏感信息，如数据库连接信息，邮箱密码，uc-key，阿⾥的osskey，有时还可以找到源代码泄露。</span><br></pre></td></tr></table></div></figure>
+
+<blockquote>
+<p>in:name password 搜索标题中含有关键字password</p>
+<p>in:descripton password 搜索描述中含有关键字password</p>
+<p>in:readme password ⽂件搜索含有关键字</p>
+</blockquote>
+<p>搜索一些账号密码：</p>
+<blockquote>
+<p><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://github.com/search?q=bilibili.com+password+3306&type=code" >https://github.com/search?q=bilibili.com+password+3306&amp;type=code</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+</blockquote>
+
+        <h2 id="google-hacking-语法收集信息"   >
+          <a href="#google-hacking-语法收集信息" class="heading-link"><i class="fas fa-link"></i></a><a href="#google-hacking-语法收集信息" class="headerlink" title="google hacking 语法收集信息"></a>google hacking 语法收集信息</h2>
+      
+        <h2 id="一些网盘搜索"   >
+          <a href="#一些网盘搜索" class="heading-link"><i class="fas fa-link"></i></a><a href="#一些网盘搜索" class="headerlink" title="一些网盘搜索"></a>一些网盘搜索</h2>
+      <blockquote>
+<p>凌云搜索 <span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://www.lingfengyun.com/" >https://www.lingfengyun.com/</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+<p>盘搜搜：<span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="http://www.pansoso.com/" >http://www.pansoso.com/</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+<p>盘搜：<span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="http://www.pansou.com/" >http://www.pansou.com/</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+<p>⽹站注册信息：<span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="http://www.reg007.com/" >www.reg007.com</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+</blockquote>
+
+        <h2 id="Js敏感信息泄露"   >
+          <a href="#Js敏感信息泄露" class="heading-link"><i class="fas fa-link"></i></a><a href="#Js敏感信息泄露" class="headerlink" title="Js敏感信息泄露"></a>Js敏感信息泄露</h2>
+      <blockquote>
+<p><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://github.com/Threezh1/JSFinder" >https://github.com/Threezh1/JSFinder</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span> </p>
+<p><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://github.com/GerbenJavado/LinkFinder" >https://github.com/GerbenJavado/LinkFinder</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span> </p>
+<p><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://github.com/rtcatc/Packer-Fuzzer" >https://github.com/rtcatc/Packer-Fuzzer</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span> (webpack)</p>
+<p><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://github.com/momosecurity/FindSomething" >https://github.com/momosecurity/FindSomething</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+</blockquote>
+
+        <h2 id="一些敏感文件泄露"   >
+          <a href="#一些敏感文件泄露" class="heading-link"><i class="fas fa-link"></i></a><a href="#一些敏感文件泄露" class="headerlink" title="一些敏感文件泄露"></a>一些敏感文件泄露</h2>
+      <ul>
+<li>git信息泄露：访问xxx&#x2F;.git ⽂件 403或存在即可尝试获取源码<ul>
+<li>inurl:&#x2F;.git</li>
+<li><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://github.com/BugScanTeam/GitHack" >https://github.com/BugScanTeam/GitHack</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></li>
+</ul>
+</li>
+<li>svn信息泄露：访问xxx&#x2F;.svn&#x2F;entries 内容存在即可尝试获取源码<ul>
+<li>inurl:&#x2F;.svn&#x2F;entries</li>
+<li><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://github.com/callmefeifei/SvnHack" >https://github.com/callmefeifei/SvnHack</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></li>
+<li><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://blog.csdn.net/wuxinweii/article/details/123099063" >https://blog.csdn.net/wuxinweii/article/details/123099063</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></li>
+</ul>
+</li>
+<li>DS_Store泄露: 该⽂件为mac下的数据⽂件，访问存在即可尝试获取源码<ul>
+<li>inurl:&#x2F;.DS_Store</li>
+<li><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://github.com/lijiejie/ds_store_exp" >https://github.com/lijiejie/ds_store_exp</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></li>
+</ul>
+</li>
+<li>php特性配置说明⽂件composer.json泄露: 访问composer.json存在即可尝试获取源码相关信息<ul>
+<li>inurl:&#x2F;composer.json</li>
+</ul>
+</li>
+</ul>
+
+        <h2 id="APP抓包，小程序信息收集"   >
+          <a href="#APP抓包，小程序信息收集" class="heading-link"><i class="fas fa-link"></i></a><a href="#APP抓包，小程序信息收集" class="headerlink" title="APP抓包，小程序信息收集"></a>APP抓包，小程序信息收集</h2>
+      <p><strong>工具：</strong></p>
+<ul>
+<li>安卓模拟器</li>
+<li>Charlies</li>
+<li>Proxifier</li>
+<li>Burp Suite</li>
+<li>Fiddler</li>
+</ul>
+
+        <h2 id="使用一些开源工具进行信息收集"   >
+          <a href="#使用一些开源工具进行信息收集" class="heading-link"><i class="fas fa-link"></i></a><a href="#使用一些开源工具进行信息收集" class="headerlink" title="使用一些开源工具进行信息收集"></a>使用一些开源工具进行信息收集</h2>
+      <p><strong>工具：</strong></p>
+<ul>
+<li>鹰图：<span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://hunter.qianxin.com/" >https://hunter.qianxin.com/</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></li>
+<li>Quake：<span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://quake.360.net/quake/#/index" >https://quake.360.net/quake/#/index</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></li>
+<li>Fofa：<span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://fofa.info/" >https://fofa.info/</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></li>
+<li>Zoomeye：<span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://www.zoomeye.org/" >https://www.zoomeye.org/</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></li>
+<li>水泽：<span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://github.com/0x727/ShuiZe_0x727" >https://github.com/0x727/ShuiZe_0x727</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></li>
+<li>灯塔：<span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://github.com/TophantTechnology/ARL" >https://github.com/TophantTechnology/ARL</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></li>
+</ul>
+</div><footer class="post-footer"><div class="post-ending ending"><div class="ending__text">------ 本文结束，感谢您的阅读 ------</div></div><div class="post-copyright copyright"><div class="copyright-author"><span class="copyright-author__name">本文作者: </span><span class="copyright-author__value"><a href="https://www.ixxzhi.cn">冰糖小混子</a></span></div><div class="copyright-link"><span class="copyright-link__name">本文链接: </span><span class="copyright-link__value"><a href="https://www.ixxzhi.cn/2023/08/20/%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86/">https://www.ixxzhi.cn/2023/08/20/%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86/</a></span></div><div class="copyright-notice"><span class="copyright-notice__name">版权声明: </span><span class="copyright-notice__value">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" rel="external nofollow" target="_blank">BY-NC-SA</a> 许可协议。转载请注明出处！</span></div></div><div class="post-tags"><span class="post-tags-item"><span class="post-tags-item__icon"><i class="fas fa-tag"></i></span><a class="post-tags-item__link" href="https://www.ixxzhi.cn/tags/%E5%B7%A5%E5%85%B7/">工具</a></span></div><nav class="post-paginator paginator"><div class="paginator-prev"><a class="paginator-prev__link" href="/2023/08/22/%E5%B8%B8%E8%A7%81%E6%95%8F%E6%84%9F%E6%96%87%E4%BB%B6/"><span class="paginator-prev__icon"><i class="fas fa-angle-left"></i></span><span class="paginator-prev__text">常见敏感文件</span></a></div><div class="paginator-next"><a class="paginator-next__link" href="/2023/08/20/%E5%B8%B8%E7%94%A8%E5%B7%A5%E5%85%B7-%E7%BD%91%E7%AB%99/"><span class="paginator-prev__text">常用工具/网站</span><span class="paginator-next__icon"><i class="fas fa-angle-right"></i></span></a></div></nav></footer></div></div><div class="comments" id="comments"><div id="utterances-container"></div></div></div><div class="sidebar-wrap" id="sidebar-wrap"><aside class="sidebar" id="sidebar"><div class="sidebar-nav"><span class="sidebar-nav-toc current">文章目录</span><span class="sidebar-nav-ov">站点概览</span></div><section class="sidebar-toc"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Web%E8%B5%84%E4%BA%A7%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86"><span class="toc-number">1.</span> <span class="toc-text">
+          Web资产信息收集</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#web%E5%9F%BA%E6%9C%AC%E6%9E%B6%E6%9E%84%EF%BC%9A"><span class="toc-number">1.1.</span> <span class="toc-text">
+          web基本架构：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AD%90%E5%9F%9F%E5%90%8D%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86"><span class="toc-number">1.2.</span> <span class="toc-text">
+          子域名信息收集</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%97%81%E7%AB%99%E5%92%8CC%E6%AE%B5%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86"><span class="toc-number">1.3.</span> <span class="toc-text">
+          旁站和C段信息收集</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%9B%AE%E5%BD%95%E5%92%8C%E6%95%8F%E6%84%9F%E6%96%87%E4%BB%B6%E6%89%AB%E6%8F%8F"><span class="toc-number">1.4.</span> <span class="toc-text">
+          目录和敏感文件扫描</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#CMS%E8%AF%86%E5%88%AB"><span class="toc-number">1.5.</span> <span class="toc-text">
+          CMS识别</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%A4%E6%96%AD%E7%BD%91%E7%AB%99%E4%B8%AD%E9%97%B4%E4%BB%B6%E7%AD%89%E4%BF%A1%E6%81%AF"><span class="toc-number">1.6.</span> <span class="toc-text">
+          判断网站中间件等信息</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AB%AF%E5%8F%A3%E6%89%AB%E6%8F%8F"><span class="toc-number">1.7.</span> <span class="toc-text">
+          端口扫描</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#CDN%E7%BB%95%E8%BF%87"><span class="toc-number">2.</span> <span class="toc-text">
+          CDN绕过</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BF%A1%E6%81%AF%E6%B3%84%E9%9C%B2%E6%94%B6%E9%9B%86"><span class="toc-number">3.</span> <span class="toc-text">
+          信息泄露收集</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Github%E6%90%9C%E7%B4%A2"><span class="toc-number">3.1.</span> <span class="toc-text">
+          Github搜索</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#google-hacking-%E8%AF%AD%E6%B3%95%E6%94%B6%E9%9B%86%E4%BF%A1%E6%81%AF"><span class="toc-number">3.2.</span> <span class="toc-text">
+          google hacking 语法收集信息</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E4%BA%9B%E7%BD%91%E7%9B%98%E6%90%9C%E7%B4%A2"><span class="toc-number">3.3.</span> <span class="toc-text">
+          一些网盘搜索</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Js%E6%95%8F%E6%84%9F%E4%BF%A1%E6%81%AF%E6%B3%84%E9%9C%B2"><span class="toc-number">3.4.</span> <span class="toc-text">
+          Js敏感信息泄露</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E4%BA%9B%E6%95%8F%E6%84%9F%E6%96%87%E4%BB%B6%E6%B3%84%E9%9C%B2"><span class="toc-number">3.5.</span> <span class="toc-text">
+          一些敏感文件泄露</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#APP%E6%8A%93%E5%8C%85%EF%BC%8C%E5%B0%8F%E7%A8%8B%E5%BA%8F%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86"><span class="toc-number">3.6.</span> <span class="toc-text">
+          APP抓包，小程序信息收集</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8%E4%B8%80%E4%BA%9B%E5%BC%80%E6%BA%90%E5%B7%A5%E5%85%B7%E8%BF%9B%E8%A1%8C%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86"><span class="toc-number">3.7.</span> <span class="toc-text">
+          使用一些开源工具进行信息收集</span></a></li></ol></li></ol></section><!-- ov = overview--><section class="sidebar-ov hide"><div class="sidebar-ov-author"><div class="sidebar-ov-author__avatar"><img class="sidebar-ov-author__avatar_img" src="/images/icons/avatar.jpg" alt="avatar"></div><p class="sidebar-ov-author__text">冰糖小混子</p></div><div class="sidebar-ov-state"><a class="sidebar-ov-state-item sidebar-ov-state-item--posts" href="/archives/"><div class="sidebar-ov-state-item__count">31</div><div class="sidebar-ov-state-item__name">归档</div></a><a class="sidebar-ov-state-item sidebar-ov-state-item--categories" href="/categories/"><div class="sidebar-ov-state-item__count">8</div><div class="sidebar-ov-state-item__name">分类</div></a><a class="sidebar-ov-state-item sidebar-ov-state-item--tags" href="/tags/"><div class="sidebar-ov-state-item__count">23</div><div class="sidebar-ov-state-item__name">标签</div></a></div><div class="sidebar-ov-cc"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" target="_blank" rel="noopener" data-popover="知识共享许可协议" data-popover-pos="up"><img src="/images/cc-by-nc-sa.svg"></a></div></section><div class="sidebar-reading"><div class="sidebar-reading-info"><span class="sidebar-reading-info__text">你已阅读了 </span><span class="sidebar-reading-info__num">0</span><span class="sidebar-reading-info__perc">%</span></div><div class="sidebar-reading-line"></div></div></aside></div><div class="clearfix"></div></div></main><footer class="footer" id="footer"><div class="footer-inner"><div><span>Copyright © 2024</span><span class="footer__icon"><i class="fas fa-heart"></i></span><span>冰糖小混子</span><span class="footer__devider">|</span><span><a href="https://beian.miit.gov.cn/" rel="noopener" target="_blank">蒙ICP备20002846号</a></span></div><div><span>由 <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a> 强力驱动</span><span> v6.3.0</span><span class="footer__devider">|</span><span>主题 - <a href="https://github.com/liuyib/hexo-theme-stun/" title="Stun" target="_blank" rel="noopener">Stun</a></span><span> v2.8.0</span></div></div></footer><div class="loading-bar" id="loading-bar"><div class="loading-bar__progress"></div></div><div class="back2top" id="back2top"><span class="back2top__icon"><i class="fas fa-rocket"></i></span></div></div><div class="search-mask"></div><div class="search-popup"><span class="search-close"></span><div class="search-input"></div><div class="search-results"><div id="algolia-hits"></div></div><div id="algolia-pagination"></div><div id="algolia-stats"></div></div><script src="https://cdn.jsdelivr.net/npm/jquery@v3.4.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.ui.min.js"></script><script src="https://cdn.jsdelivr.net/npm/ribbon.js@latest/dist/ribbon.min.js" size="120" alpha="0.6" zIndex="-1"></script><script src="https://cdn.jsdelivr.net/npm/instantsearch.js@2.1.1/dist/instantsearch.min.js" defer></script><script>window.addEventListener('DOMContentLoaded', function () {
+  $('.header-nav-search').on('click', function (e) {
+    e.stopPropagation();
+
+    $('body').css('overflow', 'hidden');
+    $('.search-popup')
+      .velocity('stop')
+      .velocity('transition.expandIn', {
+        duration: 300,
+        complete: function () {
+          $('.search-popup input').focus();
+        }
+      });
+    $('.search-mask')
+      .velocity('stop')
+      .velocity('transition.fadeIn', {
+        duration: 300
+      });
+  });
+
+  function closeSearch () {
+    $('body').css({ overflow: 'auto' });
+    $('.search-popup').css({ display: 'none' });
+    $('.search-mask').css({ display: 'none' });
+  }
+
+  $('.search-mask, .search-close').on('click', function () {
+    closeSearch();
+  });
+
+  $(document).on('keydown', function (e) {
+    // Escape <=> 27
+    if (e.keyCode === Stun.utils.codeToKeyCode('Escape')) {
+      closeSearch();
+    }
+  });
+
+  var algolia = CONFIG.algolia;
+  if (!algolia && !(algolia.appId && algolia.apiKey && algolia.indexName)) {
+    return console.error('Algolia setting is invalid.');
+  }
+
+  var search = instantsearch({
+    appId: algolia.appId,
+    apiKey: algolia.apiKey,
+    indexName: algolia.indexName,
+    searchParameters: {
+      hitsPerPage: algolia.hits.per_page || 10
+    },
+    searchFunction: function (helper) {
+      var searchInput = $('.search-input').find('input');
+
+      if (searchInput.val()) {
+        helper.search();
+      }
+    }
+  });
+
+  search.addWidget(
+    instantsearch.widgets.searchBox({
+      container: '.search-input',
+      reset: false,
+      magnifier: false,
+      placeholder: algolia.languages.inputPlaceholder
+    })
+  );
+
+  // The hits of search results.
+  search.addWidget(
+    instantsearch.widgets.hits({
+      container: '#algolia-hits',
+      templates: {
+        item: function (data) {
+          var link = data.permalink ? data.permalink : CONFIG.root + data.path;
+          return (
+            '<a href="' + link + '" class="algolia-hit-item-link">' +
+              data._highlightResult.title.value +
+            '</a>'
+          );
+        },
+        empty: function (data) {
+          return (
+            '<div id="algolia-hits-empty">' +
+              algolia.languages.hitsEmpty.replace(/\$\{query}/, data.query) +
+            '</div>'
+          );
+        }
+      },
+      cssClasses: {
+        item: 'algolia-hit-item'
+      }
+    })
+  );
+
+  // The stats of search results.
+  if ($('#algolia-stats')[0]) {
+    search.addWidget(
+      instantsearch.widgets.stats({
+        container: '#algolia-stats',
+        templates: {
+          body: function (data) {
+            var stats = algolia.languages.hitsStats
+              .replace(/\$\{hits}/, data.nbHits)
+              .replace(/\$\{time}/, data.processingTimeMS);
+            return (
+              stats +
+              '<span class="algolia-logo pull-right">' +
+                '<img src="' + CONFIG.root +
+                `${CONFIG.sourcePath.images}/algolia.svg" alt="Algolia" />` +
+              '</span>'
+            );
+          }
+        }
+      })
+    );
+  }
+
+  // The pagination of the results.
+  search.addWidget(
+    instantsearch.widgets.pagination({
+      container: '#algolia-pagination',
+      scrollTo: false,
+      showFirstLast: false,
+      labels: {
+        first: '<i class="fa fa-angle-double-left"></i>',
+        last: '<i class="fa fa-angle-double-right"></i>',
+        previous: '<i class="fa fa-angle-left"></i>',
+        next: '<i class="fa fa-angle-right"></i>'
+      },
+      cssClasses: {
+        root: 'pagination',
+        item: 'pagination-item',
+        link: 'page-number',
+        active: 'current',
+        disabled: 'disabled-item'
+      }
+    })
+  );
+
+  search.start();
+});</script><script>function loadUtterances() {
+  var d = document, s = d.createElement('script');
+  var container = d.getElementById('utterances-container');
+
+  if (!container) {
+    return;
+  }
+  s.src = 'https://utteranc.es/client.js';
+  s.setAttribute('repo', 'ixxzhi/ixxzhi.github.io');
+  s.setAttribute('issue-term', 'title');
+  s.setAttribute('label', 'utterances');
+  s.setAttribute('theme', 'github-light');
+  s.setAttribute('crossorigin', 'anonymous');
+  s.setAttribute('async', '');
+  if (false) {
+    s.setAttribute('data-pjax-rm', '');
+  }
+  container.append(s);
+}
+
+if (false) {
+  loadUtterances();
+} else {
+  window.addEventListener('DOMContentLoaded', loadUtterances, false);
+}</script><script src="/js/utils.js?v=2.8.0"></script><script src="/js/stun-boot.js?v=2.8.0"></script><script src="/js/scroll.js?v=2.8.0"></script><script src="/js/header.js?v=2.8.0"></script><script src="/js/sidebar.js?v=2.8.0"></script></body></html>

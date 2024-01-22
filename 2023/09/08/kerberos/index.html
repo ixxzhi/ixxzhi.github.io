@@ -1,0 +1,310 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="format-detection" content="telephone=no"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black"><link rel="icon" href="/images/icons/favicon/favicon-16x16.png?v=2.8.0" type="image/png" sizes="16x16"><link rel="icon" href="/images/icons/favicon/favicon-32x32.png?v=2.8.0" type="image/png" sizes="32x32"><link rel="apple-touch-icon" href="/images/icons/favicon/apple-touch-icon.png?v=2.8.0" sizes="180x180"><meta name="description" content="Kerberos协议                           Kerberos概述       ​	Kerberos是一种由MIT（麻省理工大学）提出的一种网络身份验证协议。它旨在通过使用密钥加密技术为客户端&#x2F;服务器应用程序提供强身份验证。                      Kerberos基本概念        Key Dis">
+<meta property="og:type" content="article">
+<meta property="og:title" content="kerberos（待更新）">
+<meta property="og:url" content="https://www.ixxzhi.cn/2023/09/08/kerberos/index.html">
+<meta property="og:site_name" content="冰糖の部落阁">
+<meta property="og:description" content="Kerberos协议                           Kerberos概述       ​	Kerberos是一种由MIT（麻省理工大学）提出的一种网络身份验证协议。它旨在通过使用密钥加密技术为客户端&#x2F;服务器应用程序提供强身份验证。                      Kerberos基本概念        Key Dis">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://qiniu2.ixxzhi.cn/image-20230908105723957.png">
+<meta property="og:image" content="http://qiniu2.ixxzhi.cn/images/image-20231209020706062.png">
+<meta property="article:published_time" content="2023-09-08T02:04:14.000Z">
+<meta property="article:modified_time" content="2024-01-03T16:31:40.942Z">
+<meta property="article:author" content="冰糖小混子">
+<meta property="article:tag" content="内网">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://qiniu2.ixxzhi.cn/image-20230908105723957.png"><title>kerberos（待更新） | 冰糖の部落阁</title><link ref="canonical" href="https://www.ixxzhi.cn/2023/09/08/kerberos/"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.12.1/css/all.min.css" type="text/css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/instantsearch.js@2.1.1/dist/instantsearch.min.css" type="text/css"><link rel="stylesheet" href="/css/index.css?v=2.8.0"><link rel="stylesheet" href="css/custom.css"><script>var Stun = window.Stun || {};
+var CONFIG = {
+  root: '/',
+  algolia: {"appId":"AKOK4JB6FU","apiKey":"afe2853f80920ee4cdb1d45209c0ecf2","indexName":"blog_ixxzhi","hits":{"per_page":10},"languages":{"inputPlaceholder":"搜索文章","hitsEmpty":"没有找到任何搜索结果：${query}","hitsStats":"找到 ${hits} 条搜索结果，耗时 ${time} 毫秒"}},
+  assistSearch: undefined,
+  fontIcon: {"prompt":{"success":"fas fa-check-circle","info":"fas fa-arrow-circle-right","warning":"fas fa-exclamation-circle","error":"fas fa-times-circle"},"copyBtn":"fas fa-copy"},
+  sidebar: {"offsetTop":"20px","tocMaxDepth":6},
+  header: {"enable":true,"showOnPost":true,"scrollDownIcon":false},
+  postWidget: {"endText":true},
+  nightMode: {"enable":true},
+  back2top: {"enable":true},
+  codeblock: {"style":"default","highlight":"light","wordWrap":false},
+  reward: false,
+  fancybox: false,
+  zoomImage: {"gapAside":"20px"},
+  galleryWaterfall: undefined,
+  lazyload: false,
+  pjax: undefined,
+  externalLink: {"icon":{"enable":true,"name":"fas fa-external-link-alt"}},
+  shortcuts: undefined,
+  prompt: {"copyButton":"复制","copySuccess":"复制成功","copyError":"复制失败"},
+  sourcePath: {"js":"js","css":"css","images":"images"},
+};
+
+window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></head><body><div class="container" id="container"><header class="header" id="header"><div class="header-inner"><nav class="header-nav header-nav--fixed"><div class="header-nav-inner"><div class="header-nav-menubtn"><i class="fas fa-bars"></i></div><div class="header-nav-menu"><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/"><span class="header-nav-menu-item__icon"><i class="fas fa-home"></i></span><span class="header-nav-menu-item__text">首页</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/archives/"><span class="header-nav-menu-item__icon"><i class="fas fa-folder-open"></i></span><span class="header-nav-menu-item__text">归档</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/categories/"><span class="header-nav-menu-item__icon"><i class="fas fa-layer-group"></i></span><span class="header-nav-menu-item__text">分类</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/tags/"><span class="header-nav-menu-item__icon"><i class="fas fa-tags"></i></span><span class="header-nav-menu-item__text">标签</span></a></div></div><div class="header-nav-search"><span class="header-nav-search__icon"><i class="fas fa-search"></i></span><span class="header-nav-search__text">搜索</span></div><div class="header-nav-mode"><div class="mode"><div class="mode-track"><span class="mode-track-moon"></span><span class="mode-track-sun"></span></div><div class="mode-thumb"></div></div></div></div></nav><div class="header-banner"><div class="header-banner-info"><div class="header-banner-info__title">冰糖の部落阁</div><div class="header-banner-info__subtitle">冰糖的笔记和随笔</div></div></div></div></header><main class="main" id="main"><div class="main-inner"><div class="content-wrap" id="content-wrap"><div class="content" id="content"><!-- Just used to judge whether it is an article page--><div id="is-post"></div><div class="post"><header class="post-header"><h1 class="post-title">kerberos（待更新）</h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2023-09-08</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2024-01-04</span></span></div></header><div class="post-body">
+        <h1 id="Kerberos协议"   >
+          <a href="#Kerberos协议" class="heading-link"><i class="fas fa-link"></i></a><a href="#Kerberos协议" class="headerlink" title="Kerberos协议"></a>Kerberos协议</h1>
+      
+        <h2 id="Kerberos概述"   >
+          <a href="#Kerberos概述" class="heading-link"><i class="fas fa-link"></i></a><a href="#Kerberos概述" class="headerlink" title="Kerberos概述"></a>Kerberos概述</h2>
+      <p>​	Kerberos是一种由MIT（麻省理工大学）提出的一种网络身份验证协议。它旨在通过使用密钥加密技术为客户端&#x2F;服务器应用程序提供强身份验证。</p>
+<p><img src="http://qiniu2.ixxzhi.cn/image-20230908105723957.png" alt="img"></p>
+
+        <h2 id="Kerberos基本概念"   >
+          <a href="#Kerberos基本概念" class="heading-link"><i class="fas fa-link"></i></a><a href="#Kerberos基本概念" class="headerlink" title="Kerberos基本概念"></a>Kerberos基本概念</h2>
+      <ul>
+<li><p>Key Distribution Center,or KDC</p>
+<p>在启用Kerberos的环境中进行身份验证的受信任源。</p>
+</li>
+<li><p>Kerberos KDC Server</p>
+<p>作为密钥分发中心（KDC）的计算机或服务器。</p>
+</li>
+<li><p>Kerberos Client</p>
+<p>集群中针对KDC进行身份验证的任何计算机。</p>
+</li>
+<li><p>KDC Admin Account</p>
+<p>Ambari</p>
+</li>
+<li></li>
+</ul>
+<p>在Kerberos协议中，主要有以下三个角色：</p>
+<ul>
+<li><strong>访问服务的客户端：</strong>kerberos客户端是代表需要访问资源的用户进行操作的应用程序，例如打开文件、查询数据库或打印文档。每个Kerberos客户端在访问资源之前都会请求身份验证。</li>
+<li><strong>提供服务的服务端：</strong>域内提供服务的服务端，服务端都有一个独唯一的SPN。</li>
+<li><strong>提供认证服务的KDC：</strong>Key Distribution Center，密钥分发中心是一种网络服务，它向活动目录域内的用户和计算机提供会话票据和临时会话密钥，其服务账户为krbtgt。KDC作为活动目录域服务AADS的一部分运行在每个域控制器上。</li>
+<li>这里说一下<strong>krbtgt</strong>账户，该用户是在创建活动目录时系统自动创建的一个账号，其作用是KDC密钥分发中心的服务账号，其密码是系统随机生成的，无法正常登陆主机。</li>
+</ul>
+<p>Kerberos是一种基于票据Ticket的认证方式。客户端想要访问服务端的某个服务，首先需要购买服务端认可的ST服务票据(Server Ticket)。也就是说，客户端在访问服务之前需要先买好票，等待服务验票之后才能访问。但是这张票并不能直接购买，需要一张<strong>TGT认购权证（Ticket Granting Ticket）</strong>。也就是说，客户端在买票之前必须先获得一张TGT认购权证。<strong>TGT认购权证</strong>和<strong>ST服务票据</strong>均是由KDC发放；因为KDC是运行在域控制器上，所以说TGT认购权证和ST服务票据均是由域控分发。</p>
+<p>Kerberos使用TCP&#x2F;UDP 88端口进行认证，使用TCP&#x2F;UDP 464端口进行密码重置。</p>
+<p>Kerberos中一些名词的简称及含义如表所示：</p>
+<div class="table-container"><table>
+<thead>
+<tr>
+<th>简称</th>
+<th>英文全程</th>
+<th>中文名称</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>DC</td>
+<td>Domain Controller</td>
+<td>域控制器</td>
+</tr>
+<tr>
+<td>krbtgt</td>
+<td></td>
+<td>KDC密钥分发中心服务账户</td>
+</tr>
+<tr>
+<td>KDC</td>
+<td>Key Distribution Center</td>
+<td>密钥分发中心，由域控担任</td>
+</tr>
+<tr>
+<td>AD</td>
+<td>Active Directory</td>
+<td>活动目录，里面包含域内用户数据库</td>
+</tr>
+<tr>
+<td>AS</td>
+<td>Authentication Service</td>
+<td>认证服务</td>
+</tr>
+<tr>
+<td>TGS</td>
+<td>Ticket Granting Service</td>
+<td>票据授予服务</td>
+</tr>
+<tr>
+<td>TGT</td>
+<td>Ticket Granting Ticket</td>
+<td>TGT认购权证，由KDC的AS认证服务发放</td>
+</tr>
+<tr>
+<td>ST</td>
+<td>Service Ticket</td>
+<td>ST服务票据，由KDC的TGS票据授予服务发放</td>
+</tr>
+</tbody></table></div>
+<p>​	Kerberos协议有两个基础认证模块：<strong>AS_REQ &amp; AS_REP</strong> 和 <strong>TGS_REQ &amp; TGS_REP</strong>，以及微软扩展的两个认证模块<strong>S4U</strong>和<strong>PAC</strong>。S4U是微软为了实现委派而扩展的模块，分为S4U2Self和S4U2Proxy。在Kerberos最初设计的流程里只有说明了如何证明客户端的真实身份，但是并没有说明客户端是否有权限访问该服务，因为在域中不同权限的用户能够访问的资源是不同的。因此微软为了解决权限这个问题，引入了PAC（Privilege Attribute Certificate，特权属性证书）的概念。</p>
+<figure class="highlight plaintext"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">sequenceDiagram</span><br><span class="line">participant c as 客户端</span><br><span class="line">participant s as 服务器</span><br><span class="line">participant sms as SMS服务器</span><br><span class="line">participant yys as 三大运营商</span><br><span class="line">participant jz as 基站</span><br><span class="line">Title: 基础网络身份验证，Cookie，JWT</span><br><span class="line">c-&gt;&gt;s: SMS Request</span><br><span class="line">note over s:生成验证码并保存到服务器</span><br><span class="line">s-&gt;&gt;sms: SMS Request</span><br><span class="line">sms--&gt;&gt;yys: SMS Request</span><br><span class="line">yys--&gt;&gt;jz: SMS Code</span><br><span class="line">jz--&gt;&gt;用户手机: SMS Code</span><br><span class="line">note over 用户手机:用户接收验证码</span><br><span class="line">sms-&gt;&gt;s:SMS Response</span><br><span class="line">s-&gt;&gt;c:SMS Response</span><br><span class="line">c-&gt;&gt;s:Login Requst</span><br><span class="line">s-&gt;&gt;c:Response</span><br></pre></td></tr></table></div></figure>
+
+<p>认证过程：</p>
+<ol>
+<li>AS_REQ：Client向KDC发起AS_REQ,请求凭据是<strong>Client Hash加密的时间戳</strong></li>
+<li>AS_RESP：KDC使用Client Hash进行解密，如果结果正确就返回用<strong>krbtgt hash加密的TGT</strong>票据，TGT里面包含PAC，PAC包含Client的sid、Client所在的组</li>
+<li>TGS_REQ：Client凭借TGT票据向KDC发起针对特定服务的TGS_REQ请求</li>
+<li>TGS_RESP：KDC使用krbtgt hash进行解密，如果结果正确，就返回用<strong>服务hash加密的ST票据</strong>（这一步不管用户有没有访问服务的权限，只要TGT正确就返回ST票据）</li>
+<li>AP_REQ：Client拿着ST票据去请求服务</li>
+<li>AP_RESP：服务使用自己的hash解密ST票据。如果解密正确，就拿着PAC去KDC那边问Client有没有访问权限，域控解密PAC。获取Client的sid，以及所在的组，再根据该服务的ACL，判断Client是否有访问服务的权限</li>
+</ol>
+<figure class="highlight plaintext"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">sequenceDiagram</span><br><span class="line">Title: Kerberos</span><br><span class="line">participant C as Client</span><br><span class="line">participant AS as Authenticaton Service</span><br><span class="line">participant TGS as Ticket Granting Service</span><br><span class="line">participant SS as Server Service</span><br><span class="line">C-&gt;&gt;AS: AS_REQ</span><br><span class="line">Note left of C:ClientHash加密的时间戳</span><br><span class="line">AS-&gt;&gt;C:AS_RESP</span><br><span class="line">alt 账密正确</span><br><span class="line">	AS--&gt;&gt;C:krbtgt Hash加密的TGT</span><br><span class="line">end</span><br><span class="line">C-&gt;&gt;TGS: TGS_REQ</span><br><span class="line">note left of C: Krbtgt hashi加密的TGT</span><br><span class="line">TGS-&gt;&gt;C: TGS_RESP</span><br><span class="line">alt 解密正确</span><br><span class="line">TGS--&gt;&gt;C:用服务Hash加密的ST</span><br><span class="line">end</span><br><span class="line">C-&gt;&gt;SS: AP_REQ</span><br><span class="line">note left of C:用服务Hash加密的ST</span><br><span class="line">SS-&gt;&gt;C: AP_RESP</span><br></pre></td></tr></table></div></figure>
+
+
+
+
+
+<p><img src="http://qiniu2.ixxzhi.cn/images/image-20231209020706062.png" alt="image-20231209020706062"></p>
+</div><footer class="post-footer"><div class="post-ending ending"><div class="ending__text">------ 本文结束，感谢您的阅读 ------</div></div><div class="post-copyright copyright"><div class="copyright-author"><span class="copyright-author__name">本文作者: </span><span class="copyright-author__value"><a href="https://www.ixxzhi.cn">冰糖小混子</a></span></div><div class="copyright-link"><span class="copyright-link__name">本文链接: </span><span class="copyright-link__value"><a href="https://www.ixxzhi.cn/2023/09/08/kerberos/">https://www.ixxzhi.cn/2023/09/08/kerberos/</a></span></div><div class="copyright-notice"><span class="copyright-notice__name">版权声明: </span><span class="copyright-notice__value">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" rel="external nofollow" target="_blank">BY-NC-SA</a> 许可协议。转载请注明出处！</span></div></div><div class="post-tags"><span class="post-tags-item"><span class="post-tags-item__icon"><i class="fas fa-tag"></i></span><a class="post-tags-item__link" href="https://www.ixxzhi.cn/tags/%E5%86%85%E7%BD%91/">内网</a></span></div><nav class="post-paginator paginator"><div class="paginator-prev"><a class="paginator-prev__link" href="/2023/09/12/DNS%E5%8D%8F%E8%AE%AE%E8%AF%A6%E8%A7%A3/"><span class="paginator-prev__icon"><i class="fas fa-angle-left"></i></span><span class="paginator-prev__text">DNS协议详解</span></a></div><div class="paginator-next"><a class="paginator-next__link" href="/2023/09/05/%E9%9D%A2%E8%AF%95/"><span class="paginator-prev__text">面试（持续更新）</span><span class="paginator-next__icon"><i class="fas fa-angle-right"></i></span></a></div></nav></footer></div></div><div class="comments" id="comments"><div id="utterances-container"></div></div></div><div class="sidebar-wrap" id="sidebar-wrap"><aside class="sidebar" id="sidebar"><div class="sidebar-nav"><span class="sidebar-nav-toc current">文章目录</span><span class="sidebar-nav-ov">站点概览</span></div><section class="sidebar-toc"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Kerberos%E5%8D%8F%E8%AE%AE"><span class="toc-number">1.</span> <span class="toc-text">
+          Kerberos协议</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Kerberos%E6%A6%82%E8%BF%B0"><span class="toc-number">1.1.</span> <span class="toc-text">
+          Kerberos概述</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Kerberos%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5"><span class="toc-number">1.2.</span> <span class="toc-text">
+          Kerberos基本概念</span></a></li></ol></li></ol></section><!-- ov = overview--><section class="sidebar-ov hide"><div class="sidebar-ov-author"><div class="sidebar-ov-author__avatar"><img class="sidebar-ov-author__avatar_img" src="/images/icons/avatar.jpg" alt="avatar"></div><p class="sidebar-ov-author__text">冰糖小混子</p></div><div class="sidebar-ov-state"><a class="sidebar-ov-state-item sidebar-ov-state-item--posts" href="/archives/"><div class="sidebar-ov-state-item__count">31</div><div class="sidebar-ov-state-item__name">归档</div></a><a class="sidebar-ov-state-item sidebar-ov-state-item--categories" href="/categories/"><div class="sidebar-ov-state-item__count">8</div><div class="sidebar-ov-state-item__name">分类</div></a><a class="sidebar-ov-state-item sidebar-ov-state-item--tags" href="/tags/"><div class="sidebar-ov-state-item__count">23</div><div class="sidebar-ov-state-item__name">标签</div></a></div><div class="sidebar-ov-cc"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" target="_blank" rel="noopener" data-popover="知识共享许可协议" data-popover-pos="up"><img src="/images/cc-by-nc-sa.svg"></a></div></section><div class="sidebar-reading"><div class="sidebar-reading-info"><span class="sidebar-reading-info__text">你已阅读了 </span><span class="sidebar-reading-info__num">0</span><span class="sidebar-reading-info__perc">%</span></div><div class="sidebar-reading-line"></div></div></aside></div><div class="clearfix"></div></div></main><footer class="footer" id="footer"><div class="footer-inner"><div><span>Copyright © 2024</span><span class="footer__icon"><i class="fas fa-heart"></i></span><span>冰糖小混子</span><span class="footer__devider">|</span><span><a href="https://beian.miit.gov.cn/" rel="noopener" target="_blank">蒙ICP备20002846号</a></span></div><div><span>由 <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a> 强力驱动</span><span> v6.3.0</span><span class="footer__devider">|</span><span>主题 - <a href="https://github.com/liuyib/hexo-theme-stun/" title="Stun" target="_blank" rel="noopener">Stun</a></span><span> v2.8.0</span></div></div></footer><div class="loading-bar" id="loading-bar"><div class="loading-bar__progress"></div></div><div class="back2top" id="back2top"><span class="back2top__icon"><i class="fas fa-rocket"></i></span></div></div><div class="search-mask"></div><div class="search-popup"><span class="search-close"></span><div class="search-input"></div><div class="search-results"><div id="algolia-hits"></div></div><div id="algolia-pagination"></div><div id="algolia-stats"></div></div><script src="https://cdn.jsdelivr.net/npm/jquery@v3.4.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.ui.min.js"></script><script src="https://cdn.jsdelivr.net/npm/ribbon.js@latest/dist/ribbon.min.js" size="120" alpha="0.6" zIndex="-1"></script><script src="https://cdn.jsdelivr.net/npm/instantsearch.js@2.1.1/dist/instantsearch.min.js" defer></script><script>window.addEventListener('DOMContentLoaded', function () {
+  $('.header-nav-search').on('click', function (e) {
+    e.stopPropagation();
+
+    $('body').css('overflow', 'hidden');
+    $('.search-popup')
+      .velocity('stop')
+      .velocity('transition.expandIn', {
+        duration: 300,
+        complete: function () {
+          $('.search-popup input').focus();
+        }
+      });
+    $('.search-mask')
+      .velocity('stop')
+      .velocity('transition.fadeIn', {
+        duration: 300
+      });
+  });
+
+  function closeSearch () {
+    $('body').css({ overflow: 'auto' });
+    $('.search-popup').css({ display: 'none' });
+    $('.search-mask').css({ display: 'none' });
+  }
+
+  $('.search-mask, .search-close').on('click', function () {
+    closeSearch();
+  });
+
+  $(document).on('keydown', function (e) {
+    // Escape <=> 27
+    if (e.keyCode === Stun.utils.codeToKeyCode('Escape')) {
+      closeSearch();
+    }
+  });
+
+  var algolia = CONFIG.algolia;
+  if (!algolia && !(algolia.appId && algolia.apiKey && algolia.indexName)) {
+    return console.error('Algolia setting is invalid.');
+  }
+
+  var search = instantsearch({
+    appId: algolia.appId,
+    apiKey: algolia.apiKey,
+    indexName: algolia.indexName,
+    searchParameters: {
+      hitsPerPage: algolia.hits.per_page || 10
+    },
+    searchFunction: function (helper) {
+      var searchInput = $('.search-input').find('input');
+
+      if (searchInput.val()) {
+        helper.search();
+      }
+    }
+  });
+
+  search.addWidget(
+    instantsearch.widgets.searchBox({
+      container: '.search-input',
+      reset: false,
+      magnifier: false,
+      placeholder: algolia.languages.inputPlaceholder
+    })
+  );
+
+  // The hits of search results.
+  search.addWidget(
+    instantsearch.widgets.hits({
+      container: '#algolia-hits',
+      templates: {
+        item: function (data) {
+          var link = data.permalink ? data.permalink : CONFIG.root + data.path;
+          return (
+            '<a href="' + link + '" class="algolia-hit-item-link">' +
+              data._highlightResult.title.value +
+            '</a>'
+          );
+        },
+        empty: function (data) {
+          return (
+            '<div id="algolia-hits-empty">' +
+              algolia.languages.hitsEmpty.replace(/\$\{query}/, data.query) +
+            '</div>'
+          );
+        }
+      },
+      cssClasses: {
+        item: 'algolia-hit-item'
+      }
+    })
+  );
+
+  // The stats of search results.
+  if ($('#algolia-stats')[0]) {
+    search.addWidget(
+      instantsearch.widgets.stats({
+        container: '#algolia-stats',
+        templates: {
+          body: function (data) {
+            var stats = algolia.languages.hitsStats
+              .replace(/\$\{hits}/, data.nbHits)
+              .replace(/\$\{time}/, data.processingTimeMS);
+            return (
+              stats +
+              '<span class="algolia-logo pull-right">' +
+                '<img src="' + CONFIG.root +
+                `${CONFIG.sourcePath.images}/algolia.svg" alt="Algolia" />` +
+              '</span>'
+            );
+          }
+        }
+      })
+    );
+  }
+
+  // The pagination of the results.
+  search.addWidget(
+    instantsearch.widgets.pagination({
+      container: '#algolia-pagination',
+      scrollTo: false,
+      showFirstLast: false,
+      labels: {
+        first: '<i class="fa fa-angle-double-left"></i>',
+        last: '<i class="fa fa-angle-double-right"></i>',
+        previous: '<i class="fa fa-angle-left"></i>',
+        next: '<i class="fa fa-angle-right"></i>'
+      },
+      cssClasses: {
+        root: 'pagination',
+        item: 'pagination-item',
+        link: 'page-number',
+        active: 'current',
+        disabled: 'disabled-item'
+      }
+    })
+  );
+
+  search.start();
+});</script><script>function loadUtterances() {
+  var d = document, s = d.createElement('script');
+  var container = d.getElementById('utterances-container');
+
+  if (!container) {
+    return;
+  }
+  s.src = 'https://utteranc.es/client.js';
+  s.setAttribute('repo', 'ixxzhi/ixxzhi.github.io');
+  s.setAttribute('issue-term', 'title');
+  s.setAttribute('label', 'utterances');
+  s.setAttribute('theme', 'github-light');
+  s.setAttribute('crossorigin', 'anonymous');
+  s.setAttribute('async', '');
+  if (false) {
+    s.setAttribute('data-pjax-rm', '');
+  }
+  container.append(s);
+}
+
+if (false) {
+  loadUtterances();
+} else {
+  window.addEventListener('DOMContentLoaded', loadUtterances, false);
+}</script><script src="/js/utils.js?v=2.8.0"></script><script src="/js/stun-boot.js?v=2.8.0"></script><script src="/js/scroll.js?v=2.8.0"></script><script src="/js/header.js?v=2.8.0"></script><script src="/js/sidebar.js?v=2.8.0"></script></body></html>

