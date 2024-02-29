@@ -1,0 +1,426 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="format-detection" content="telephone=no"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black"><link rel="icon" href="/images/icons/favicon/favicon-16x16.png?v=2.8.0" type="image/png" sizes="16x16"><link rel="icon" href="/images/icons/favicon/favicon-32x32.png?v=2.8.0" type="image/png" sizes="32x32"><link rel="apple-touch-icon" href="/images/icons/favicon/apple-touch-icon.png?v=2.8.0" sizes="180x180"><meta name="description" content="说到cli接管之前，首先需要看明白阿里云官方文档，搞清楚具体流程和官方工具和api的调用方式 参考文档 OpenAPI-访问控制接口文档：https:&#x2F;&#x2F;next.api.aliyun.com&#x2F;document&#x2F;Ram&#x2F;2015-05-01&#x2F;overview 阿里云CLI帮助文档：https:&#x2F;&#x2F;help.aliyun.com&#x2F;product&#x2F;29991.html">
+<meta property="og:type" content="article">
+<meta property="og:title" content="阿里云接管控制台">
+<meta property="og:url" content="https://www.ixxzhi.cn/2023/11/17/%E9%98%BF%E9%87%8C%E4%BA%91AK-SK%E5%88%A9%E7%94%A8/index.html">
+<meta property="og:site_name" content="冰糖の部落阁">
+<meta property="og:description" content="说到cli接管之前，首先需要看明白阿里云官方文档，搞清楚具体流程和官方工具和api的调用方式 参考文档 OpenAPI-访问控制接口文档：https:&#x2F;&#x2F;next.api.aliyun.com&#x2F;document&#x2F;Ram&#x2F;2015-05-01&#x2F;overview 阿里云CLI帮助文档：https:&#x2F;&#x2F;help.aliyun.com&#x2F;product&#x2F;29991.html">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://qiniu2.ixxzhi.cn/2024/image-20231117141020550-1700211175212-1.png">
+<meta property="og:image" content="http://qiniu2.ixxzhi.cn/2024/image-20231117142041941.png">
+<meta property="og:image" content="http://qiniu2.ixxzhi.cn/2024/image-20231117142405114.png">
+<meta property="og:image" content="http://qiniu2.ixxzhi.cn/2024/image-20231117142708757.png">
+<meta property="og:image" content="http://qiniu2.ixxzhi.cn/2024/image-20231117143508872.png">
+<meta property="og:image" content="http://qiniu2.ixxzhi.cn/2024/image-20231117143614092.png">
+<meta property="og:image" content="http://qiniu2.ixxzhi.cn/2024/image-20231117143921087.png">
+<meta property="og:image" content="http://qiniu2.ixxzhi.cn/2024/image-20231117144035250.png">
+<meta property="og:image" content="http://qiniu2.ixxzhi.cn/2024/image-20231117144626473.png">
+<meta property="og:image" content="http://qiniu2.ixxzhi.cn/2024/image-20231117145011178.png">
+<meta property="og:image" content="http://qiniu2.ixxzhi.cn/2024/image-20231117145433456.png">
+<meta property="og:image" content="http://qiniu2.ixxzhi.cn/2024/image-20231117145711424.png">
+<meta property="og:image" content="http://qiniu2.ixxzhi.cn/2024/image-20231117150123169.png">
+<meta property="og:image" content="http://qiniu2.ixxzhi.cn/2024/image-20231117150607709.png">
+<meta property="og:image" content="http://qiniu2.ixxzhi.cn/2024/image-20231117160631045.png">
+<meta property="og:image" content="http://qiniu2.ixxzhi.cn/2024/image-20231117161233286.png">
+<meta property="og:image" content="http://qiniu2.ixxzhi.cn/2024/image-20231117161631158.png">
+<meta property="og:image" content="http://qiniu2.ixxzhi.cn/2024/image-20231117161856679.png">
+<meta property="og:image" content="http://qiniu2.ixxzhi.cn/2024/image-20231117162256608.png">
+<meta property="og:image" content="http://qiniu2.ixxzhi.cn/2024/image-20231117162028916.png">
+<meta property="og:image" content="http://qiniu2.ixxzhi.cn/2024/image-20231117162521721.png">
+<meta property="og:image" content="http://qiniu2.ixxzhi.cn/2024/image-20231117162632706.png">
+<meta property="og:image" content="http://qiniu2.ixxzhi.cn/2024/image-20231117163937077.png">
+<meta property="og:image" content="http://qiniu2.ixxzhi.cn/2024/image-20231117164001528.png">
+<meta property="article:published_time" content="2023-11-17T03:14:53.000Z">
+<meta property="article:modified_time" content="2024-02-29T17:35:44.850Z">
+<meta property="article:author" content="冰糖小混子">
+<meta property="article:tag" content="阿里云">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://qiniu2.ixxzhi.cn/2024/image-20231117141020550-1700211175212-1.png"><title>阿里云接管控制台 | 冰糖の部落阁</title><link ref="canonical" href="https://www.ixxzhi.cn/2023/11/17/%E9%98%BF%E9%87%8C%E4%BA%91AK-SK%E5%88%A9%E7%94%A8/"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.12.1/css/all.min.css" type="text/css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/instantsearch.js@2.1.1/dist/instantsearch.min.css" type="text/css"><link rel="stylesheet" href="/css/index.css?v=2.8.0"><link rel="stylesheet" href="css/custom.css"><script>var Stun = window.Stun || {};
+var CONFIG = {
+  root: '/',
+  algolia: {"appId":"AKOK4JB6FU","apiKey":"afe2853f80920ee4cdb1d45209c0ecf2","indexName":"blog_ixxzhi","hits":{"per_page":10},"languages":{"inputPlaceholder":"搜索文章","hitsEmpty":"没有找到任何搜索结果：${query}","hitsStats":"找到 ${hits} 条搜索结果，耗时 ${time} 毫秒"}},
+  assistSearch: undefined,
+  fontIcon: {"prompt":{"success":"fas fa-check-circle","info":"fas fa-arrow-circle-right","warning":"fas fa-exclamation-circle","error":"fas fa-times-circle"},"copyBtn":"fas fa-copy"},
+  sidebar: {"offsetTop":"20px","tocMaxDepth":6},
+  header: {"enable":true,"showOnPost":true,"scrollDownIcon":false},
+  postWidget: {"endText":true},
+  nightMode: {"enable":true},
+  back2top: {"enable":true},
+  codeblock: {"style":"default","highlight":"light","wordWrap":false},
+  reward: false,
+  fancybox: false,
+  zoomImage: {"gapAside":"20px"},
+  galleryWaterfall: undefined,
+  lazyload: false,
+  pjax: undefined,
+  externalLink: {"icon":{"enable":true,"name":"fas fa-external-link-alt"}},
+  shortcuts: undefined,
+  prompt: {"copyButton":"复制","copySuccess":"复制成功","copyError":"复制失败"},
+  sourcePath: {"js":"js","css":"css","images":"images"},
+};
+
+window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></head><body><div class="container" id="container"><header class="header" id="header"><div class="header-inner"><nav class="header-nav header-nav--fixed"><div class="header-nav-inner"><div class="header-nav-menubtn"><i class="fas fa-bars"></i></div><div class="header-nav-menu"><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/"><span class="header-nav-menu-item__icon"><i class="fas fa-home"></i></span><span class="header-nav-menu-item__text">首页</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/archives/"><span class="header-nav-menu-item__icon"><i class="fas fa-folder-open"></i></span><span class="header-nav-menu-item__text">归档</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/categories/"><span class="header-nav-menu-item__icon"><i class="fas fa-layer-group"></i></span><span class="header-nav-menu-item__text">分类</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/tags/"><span class="header-nav-menu-item__icon"><i class="fas fa-tags"></i></span><span class="header-nav-menu-item__text">标签</span></a></div></div><div class="header-nav-search"><span class="header-nav-search__icon"><i class="fas fa-search"></i></span><span class="header-nav-search__text">搜索</span></div><div class="header-nav-mode"><div class="mode"><div class="mode-track"><span class="mode-track-moon"></span><span class="mode-track-sun"></span></div><div class="mode-thumb"></div></div></div></div></nav><div class="header-banner"><div class="header-banner-info"><div class="header-banner-info__title">冰糖の部落阁</div><div class="header-banner-info__subtitle">冰糖的笔记和随笔</div></div></div></div></header><main class="main" id="main"><div class="main-inner"><div class="content-wrap" id="content-wrap"><div class="content" id="content"><!-- Just used to judge whether it is an article page--><div id="is-post"></div><div class="post"><header class="post-header"><h1 class="post-title">阿里云接管控制台</h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2023-11-17</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2024-03-01</span></span></div></header><div class="post-body"><p>说到cli接管之前，首先需要看明白阿里云官方文档，搞清楚具体流程和官方工具和api的调用方式</p>
+<p><strong>参考文档</strong></p>
+<p>OpenAPI-访问控制接口文档：<span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://next.api.aliyun.com/document/Ram/2015-05-01/overview" >https://next.api.aliyun.com/document/Ram/2015-05-01/overview</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+<p>阿里云CLI帮助文档：<span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://help.aliyun.com/product/29991.html" >https://help.aliyun.com/product/29991.html</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+
+        <h1 id="在线调试"   >
+          <a href="#在线调试" class="heading-link"><i class="fas fa-link"></i></a><a href="#在线调试" class="headerlink" title="在线调试"></a>在线调试</h1>
+      <p>首先看文档先调试一下</p>
+<p><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://next.api.aliyun.com/api/Ram/2015-05-01/CreateUser" >CreateUser_访问控制_API调试-阿里云OpenAPI开发者门户</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+<p>对于RAM用户的概念不是很了解的可以参考<span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://help.aliyun.com/zh/ram/user-guide/overview-of-ram-users" >什么是RAM用户_访问控制-阿里云帮助中心</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+<p>用官方一点的话来说， RAM用户就是一种轻量级的身份凭证，可以用于授权和管理访问阿里云资源的权限， 每个RAM用户都有自己的登录凭证（AccessKey ID 和 Secret AccessKey），可以用ak、sk去调用它的api进行身份校验</p>
+
+        <h2 id="登录控制台"   >
+          <a href="#登录控制台" class="heading-link"><i class="fas fa-link"></i></a><a href="#登录控制台" class="headerlink" title="登录控制台"></a>登录控制台</h2>
+      <p>这里使用我自己的账号作为演示，首先需要登录我的控制台账号</p>
+<p><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://next.api.aliyun.com/api/Ram/2015-05-01/CreateUser" >https://next.api.aliyun.com/api/Ram/2015-05-01/CreateUser</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+<p>点击右上角登录控制台使用主账号登录</p>
+
+        <h2 id="创建RAM用户"   >
+          <a href="#创建RAM用户" class="heading-link"><i class="fas fa-link"></i></a><a href="#创建RAM用户" class="headerlink" title="创建RAM用户"></a>创建RAM用户</h2>
+      <blockquote>
+<p><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://next.api.aliyun.com/api/Ram/2015-05-01/CreateUser" >https://next.api.aliyun.com/api/Ram/2015-05-01/CreateUser</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+</blockquote>
+<p>这里的在线调试可以清晰的看到调用结果和返回的数据</p>
+<p>星号是必填项，其余参数也标注了是什么功能，这里是创建了一个<code>aliyun</code>的用户</p>
+<p><img src="http://qiniu2.ixxzhi.cn/2024/image-20231117141020550-1700211175212-1.png" alt="image-20231117141020550"></p>
+
+        <h2 id="添加登录web控制台的权限"   >
+          <a href="#添加登录web控制台的权限" class="heading-link"><i class="fas fa-link"></i></a><a href="#添加登录web控制台的权限" class="headerlink" title="添加登录web控制台的权限"></a>添加登录web控制台的权限</h2>
+      <blockquote>
+<p><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://next.api.aliyun.com/api/Ram/2015-05-01/CreateLoginProfile" >https://next.api.aliyun.com/api/Ram/2015-05-01/CreateLoginProfile</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+</blockquote>
+<p>因为登录控制台肯定需要密码，所以这里指定一个密码</p>
+<p><img src="http://qiniu2.ixxzhi.cn/2024/image-20231117142041941.png" alt="image-20231117142041941"></p>
+
+        <h2 id="查看云账号别名"   >
+          <a href="#查看云账号别名" class="heading-link"><i class="fas fa-link"></i></a><a href="#查看云账号别名" class="headerlink" title="查看云账号别名"></a>查看云账号别名</h2>
+      <blockquote>
+<p><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://next.api.aliyun.com/api/Ram/2015-05-01/GetAccountAlias" >https://next.api.aliyun.com/api/Ram/2015-05-01/GetAccountAlias</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+</blockquote>
+<p>我们后续使用RAM用户登录控制台的时候需要云账号的别名，所以先查询之后做个记录</p>
+<p><img src="http://qiniu2.ixxzhi.cn/2024/image-20231117142405114.png" alt="image-20231117142405114"></p>
+
+        <h2 id="查询所有RAM用户"   >
+          <a href="#查询所有RAM用户" class="heading-link"><i class="fas fa-link"></i></a><a href="#查询所有RAM用户" class="headerlink" title="查询所有RAM用户"></a>查询所有RAM用户</h2>
+      <blockquote>
+<p><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://next.api.aliyun.com/api/Ram/2015-05-01/ListUsers" >https://next.api.aliyun.com/api/Ram/2015-05-01/ListUsers</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+</blockquote>
+<p>这一步主要是确保账号添加成功</p>
+<p><img src="http://qiniu2.ixxzhi.cn/2024/image-20231117142708757.png" alt="image-20231117142708757"></p>
+
+        <h2 id="尝试登录控制台"   >
+          <a href="#尝试登录控制台" class="heading-link"><i class="fas fa-link"></i></a><a href="#尝试登录控制台" class="headerlink" title="尝试登录控制台"></a>尝试登录控制台</h2>
+      <ol>
+<li><p>打开<span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://account.aliyun.com/login/login.htm" >阿里云登陆页面</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span>，点击右下角RAM用户</p>
+<p><img src="http://qiniu2.ixxzhi.cn/2024/image-20231117143508872.png" alt="image-20231117143508872"></p>
+<p><img src="http://qiniu2.ixxzhi.cn/2024/image-20231117143614092.png" alt="image-20231117143614092"></p>
+</li>
+<li><p>这里填写<code>用户名</code>@<code>别名</code> 登录，密码为添加web控制台权限时设置的密码</p>
+<p><img src="http://qiniu2.ixxzhi.cn/2024/image-20231117143921087.png" alt="image-20231117143921087"></p>
+</li>
+<li><p>成功登录<code>aliyun</code>用户</p>
+<p><img src="http://qiniu2.ixxzhi.cn/2024/image-20231117144035250.png" alt="image-20231117144035250"></p>
+</li>
+</ol>
+
+        <h2 id="添加权限"   >
+          <a href="#添加权限" class="heading-link"><i class="fas fa-link"></i></a><a href="#添加权限" class="headerlink" title="添加权限"></a>添加权限</h2>
+      <p>虽然我们已经成功登陆了<code>aliyun</code>用户，<strong>但是！！！</strong>我们当时仅仅是创建了这个用户，并给他加了一个web控制台功能，并没有给他<strong>添加其他权限</strong></p>
+<p>所以我的账号这里，其实是有云上资源的，但是由于没有给<code>aliyun</code>用户赋权，所以他看不到任何东西，如下图：</p>
+<p><img src="http://qiniu2.ixxzhi.cn/2024/image-20231117144626473.png" alt="image-20231117144626473"></p>
+<p>所以我们要给这个<code>aliyun</code>用户进行赋权</p>
+<p>但是在这之前我们需要先查看一下权限策略</p>
+<blockquote>
+<p><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://next.api.aliyun.com/api/Ram/2015-05-01/ListPolicies" >https://next.api.aliyun.com/api/Ram/2015-05-01/ListPolicies</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+</blockquote>
+<p><img src="http://qiniu2.ixxzhi.cn/2024/image-20231117145011178.png" alt="image-20231117145011178"></p>
+<p>他的PolicyType是<code>System</code> ,PolicyName是<code>AdministratorAccess</code> ,这个是阿里云默认的，也就是管理所有阿里云资源的权限。</p>
+<p>我们现在给<code>aliyun</code>用户加上该权限</p>
+<blockquote>
+<p><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://next.api.aliyun.com/api/Ram/2015-05-01/AttachPolicyToUser" >https://next.api.aliyun.com/api/Ram/2015-05-01/AttachPolicyToUser</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+</blockquote>
+<p><img src="http://qiniu2.ixxzhi.cn/2024/image-20231117145433456.png" alt="image-20231117145433456"></p>
+<p>返回Requestid就是赋权成功了</p>
+
+        <h2 id="查看授权列表"   >
+          <a href="#查看授权列表" class="heading-link"><i class="fas fa-link"></i></a><a href="#查看授权列表" class="headerlink" title="查看授权列表"></a>查看授权列表</h2>
+      <blockquote>
+<p><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://next.api.aliyun.com/api/Ram/2015-05-01/ListPoliciesForUser" >https://next.api.aliyun.com/api/Ram/2015-05-01/ListPoliciesForUser</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+</blockquote>
+<p>我们再来验证一下是否赋权成功</p>
+<p><img src="http://qiniu2.ixxzhi.cn/2024/image-20231117145711424.png" alt="image-20231117145711424"></p>
+<p>这里可以看到返回了AdministratorAccess</p>
+
+        <h2 id="重新登录"   >
+          <a href="#重新登录" class="heading-link"><i class="fas fa-link"></i></a><a href="#重新登录" class="headerlink" title="重新登录"></a>重新登录</h2>
+      <blockquote>
+<p><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://home.console.aliyun.com/home/dashboard/ProductAndService" >https://home.console.aliyun.com/home/dashboard/ProductAndService</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+</blockquote>
+<p>重新登陆<code>aliyun</code>用户或者刷新一下登录的页面便可以看到所有的资源内容了</p>
+<p><img src="http://qiniu2.ixxzhi.cn/2024/image-20231117150123169.png" alt="image-20231117150123169"></p>
+
+        <h1 id="命令行接管控制台"   >
+          <a href="#命令行接管控制台" class="heading-link"><i class="fas fa-link"></i></a><a href="#命令行接管控制台" class="headerlink" title="命令行接管控制台"></a>命令行接管控制台</h1>
+      <p>但是渗透测试的过程中，只有一个ak和sk，web调试页面登录不进去该怎么办呢？</p>
+<p>不知道大家注意到没有，在调试的页面有一个<strong>CLI示例</strong>的按钮，我们点进去会发现一个控制台的命令</p>
+<p><img src="http://qiniu2.ixxzhi.cn/2024/image-20231117150607709.png" alt="image-20231117150607709"></p>
+<p>但是我们要怎么用呢？点击下面的**<span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://help.aliyun.com/product/29991.html" >阿里云CLI使用指南</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span>**可以看到安装及使用相关的文档，这里不再赘述了</p>
+
+        <h2 id="验证阿里云CLI是否安装成功"   >
+          <a href="#验证阿里云CLI是否安装成功" class="heading-link"><i class="fas fa-link"></i></a><a href="#验证阿里云CLI是否安装成功" class="headerlink" title="验证阿里云CLI是否安装成功"></a>验证阿里云CLI是否安装成功</h2>
+      <figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">aliyun version</span><br></pre></td></tr></table></div></figure>
+
+<p><img src="http://qiniu2.ixxzhi.cn/2024/image-20231117160631045.png" alt="image-20231117160631045"></p>
+<p>运行上述命令看到版本号即代表安装成功，下面我们通过命令行来进行上述操作</p>
+
+        <h2 id="登录控制台-1"   >
+          <a href="#登录控制台-1" class="heading-link"><i class="fas fa-link"></i></a><a href="#登录控制台-1" class="headerlink" title="登录控制台"></a>登录控制台</h2>
+      <figure class="highlight sh"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">aliyun configure --profile user1 </span><br><span class="line"><span class="comment"># user1为配置文件名称可以随意填写</span></span><br></pre></td></tr></table></div></figure>
+
+<p>看到下图中的内容就表示登录成功啦^_^</p>
+<p><img src="http://qiniu2.ixxzhi.cn/2024/image-20231117161233286.png" alt="image-20231117161233286"></p>
+
+        <h2 id="创建RAM用户-1"   >
+          <a href="#创建RAM用户-1" class="heading-link"><i class="fas fa-link"></i></a><a href="#创建RAM用户-1" class="headerlink" title="创建RAM用户"></a>创建RAM用户</h2>
+      <figure class="highlight sh"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">aliyun ram CreateUser --UserName hack1</span><br></pre></td></tr></table></div></figure>
+
+
+
+<p><img src="http://qiniu2.ixxzhi.cn/2024/image-20231117161631158.png" alt="image-20231117161631158"></p>
+
+        <h2 id="添加登录web控制台的权限-1"   >
+          <a href="#添加登录web控制台的权限-1" class="heading-link"><i class="fas fa-link"></i></a><a href="#添加登录web控制台的权限-1" class="headerlink" title="添加登录web控制台的权限"></a>添加登录web控制台的权限</h2>
+      <figure class="highlight sh"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">aliyun ram CreateLoginProfile --UserName hack1 --Password www.ixxzhi.cn</span><br></pre></td></tr></table></div></figure>
+
+<p><img src="http://qiniu2.ixxzhi.cn/2024/image-20231117161856679.png" alt="image-20231117161856679"></p>
+
+        <h2 id="查看用户创建成功没"   >
+          <a href="#查看用户创建成功没" class="heading-link"><i class="fas fa-link"></i></a><a href="#查看用户创建成功没" class="headerlink" title="查看用户创建成功没"></a>查看用户创建成功没</h2>
+      <figure class="highlight sh"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">aliyun ram ListUsers</span><br></pre></td></tr></table></div></figure>
+
+<p><img src="http://qiniu2.ixxzhi.cn/2024/image-20231117162256608.png" alt="image-20231117162256608"></p>
+
+        <h2 id="查看云账号别名-1"   >
+          <a href="#查看云账号别名-1" class="heading-link"><i class="fas fa-link"></i></a><a href="#查看云账号别名-1" class="headerlink" title="查看云账号别名"></a>查看云账号别名</h2>
+      <figure class="highlight sh"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">aliyun ram GetAccountAlias</span><br></pre></td></tr></table></div></figure>
+
+<p><img src="http://qiniu2.ixxzhi.cn/2024/image-20231117162028916.png" alt="image-20231117162028916"></p>
+
+        <h2 id="查看PolicyName和PolicyType"   >
+          <a href="#查看PolicyName和PolicyType" class="heading-link"><i class="fas fa-link"></i></a><a href="#查看PolicyName和PolicyType" class="headerlink" title="查看PolicyName和PolicyType"></a>查看PolicyName和PolicyType</h2>
+      <p><img src="http://qiniu2.ixxzhi.cn/2024/image-20231117162521721.png" alt="image-20231117162521721"></p>
+
+        <h2 id="添加权限-1"   >
+          <a href="#添加权限-1" class="heading-link"><i class="fas fa-link"></i></a><a href="#添加权限-1" class="headerlink" title="添加权限"></a>添加权限</h2>
+      <figure class="highlight sh"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">aliyun ram AttachPolicyToUser --PolicyType System --PolicyName AdministratorAccess --UserName hack1</span><br></pre></td></tr></table></div></figure>
+
+<p><img src="http://qiniu2.ixxzhi.cn/2024/image-20231117162632706.png" alt="image-20231117162632706"></p>
+
+        <h2 id="登录web控制台"   >
+          <a href="#登录web控制台" class="heading-link"><i class="fas fa-link"></i></a><a href="#登录web控制台" class="headerlink" title="登录web控制台"></a>登录web控制台</h2>
+      <p>这一步同上面</p>
+
+        <h2 id="Q1-如何删除用户"   >
+          <a href="#Q1-如何删除用户" class="heading-link"><i class="fas fa-link"></i></a><a href="#Q1-如何删除用户" class="headerlink" title="Q1:如何删除用户"></a>Q1:如何删除用户</h2>
+      <p>因为我们是管理员权限，所以需要先撤销权限</p>
+<figure class="highlight sh"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">aliyun ram DetachPolicyFromUser --PolicyType System --PolicyName AdministratorAccess --UserName hack1</span><br></pre></td></tr></table></div></figure>
+
+<p><img src="http://qiniu2.ixxzhi.cn/2024/image-20231117163937077.png" alt="image-20231117163937077"></p>
+<p>然后再删除用户</p>
+<figure class="highlight sh"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">aliyun ram DeleteUser --UserName hack1</span><br></pre></td></tr></table></div></figure>
+
+<p><img src="http://qiniu2.ixxzhi.cn/2024/image-20231117164001528.png" alt="image-20231117164001528"></p>
+
+        <h2 id="Q2-这么多命令记不住怎么办？"   >
+          <a href="#Q2-这么多命令记不住怎么办？" class="heading-link"><i class="fas fa-link"></i></a><a href="#Q2-这么多命令记不住怎么办？" class="headerlink" title="Q2:这么多命令记不住怎么办？"></a>Q2:这么多命令记不住怎么办？</h2>
+      <p>执行下列命令试试？</p>
+<figure class="highlight sh"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">aliyun --<span class="built_in">help</span></span><br><span class="line">aliyun ram</span><br><span class="line">aliyun ram | grep List</span><br><span class="line">aliyun ram DeleteUser --<span class="built_in">help</span></span><br></pre></td></tr></table></div></figure>
+
+</div><footer class="post-footer"><div class="post-ending ending"><div class="ending__text">------ 本文结束，感谢您的阅读 ------</div></div><div class="post-copyright copyright"><div class="copyright-author"><span class="copyright-author__name">本文作者: </span><span class="copyright-author__value"><a href="https://www.ixxzhi.cn">冰糖小混子</a></span></div><div class="copyright-link"><span class="copyright-link__name">本文链接: </span><span class="copyright-link__value"><a href="https://www.ixxzhi.cn/2023/11/17/%E9%98%BF%E9%87%8C%E4%BA%91AK-SK%E5%88%A9%E7%94%A8/">https://www.ixxzhi.cn/2023/11/17/%E9%98%BF%E9%87%8C%E4%BA%91AK-SK%E5%88%A9%E7%94%A8/</a></span></div><div class="copyright-notice"><span class="copyright-notice__name">版权声明: </span><span class="copyright-notice__value">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" rel="external nofollow" target="_blank">BY-NC-SA</a> 许可协议。转载请注明出处！</span></div></div><div class="post-tags"><span class="post-tags-item"><span class="post-tags-item__icon"><i class="fas fa-tag"></i></span><a class="post-tags-item__link" href="https://www.ixxzhi.cn/tags/%E9%98%BF%E9%87%8C%E4%BA%91/">阿里云</a></span></div><nav class="post-paginator paginator"><div class="paginator-prev"><a class="paginator-prev__link" href="/2023/12/20/%E6%B1%87%E7%BC%96/"><span class="paginator-prev__icon"><i class="fas fa-angle-left"></i></span><span class="paginator-prev__text">8086汇编</span></a></div><div class="paginator-next"><a class="paginator-next__link" href="/2023/09/13/TCP%E5%8D%8F%E8%AE%AE%E8%AF%A6%E8%A7%A3/"><span class="paginator-prev__text">TCP协议详解</span><span class="paginator-next__icon"><i class="fas fa-angle-right"></i></span></a></div></nav></footer></div></div><div class="comments" id="comments"><div id="utterances-container"></div></div></div><div class="sidebar-wrap" id="sidebar-wrap"><aside class="sidebar" id="sidebar"><div class="sidebar-nav"><span class="sidebar-nav-toc current">文章目录</span><span class="sidebar-nav-ov">站点概览</span></div><section class="sidebar-toc"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%9C%A8%E7%BA%BF%E8%B0%83%E8%AF%95"><span class="toc-number">1.</span> <span class="toc-text">
+          在线调试</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%99%BB%E5%BD%95%E6%8E%A7%E5%88%B6%E5%8F%B0"><span class="toc-number">1.1.</span> <span class="toc-text">
+          登录控制台</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%9B%E5%BB%BARAM%E7%94%A8%E6%88%B7"><span class="toc-number">1.2.</span> <span class="toc-text">
+          创建RAM用户</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B7%BB%E5%8A%A0%E7%99%BB%E5%BD%95web%E6%8E%A7%E5%88%B6%E5%8F%B0%E7%9A%84%E6%9D%83%E9%99%90"><span class="toc-number">1.3.</span> <span class="toc-text">
+          添加登录web控制台的权限</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9F%A5%E7%9C%8B%E4%BA%91%E8%B4%A6%E5%8F%B7%E5%88%AB%E5%90%8D"><span class="toc-number">1.4.</span> <span class="toc-text">
+          查看云账号别名</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9F%A5%E8%AF%A2%E6%89%80%E6%9C%89RAM%E7%94%A8%E6%88%B7"><span class="toc-number">1.5.</span> <span class="toc-text">
+          查询所有RAM用户</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B0%9D%E8%AF%95%E7%99%BB%E5%BD%95%E6%8E%A7%E5%88%B6%E5%8F%B0"><span class="toc-number">1.6.</span> <span class="toc-text">
+          尝试登录控制台</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B7%BB%E5%8A%A0%E6%9D%83%E9%99%90"><span class="toc-number">1.7.</span> <span class="toc-text">
+          添加权限</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9F%A5%E7%9C%8B%E6%8E%88%E6%9D%83%E5%88%97%E8%A1%A8"><span class="toc-number">1.8.</span> <span class="toc-text">
+          查看授权列表</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%87%8D%E6%96%B0%E7%99%BB%E5%BD%95"><span class="toc-number">1.9.</span> <span class="toc-text">
+          重新登录</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%91%BD%E4%BB%A4%E8%A1%8C%E6%8E%A5%E7%AE%A1%E6%8E%A7%E5%88%B6%E5%8F%B0"><span class="toc-number">2.</span> <span class="toc-text">
+          命令行接管控制台</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%AA%8C%E8%AF%81%E9%98%BF%E9%87%8C%E4%BA%91CLI%E6%98%AF%E5%90%A6%E5%AE%89%E8%A3%85%E6%88%90%E5%8A%9F"><span class="toc-number">2.1.</span> <span class="toc-text">
+          验证阿里云CLI是否安装成功</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%99%BB%E5%BD%95%E6%8E%A7%E5%88%B6%E5%8F%B0-1"><span class="toc-number">2.2.</span> <span class="toc-text">
+          登录控制台</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%9B%E5%BB%BARAM%E7%94%A8%E6%88%B7-1"><span class="toc-number">2.3.</span> <span class="toc-text">
+          创建RAM用户</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B7%BB%E5%8A%A0%E7%99%BB%E5%BD%95web%E6%8E%A7%E5%88%B6%E5%8F%B0%E7%9A%84%E6%9D%83%E9%99%90-1"><span class="toc-number">2.4.</span> <span class="toc-text">
+          添加登录web控制台的权限</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9F%A5%E7%9C%8B%E7%94%A8%E6%88%B7%E5%88%9B%E5%BB%BA%E6%88%90%E5%8A%9F%E6%B2%A1"><span class="toc-number">2.5.</span> <span class="toc-text">
+          查看用户创建成功没</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9F%A5%E7%9C%8B%E4%BA%91%E8%B4%A6%E5%8F%B7%E5%88%AB%E5%90%8D-1"><span class="toc-number">2.6.</span> <span class="toc-text">
+          查看云账号别名</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9F%A5%E7%9C%8BPolicyName%E5%92%8CPolicyType"><span class="toc-number">2.7.</span> <span class="toc-text">
+          查看PolicyName和PolicyType</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B7%BB%E5%8A%A0%E6%9D%83%E9%99%90-1"><span class="toc-number">2.8.</span> <span class="toc-text">
+          添加权限</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%99%BB%E5%BD%95web%E6%8E%A7%E5%88%B6%E5%8F%B0"><span class="toc-number">2.9.</span> <span class="toc-text">
+          登录web控制台</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Q1-%E5%A6%82%E4%BD%95%E5%88%A0%E9%99%A4%E7%94%A8%E6%88%B7"><span class="toc-number">2.10.</span> <span class="toc-text">
+          Q1:如何删除用户</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Q2-%E8%BF%99%E4%B9%88%E5%A4%9A%E5%91%BD%E4%BB%A4%E8%AE%B0%E4%B8%8D%E4%BD%8F%E6%80%8E%E4%B9%88%E5%8A%9E%EF%BC%9F"><span class="toc-number">2.11.</span> <span class="toc-text">
+          Q2:这么多命令记不住怎么办？</span></a></li></ol></li></ol></section><!-- ov = overview--><section class="sidebar-ov hide"><div class="sidebar-ov-author"><div class="sidebar-ov-author__avatar"><img class="sidebar-ov-author__avatar_img" src="/images/icons/avatar.jpg" alt="avatar"></div><p class="sidebar-ov-author__text">冰糖小混子</p></div><div class="sidebar-ov-state"><a class="sidebar-ov-state-item sidebar-ov-state-item--posts" href="/archives/"><div class="sidebar-ov-state-item__count">34</div><div class="sidebar-ov-state-item__name">归档</div></a><a class="sidebar-ov-state-item sidebar-ov-state-item--categories" href="/categories/"><div class="sidebar-ov-state-item__count">8</div><div class="sidebar-ov-state-item__name">分类</div></a><a class="sidebar-ov-state-item sidebar-ov-state-item--tags" href="/tags/"><div class="sidebar-ov-state-item__count">26</div><div class="sidebar-ov-state-item__name">标签</div></a></div><div class="sidebar-ov-cc"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" target="_blank" rel="noopener" data-popover="知识共享许可协议" data-popover-pos="up"><img src="/images/cc-by-nc-sa.svg"></a></div></section><div class="sidebar-reading"><div class="sidebar-reading-info"><span class="sidebar-reading-info__text">你已阅读了 </span><span class="sidebar-reading-info__num">0</span><span class="sidebar-reading-info__perc">%</span></div><div class="sidebar-reading-line"></div></div></aside></div><div class="clearfix"></div></div></main><footer class="footer" id="footer"><div class="footer-inner"><div><span>Copyright © 2024</span><span class="footer__icon"><i class="fas fa-heart"></i></span><span>冰糖小混子</span><span class="footer__devider">|</span><span><a href="https://beian.miit.gov.cn/" rel="noopener" target="_blank">蒙ICP备20002846号</a></span></div><div><span>由 <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a> 强力驱动</span><span> v6.3.0</span><span class="footer__devider">|</span><span>主题 - <a href="https://github.com/liuyib/hexo-theme-stun/" title="Stun" target="_blank" rel="noopener">Stun</a></span><span> v2.8.0</span></div></div></footer><div class="loading-bar" id="loading-bar"><div class="loading-bar__progress"></div></div><div class="back2top" id="back2top"><span class="back2top__icon"><i class="fas fa-rocket"></i></span></div></div><div class="search-mask"></div><div class="search-popup"><span class="search-close"></span><div class="search-input"></div><div class="search-results"><div id="algolia-hits"></div></div><div id="algolia-pagination"></div><div id="algolia-stats"></div></div><script src="https://cdn.jsdelivr.net/npm/jquery@v3.4.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.ui.min.js"></script><script src="https://cdn.jsdelivr.net/npm/ribbon.js@latest/dist/ribbon.min.js" size="120" alpha="0.6" zIndex="-1"></script><script src="https://cdn.jsdelivr.net/npm/instantsearch.js@2.1.1/dist/instantsearch.min.js" defer></script><script>window.addEventListener('DOMContentLoaded', function () {
+  $('.header-nav-search').on('click', function (e) {
+    e.stopPropagation();
+
+    $('body').css('overflow', 'hidden');
+    $('.search-popup')
+      .velocity('stop')
+      .velocity('transition.expandIn', {
+        duration: 300,
+        complete: function () {
+          $('.search-popup input').focus();
+        }
+      });
+    $('.search-mask')
+      .velocity('stop')
+      .velocity('transition.fadeIn', {
+        duration: 300
+      });
+  });
+
+  function closeSearch () {
+    $('body').css({ overflow: 'auto' });
+    $('.search-popup').css({ display: 'none' });
+    $('.search-mask').css({ display: 'none' });
+  }
+
+  $('.search-mask, .search-close').on('click', function () {
+    closeSearch();
+  });
+
+  $(document).on('keydown', function (e) {
+    // Escape <=> 27
+    if (e.keyCode === Stun.utils.codeToKeyCode('Escape')) {
+      closeSearch();
+    }
+  });
+
+  var algolia = CONFIG.algolia;
+  if (!algolia && !(algolia.appId && algolia.apiKey && algolia.indexName)) {
+    return console.error('Algolia setting is invalid.');
+  }
+
+  var search = instantsearch({
+    appId: algolia.appId,
+    apiKey: algolia.apiKey,
+    indexName: algolia.indexName,
+    searchParameters: {
+      hitsPerPage: algolia.hits.per_page || 10
+    },
+    searchFunction: function (helper) {
+      var searchInput = $('.search-input').find('input');
+
+      if (searchInput.val()) {
+        helper.search();
+      }
+    }
+  });
+
+  search.addWidget(
+    instantsearch.widgets.searchBox({
+      container: '.search-input',
+      reset: false,
+      magnifier: false,
+      placeholder: algolia.languages.inputPlaceholder
+    })
+  );
+
+  // The hits of search results.
+  search.addWidget(
+    instantsearch.widgets.hits({
+      container: '#algolia-hits',
+      templates: {
+        item: function (data) {
+          var link = data.permalink ? data.permalink : CONFIG.root + data.path;
+          return (
+            '<a href="' + link + '" class="algolia-hit-item-link">' +
+              data._highlightResult.title.value +
+            '</a>'
+          );
+        },
+        empty: function (data) {
+          return (
+            '<div id="algolia-hits-empty">' +
+              algolia.languages.hitsEmpty.replace(/\$\{query}/, data.query) +
+            '</div>'
+          );
+        }
+      },
+      cssClasses: {
+        item: 'algolia-hit-item'
+      }
+    })
+  );
+
+  // The stats of search results.
+  if ($('#algolia-stats')[0]) {
+    search.addWidget(
+      instantsearch.widgets.stats({
+        container: '#algolia-stats',
+        templates: {
+          body: function (data) {
+            var stats = algolia.languages.hitsStats
+              .replace(/\$\{hits}/, data.nbHits)
+              .replace(/\$\{time}/, data.processingTimeMS);
+            return (
+              stats +
+              '<span class="algolia-logo pull-right">' +
+                '<img src="' + CONFIG.root +
+                `${CONFIG.sourcePath.images}/algolia.svg" alt="Algolia" />` +
+              '</span>'
+            );
+          }
+        }
+      })
+    );
+  }
+
+  // The pagination of the results.
+  search.addWidget(
+    instantsearch.widgets.pagination({
+      container: '#algolia-pagination',
+      scrollTo: false,
+      showFirstLast: false,
+      labels: {
+        first: '<i class="fa fa-angle-double-left"></i>',
+        last: '<i class="fa fa-angle-double-right"></i>',
+        previous: '<i class="fa fa-angle-left"></i>',
+        next: '<i class="fa fa-angle-right"></i>'
+      },
+      cssClasses: {
+        root: 'pagination',
+        item: 'pagination-item',
+        link: 'page-number',
+        active: 'current',
+        disabled: 'disabled-item'
+      }
+    })
+  );
+
+  search.start();
+});</script><script>function loadUtterances() {
+  var d = document, s = d.createElement('script');
+  var container = d.getElementById('utterances-container');
+
+  if (!container) {
+    return;
+  }
+  s.src = 'https://utteranc.es/client.js';
+  s.setAttribute('repo', 'ixxzhi/ixxzhi.github.io');
+  s.setAttribute('issue-term', 'title');
+  s.setAttribute('label', 'utterances');
+  s.setAttribute('theme', 'github-light');
+  s.setAttribute('crossorigin', 'anonymous');
+  s.setAttribute('async', '');
+  if (false) {
+    s.setAttribute('data-pjax-rm', '');
+  }
+  container.append(s);
+}
+
+if (false) {
+  loadUtterances();
+} else {
+  window.addEventListener('DOMContentLoaded', loadUtterances, false);
+}</script><script src="/js/utils.js?v=2.8.0"></script><script src="/js/stun-boot.js?v=2.8.0"></script><script src="/js/scroll.js?v=2.8.0"></script><script src="/js/header.js?v=2.8.0"></script><script src="/js/sidebar.js?v=2.8.0"></script></body></html>
